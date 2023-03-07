@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Getraenkeabrechner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/tc_blau</item>
+        <item name="colorPrimaryVariant">@color/tc_hellblau</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/tc_weiss</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -22,4 +22,10 @@
     <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Getraenkeabrechner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Getraenkeabrechner.Header" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/tc_blau</item>
+        <item name="android:textSize">36dp</item>
+        <item name="android:fontWeight">1000</item>
+    </style>
 </resources>
