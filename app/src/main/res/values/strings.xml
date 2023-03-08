@@ -15,7 +15,6 @@
     <string name="nav_header_title">Einstellungen</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -30,4 +29,6 @@
     <string name="menu_delete_all_bookings">Alle Buchungen löschen</string>
     <string name="menu_cancel">Stornieren</string>
     <string name="menu_change_password">Passwort ändern</string>
+    <string name="beverage_selection_label">Getränkeauswahl</string>
+    <string name="signature_label">Unterschrift</string>
 </resources>
