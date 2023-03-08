@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="tc_blau">#2A4393</color>
-    <color name="tc_hellblau">#EAEEF6</color>
-    <color name="tc_weiss">#FBFDFF</color>
+    <color name="tc_mittelblau">#DEE1F9</color>
+    <color name="tc_hellblau">#F5F3FB</color>
+    <color name="tc_weiss">#FEFBFF</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
