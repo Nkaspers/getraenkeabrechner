@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:id="@+id/subheader_members"
+        android:title="@string/menu_subheader_members">
+        <menu>
+            <item
+                android:id="@+id/nav_members_edit"
+                android:icon="@drawable/ic_member"
+                android:title="@string/menu_edit" />
+            <item
+                android:id="@+id/nav_members_import"
+                android:icon="@drawable/ic_import"
+                android:title="@string/menu_import" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_subheader_entries"
+        android:title="@string/menu_subheader_entries">
+        <menu>
+            <item
+                android:id="@+id/nav_entries_show_all"
+                android:icon="@drawable/ic_euro"
+                android:title="@string/menu_all_entries" />
+            <item
+                android:id="@+id/nav_entries_cancel"
+                android:icon="@drawable/ic_cancel"
+                android:title="@string/menu_cancel" />
+            <item
+                android:id="@+id/nav_entries_export"
+                android:icon="@drawable/ic_export"
+                android:title="@string/menu_export" />
+            <item
+                android:id="@+id/nav_entries_delete_all"
+                android:icon="@drawable/ic_delete_all"
+                android:title="@string/menu_delete_all_bookings" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_subheader_beverages"
+        android:title="@string/menu_subheader_beverages">
+        <menu>
+            <item
+                android:id="@+id/nav_beverages_edit"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/menu_edit" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_subheader_security"
+        android:title="@string/menu_subheader_security">
+        <menu>
+            <item
+                android:id="@+id/nav_password_change"
+                android:icon="@drawable/ic_shield"
+                android:title="@string/menu_change_password" />
+        </menu>
+    </item>
+
+</menu>
