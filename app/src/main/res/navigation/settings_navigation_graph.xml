@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_members_edit">
+
+    <fragment
+        android:id="@+id/nav_members_edit"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.members.EditMembersFragment"
+        android:label="@string/menu_edit"
+        tools:layout="@layout/fragment_edit_members" />
+
+    <fragment
+        android:id="@+id/nav_members_import"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.members.ImportMembersFragment"
+        android:label="@string/menu_import"
+        tools:layout="@layout/fragment_import_members" />
+
+    <fragment
+        android:id="@+id/nav_entries_show_all"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.entries.AllEntriesFragment"
+        android:label="@string/menu_all_entries"
+        tools:layout="@layout/fragment_all_entries" />
+    <fragment
+        android:id="@+id/nav_entries_cancel"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.entries.CancelEntryFragment"
+        android:label="@string/menu_cancel"
+        tools:layout="@layout/fragment_cancel_entry" />
+    <fragment
+        android:id="@+id/nav_items_edit"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.items.EditItemsFragment"
+        android:label="@string/menu_edit"
+        tools:layout="@layout/fragment_edit_items" />
+
+</navigation>
