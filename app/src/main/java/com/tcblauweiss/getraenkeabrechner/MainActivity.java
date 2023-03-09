@@ -1,5 +1,6 @@
 package com.tcblauweiss.getraenkeabrechner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent_launch_settings = new Intent(this, SettingsActivity.class);
+            startActivity(intent_launch_settings);
+
             return true;
         }
 

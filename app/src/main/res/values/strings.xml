@@ -31,4 +31,6 @@
     <string name="menu_change_password">Passwort ändern</string>
     <string name="beverage_selection_label">Getränkeauswahl</string>
     <string name="signature_label">Unterschrift</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

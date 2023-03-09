@@ -9,11 +9,13 @@
             <item
                 android:id="@+id/nav_members_edit"
                 android:icon="@drawable/ic_member"
-                android:title="@string/menu_edit" />
+                android:title="@string/menu_edit"
+                android:checkable="true" />
             <item
                 android:id="@+id/nav_members_import"
                 android:icon="@drawable/ic_import"
-                android:title="@string/menu_import" />
+                android:title="@string/menu_import"
+                android:checkable="true" />
         </menu>
     </item>
     <item
@@ -23,7 +25,8 @@
             <item
                 android:id="@+id/nav_entries_show_all"
                 android:icon="@drawable/ic_euro"
-                android:title="@string/menu_all_entries" />
+                android:title="@string/menu_all_entries"
+                android:checkable="true" />
             <item
                 android:id="@+id/nav_entries_cancel"
                 android:icon="@drawable/ic_cancel"
@@ -39,13 +42,14 @@
         </menu>
     </item>
     <item
-        android:id="@+id/nav_subheader_beverages"
+        android:id="@+id/nav_subheader_items"
         android:title="@string/menu_subheader_beverages">
         <menu>
             <item
-                android:id="@+id/nav_beverages_edit"
+                android:id="@+id/nav_items_edit"
                 android:icon="@drawable/ic_edit"
-                android:title="@string/menu_edit" />
+                android:title="@string/menu_edit"
+                android:checkable="true" />
         </menu>
     </item>
     <item

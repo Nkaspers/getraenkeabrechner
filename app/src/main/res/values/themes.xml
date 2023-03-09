@@ -4,15 +4,17 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/tc_blau</item>
         <item name="colorPrimaryVariant">@color/tc_mittelblau</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/tc_weiss</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/tc_weiss</item>
         <item name="colorSecondaryVariant">@color/tc_hellblau</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryContainer">@color/tc_mittelblau</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="color">@color/tc_mittelblau</item>
     </style>
 
     <style name="Theme.Getraenkeabrechner.NoActionBar">
@@ -20,6 +22,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Getraenkeabrechner.NavigationView" parent="ThemeOverlay.Material3.NavigationView">
+        <item name="itemShapeFillColor">@color/navigation_item_background_color</item>
+    </style>
 
     <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
