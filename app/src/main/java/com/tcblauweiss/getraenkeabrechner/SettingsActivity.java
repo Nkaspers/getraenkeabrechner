@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_members_edit, R.id.nav_members_import, R.id.nav_entries_show_all,
                 R.id.nav_entries_cancel, R.id.nav_entries_export, R.id.nav_entries_delete_all,
-                R.id.nav_items_edit, R.id.nav_password_change)
+                R.id.nav_items_edit, R.id.nav_password_change, R.id.nav_return_to_main)
                 .setOpenableLayout(drawer)
                 .build();
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_settings);
@@ -46,7 +46,6 @@ public class SettingsActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
         drawer.openDrawer(GravityCompat.START);
     }
 
