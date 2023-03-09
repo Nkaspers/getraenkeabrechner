@@ -13,12 +13,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.databinding.ActivityMainBinding;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
+import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
 
 import android.view.Menu;
@@ -32,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private Item item1 = new Item("Bier (0,5l)", Float.valueOf((float)1.5));
+    private Item item2 = new Item("Wasser (1l)", Float.valueOf((float)1));
+    private Entry entry1 = new Entry(LocalDateTime.now(),"Musterman", "Max", item1, 2,(float)3.0);
+    private Entry entry2= new Entry(LocalDateTime.now(),"Meier", "Hans", item1, 1,(float)1.5);
+    private Entry entry3 =  new Entry(LocalDateTime.now(),"Müller", "Peter", item2, 1,(float)1.0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
         setupLastEntriesView();
+        setupItemSelectionView();
     }
 
     @Override
@@ -73,25 +81,39 @@ public class MainActivity extends AppCompatActivity {
         LastEntriesAdapter lastEntriesAdapter;
 
         RecyclerView lastEntriesRecyclerView = findViewById(R.id.rec_view_last_entries);
+        lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         // some sample data for testing purposes
-        Item item1 = new Item("Bier (0,5l)", Float.valueOf((float)1.5));
-        Item item2 = new Item("Wasser (1l)", Float.valueOf((float)1));
-        Entry entry1 = new Entry(LocalDateTime.now(),"Musterman", "Max", item1, 2,(float)3.0);
-        Entry entry2= new Entry(LocalDateTime.now(),"Meier", "Hans", item1, 1,(float)1.5);
-        Entry entry3 =  new Entry(LocalDateTime.now(),"Müller", "Peter", item2, 1,(float)1.0);
-
         ArrayList<Entry> dataSet = new ArrayList<>();
         dataSet.add(entry1);
         dataSet.add(entry2);
         dataSet.add(entry3);
+        dataSet.add(entry2);
+        dataSet.add(entry3);
+        dataSet.add(entry1);
+        dataSet.add(entry3);
+        dataSet.add(entry3);
+        dataSet.add(entry3);
 
         lastEntriesAdapter = new LastEntriesAdapter(dataSet);
-
         lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
+    }
 
+    private void setupItemSelectionView() {
+        ItemSelectionAdapter itemSelectionAdapter;
+
+        RecyclerView itemSelectionRecycleView = findViewById(R.id.rec_view_itemselection);
+        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
+
+        ArrayList<Item> itemList = new ArrayList<>();
+        itemList.add(item1);
+        itemList.add(item2);
+        itemList.add(item1);
+        itemList.add(item2);
+        itemSelectionAdapter = new ItemSelectionAdapter(itemList);
+        itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
     }
 
 }
