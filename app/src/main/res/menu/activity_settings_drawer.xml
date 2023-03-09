@@ -60,6 +60,11 @@
                 android:id="@+id/nav_password_change"
                 android:icon="@drawable/ic_shield"
                 android:title="@string/menu_change_password" />
+            <item
+                android:id="@+id/nav_return_to_main"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/menu_back_to_mainpage" />
+
         </menu>
     </item>
 
