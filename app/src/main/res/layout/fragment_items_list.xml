@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.items.EditItemsFragment"
-    tools:listitem="@layout/fragment_edit_items" />
+    tools:listitem="@layout/item_viewholder" />

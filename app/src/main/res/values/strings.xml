@@ -31,4 +31,5 @@
     <string name="add_member_dialog_title">Neues Mitglied</string>
     <string name="add_member_dialog_confirm_label">hinzufügen</string>
     <string name="add_member_dialog_cancel_label">abbrechen</string>
+    <string name="search_Entries_label">Buchungen suchen</string>
 </resources>

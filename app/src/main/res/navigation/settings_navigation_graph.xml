@@ -23,14 +23,9 @@
         android:label="@string/menu_all_entries"
         tools:layout="@layout/fragment_all_entries" />
     <fragment
-        android:id="@+id/nav_entries_cancel"
-        android:name="com.tcblauweiss.getraenkeabrechner.ui.entries.CancelEntryFragment"
-        android:label="@string/menu_cancel"
-        tools:layout="@layout/fragment_cancel_entry" />
-    <fragment
         android:id="@+id/nav_items_edit"
         android:name="com.tcblauweiss.getraenkeabrechner.ui.items.EditItemsFragment"
         android:label="@string/menu_edit"
-        tools:layout="@layout/fragment_edit_items" />
+        tools:layout="@layout/item_viewholder" />
 
 </navigation>

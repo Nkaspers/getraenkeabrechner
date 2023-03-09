@@ -14,7 +14,8 @@
         <com.google.android.material.search.SearchBar
             android:id="@+id/searchbar_edit_members"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize"
+            android:hint="@string/search_members_label"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_edit_members_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/searchbar_edit_members" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_edit_members_fragment"

@@ -13,7 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="color">@color/tc_mittelblau</item>
     </style>
 
@@ -26,7 +26,12 @@
         <item name="itemShapeFillColor">@color/navigation_item_background_color</item>
     </style>
 
-    <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="Theme.Getraenkeabrechner.SettingsToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:colorBackground">@color/tc_weiss</item>
+        <item name="android:textColorPrimary">@color/tc_blau</item>
+    </style>
 
     <style name="Theme.Getraenkeabrechner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
