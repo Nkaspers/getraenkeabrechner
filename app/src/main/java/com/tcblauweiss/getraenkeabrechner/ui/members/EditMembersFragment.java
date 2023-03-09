@@ -30,20 +30,10 @@ public class EditMembersFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_members, container, false);
         searchBar = view.findViewById(R.id.searchbar_edit_members);
+        searchBar.setNavigationIcon(R.drawable.ic_menu);
         ((AppCompatActivity) getActivity()).setSupportActionBar(searchBar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                return false;
-            }
-        });
         addMemberFab.setOnClickListener(new View.OnClickListener(){
 
             @Override
