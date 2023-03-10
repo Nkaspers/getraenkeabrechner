@@ -1,5 +1,6 @@
 package com.tcblauweiss.getraenkeabrechner.ui.members;
 
+import androidx.appcompat.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,16 +24,17 @@ import com.tcblauweiss.getraenkeabrechner.R;
 public class EditMembersFragment extends Fragment {
     FloatingActionButton addMemberFab;
     AlertDialog addMemberDialog;
-
+    AppCompatActivity parentActivity;
     SearchBar searchBar;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_members, container, false);
+        parentActivity = (AppCompatActivity) requireActivity();
         searchBar = view.findViewById(R.id.searchbar_edit_members);
         searchBar.setNavigationIcon(R.drawable.ic_menu);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(searchBar);
+        parentActivity.setSupportActionBar(searchBar);
 
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);
         addMemberFab.setOnClickListener(new View.OnClickListener(){

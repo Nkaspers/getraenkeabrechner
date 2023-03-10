@@ -3,6 +3,9 @@ package com.tcblauweiss.getraenkeabrechner.ui.items;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +27,8 @@ public class AllItemsFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private AppCompatActivity parentActivity;
+    private MaterialToolbar toolbar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,6 +60,12 @@ public class AllItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
+        parentActivity = (AppCompatActivity) getActivity();
+
+        //reinitialize toolbar in case it was overwritten from previous fragments.
+        toolbar = parentActivity.findViewById(R.id.toolbar);
+        parentActivity.setSupportActionBar(toolbar);
+
         RecyclerView recyclerView = view.findViewById(R.id.list_all_items);
         // Set the adapter
         Context context = view.getContext();
@@ -66,5 +77,10 @@ public class AllItemsFragment extends Fragment {
             recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

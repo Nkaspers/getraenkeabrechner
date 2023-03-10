@@ -26,7 +26,9 @@
         <item name="itemShapeFillColor">@color/navigation_item_background_color</item>
     </style>
 
-    <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorOnSurfaceVariant">@color/black</item>
+    </style>
 
     <style name="Theme.Getraenkeabrechner.SettingsToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:colorBackground">@color/tc_weiss</item>

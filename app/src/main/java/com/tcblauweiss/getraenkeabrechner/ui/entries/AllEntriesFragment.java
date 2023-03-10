@@ -15,14 +15,15 @@ import com.tcblauweiss.getraenkeabrechner.R;
 
 public class AllEntriesFragment extends Fragment {
     SearchBar searchBar;
-
+    AppCompatActivity parentActivity;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_entries, container, false);
+        parentActivity = (AppCompatActivity) requireActivity();
         searchBar = view.findViewById(R.id.searchbar_all_entries);
         searchBar.setNavigationIcon(R.drawable.ic_menu);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(searchBar);
+        parentActivity.setSupportActionBar(searchBar);
         return view;
     }
 
