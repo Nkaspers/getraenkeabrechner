@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -22,6 +23,9 @@ import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
+
+import se.warting.signatureview.views.SignaturePad;
+import se.warting.signatureview.views.SignedListener;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +54,26 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         setupLastEntriesView();
         setupItemSelectionView();
+
+        SignaturePad signaturPad = findViewById(R.id.signature_pad);
+        signaturPad.setOnSignedListener(new SignedListener() {
+            @Override
+            public void onStartSigning() {
+                Log.d("SignedListener", "OnStartSigning");
+            }
+            @Override
+            public void onSigning() {
+                Log.d("SignedListener", "OnSigning");
+            }
+            @Override
+            public void onSigned() {
+                Log.d("SignedListener", "OnSigned");
+            }
+            @Override
+            public void onClear() {
+                Log.d("SignedListener", "OnClear");
+            }
+        });
     }
 
     @Override
