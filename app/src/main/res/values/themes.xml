@@ -5,16 +5,20 @@
         <item name="colorPrimary">@color/tc_blau</item>
         <item name="colorPrimaryVariant">@color/tc_mittelblau</item>
         <item name="colorOnPrimary">@color/tc_weiss</item>
+        <item name="colorPrimaryContainer">@color/tc_blau</item>
+        <item name="colorOnPrimaryContainer">@color/tc_weiss</item>>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/tc_weiss</item>
         <item name="colorSecondaryVariant">@color/tc_hellblau</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorSecondaryContainer">@color/tc_mittelblau</item>
+        <item name="colorOnSecondaryContainer">@color/tc_blau</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowTranslucentStatus">false</item>
-        <item name="color">@color/tc_mittelblau</item>
+        <item name="colorAccent">@color/tc_blau</item>
     </style>
 
     <style name="Theme.Getraenkeabrechner.NoActionBar">
@@ -48,4 +52,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <style name="Theme.Getraenkeabrechner.FabStyle" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="colorAccent">@color/tc_mittelblau</item> </style>
 </resources>

@@ -33,5 +33,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/fab_add_member_content_desc"
-        app:srcCompat="@drawable/ic_plus"/>
+        app:srcCompat="@drawable/ic_plus"
+        style="?attr/floatingActionButtonSecondaryStyle"
+        />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
