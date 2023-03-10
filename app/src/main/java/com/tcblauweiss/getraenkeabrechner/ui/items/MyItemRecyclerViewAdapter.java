@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tcblauweiss.getraenkeabrechner.databinding.FragmentEditItemsBinding;
+import com.tcblauweiss.getraenkeabrechner.databinding.ItemsViewholderBinding;
 import com.tcblauweiss.getraenkeabrechner.ui.items.placeholder.PlaceholderContent.PlaceholderItem;
-//import com.tcblauweiss.getraenkeabrechner.ui.items.databinding.FragmentEditItemsBinding;
+//import com.tcblauweiss.getraenkeabrechner.ui.items.databinding.FragmentAllItemsBinding;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(FragmentEditItemsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(ItemsViewholderBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
     }
 
@@ -49,7 +49,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final TextView mContentView;
         public PlaceholderItem mItem;
 
-        public ViewHolder(FragmentEditItemsBinding binding) {
+        public ViewHolder(ItemsViewholderBinding binding) {
             super(binding.getRoot());
             mIdView = binding.itemNumber;
             mContentView = binding.content;

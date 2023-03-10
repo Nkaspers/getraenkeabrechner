@@ -24,8 +24,8 @@
         tools:layout="@layout/fragment_all_entries" />
     <fragment
         android:id="@+id/nav_items_edit"
-        android:name="com.tcblauweiss.getraenkeabrechner.ui.items.EditItemsFragment"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.items.AllItemsFragment"
         android:label="@string/menu_edit"
-        tools:layout="@layout/item_viewholder" />
+        tools:layout="@layout/items_viewholder" />
 
 </navigation>
