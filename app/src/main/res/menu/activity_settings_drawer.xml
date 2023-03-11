@@ -8,7 +8,7 @@
         <menu>
             <item
                 android:id="@+id/nav_members_edit"
-                android:icon="@drawable/ic_member"
+                android:icon="@drawable/ic_members"
                 android:title="@string/menu_edit"
                 android:checkable="true" />
             <item

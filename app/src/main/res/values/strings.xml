@@ -32,4 +32,11 @@
     <string name="add_member_dialog_confirm_label">hinzufügen</string>
     <string name="add_member_dialog_cancel_label">abbrechen</string>
     <string name="search_Entries_label">Buchungen suchen</string>
+    <string name="reset_entry_btn_label">Zurücksetzen</string>
+    <string name="submit_entry_btn_label">Buchen</string>
+    <string name="input_member_name_label">Name</string>
+    <string name="name_imput_field_error_label">Kein Vereinsmitglied</string>
+    <string name="invalid_member_toast">Bitte gültiges Vereinsmitglied auswählen</string>
+    <string name="submit_success_toast">Buchung erfolgreich</string>
+    <string name="signature_pad_label">Hier unterschreiben</string>
 </resources>

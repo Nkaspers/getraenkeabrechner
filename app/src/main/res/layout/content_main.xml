@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:paddingHorizontal="30dp"
-    android:paddingVertical="30dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:paddingVertical="7dp"
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -64,21 +70,28 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/customborder"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-        <androidx.appcompat.widget.SearchView
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_input_member_name"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:hint="@string/input_member_name_label"
+            app:layout_constraintWidth_percent=".4"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            app:startIconDrawable="@drawable/ic_member_simple"
+            app:errorEnabled="true"
+            app:startIconTint="?attr/colorPrimary">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/text_input_member_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
@@ -86,11 +99,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="@drawable/customborder"
-        android:minHeight="100dp"
+        android:minHeight="150dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout5"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout5">
+        app:layout_constraintStart_toEndOf="@+id/layout_input_member_name"
+        app:layout_constraintTop_toTopOf="@+id/layout_input_member_name">
 
         <ListView
             android:layout_width="match_parent"
@@ -98,48 +111,49 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/text_signature_header"
         style="@style/Theme.Getraenkeabrechner.Header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signature_label"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout5"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="@+id/layout_input_member_name"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
         app:layout_constraintVertical_bias="1.0" />
 
     <RelativeLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/customborder"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
-        app:layout_constraintStart_toStartOf="@+id/textView3">
+        app:layout_constraintStart_toStartOf="@+id/text_signature_header">
 
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/signature_pad_description"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
 
-            <se.warting.signatureview.views.SignaturePad
-                android:id="@+id/signature_pad"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/signature_pad_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:text="@string/signature_pad_label"
+            android:textColor="@android:color/darker_gray" />
 
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                android:layout_below="@id/signature_pad"/>
-
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                android:layout_below="@id/signature_pad"
-                android:layout_toEndOf="@id/button5"
-                />
+        <se.warting.signatureview.views.SignaturePad
+            android:id="@+id/signature_pad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true" />
 
     </RelativeLayout>
 
@@ -149,25 +163,29 @@
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/frameLayout"
         app:layout_constraintStart_toStartOf="@+id/frameLayout">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_reset_entry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/reset_entry_btn_label" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_submit_entry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@string/submit_entry_btn_label" />
 
     </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

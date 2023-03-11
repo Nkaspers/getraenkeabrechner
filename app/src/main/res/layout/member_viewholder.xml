@@ -13,20 +13,20 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/ic_circle"
         android:gravity="center"
-        android:text="A"
         android:theme="@style/Theme.Getraenkeabrechner.MemberIconText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="A"/>
 
     <TextView
         android:id="@+id/text_member_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="Mustermann, Max"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_member_name_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Theme.Getraenkeabrechner.BodyTextMedium"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
