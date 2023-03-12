@@ -16,6 +16,7 @@
             android:id="@+id/searchbar_all_entries"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="enterAlways"
             android:hint="@string/search_Entries_label"/>
 
     </com.google.android.material.appbar.AppBarLayout>

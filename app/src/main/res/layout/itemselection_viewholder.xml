@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:cardElevation="3dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/customborder"
-        android:layout_margin="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        app:cardBackgroundColor="@color/tc_weiss"
+        style="?attr/materialCardViewElevatedStyle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="8dp">
 
             <Button
                 android:id="@+id/btn_itemselection_decrease"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/ic_circle"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="-"
-                android:textAlignment="center"
-                android:textColor="@color/tc_weiss"
-                app:iconPadding="0dp"
+                app:icon="@drawable/ic_minus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Theme.Getraenkeabrechner.ItemSelectionButton"/>
 
             <TextView
                 android:id="@+id/text_itemselection_itemname"
@@ -40,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:text="Bier (0,5l)"
                 app:layout_constraintEnd_toStartOf="@+id/btn_itemselection_increase"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btn_itemselection_decrease"
@@ -50,7 +42,6 @@
                 android:id="@+id/text_itemselection_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 app:layout_constraintBottom_toTopOf="@+id/text_itemselection_price"
                 app:layout_constraintEnd_toEndOf="@+id/text_itemselection_itemname"
                 app:layout_constraintStart_toStartOf="@+id/text_itemselection_itemname"
@@ -60,24 +51,19 @@
                 android:id="@+id/btn_itemselection_increase"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/ic_circle"
-                android:text="+"
-                android:textAllCaps="false"
-                android:textColor="@color/tc_weiss"
+                app:icon="@drawable/ic_plus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
+                style="@style/Theme.Getraenkeabrechner.ItemSelectionButton"/>
 
             <TextView
                 android:id="@+id/text_itemselection_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1,50€"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/text_itemselection_itemname"
                 app:layout_constraintStart_toStartOf="@+id/text_itemselection_itemname" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
