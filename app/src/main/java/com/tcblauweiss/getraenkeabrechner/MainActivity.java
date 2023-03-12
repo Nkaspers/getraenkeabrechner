@@ -3,6 +3,8 @@ package com.tcblauweiss.getraenkeabrechner;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -10,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +22,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.tcblauweiss.getraenkeabrechner.databinding.ActivityMainBinding;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
+import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
+import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
+import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
 
 import se.warting.signatureview.views.SignaturePad;
@@ -27,6 +33,9 @@ import se.warting.signatureview.views.SignedListener;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Initialize Ui Elements
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         setSupportActionBar(binding.toolbar);
         setupLastEntriesView();
         setupItemSelectionView();
@@ -202,16 +212,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupItemSelectionView() {
         ItemSelectionAdapter itemSelectionAdapter;
-
+        Receipt receipt = new Receipt();
         RecyclerView itemSelectionRecycleView = findViewById(R.id.rec_view_itemselection);
         itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
 
         ArrayList<Item> itemList = new ArrayList<>();
-        itemList.add(item1);
-        itemList.add(item2);
-        itemList.add(item1);
-        itemList.add(item2);
-        itemSelectionAdapter = new ItemSelectionAdapter(itemList);
+        itemList.add((item1));
+        itemList.add((item2));
+        itemList.add((item1));
+        itemList.add((item2));
+        itemList.add((item1));
+        itemList.add((item2));
+        itemList.add((item1));
+        itemList.add((item2));
+
+
+        RecyclerView receiptRecyclerView = findViewById(R.id.rec_view_receipt);
+        receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ReceiptAdapter receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
+        receiptRecyclerView.setAdapter(receiptAdapter);
+
+        itemSelectionAdapter = new ItemSelectionAdapter(itemList, receipt,receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
     }
 

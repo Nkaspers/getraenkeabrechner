@@ -105,7 +105,8 @@
         app:layout_constraintStart_toEndOf="@+id/layout_input_member_name"
         app:layout_constraintTop_toTopOf="@+id/layout_input_member_name">
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_view_receipt"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
