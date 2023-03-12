@@ -13,6 +13,7 @@ import android.util.Log;
 
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private SignaturePad signaturePad;
     private Item item1 = new Item("Bier (0,5l)", Float.valueOf((float)1.5));
     private Item item2 = new Item("Wasser (1l)", Float.valueOf((float)1));
+    private Item item3 = new Item("Weizen (0,5l)", Float.valueOf((float)1.5));
+    private Item item4 = new Item("Softdrink (1l)", Float.valueOf((float)1.3));
+
     private Entry entry1 = new Entry(LocalDateTime.now(),"Musterman", "Max", item1, 2,(float)3.0);
     private Entry entry2= new Entry(LocalDateTime.now(),"Meier", "Hans", item1, 1,(float)1.5);
     private Entry entry3 =  new Entry(LocalDateTime.now(),"Müller", "Peter", item2, 1,(float)1.0);
@@ -219,12 +223,12 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Item> itemList = new ArrayList<>();
         itemList.add((item1));
         itemList.add((item2));
+        itemList.add((item3));
+        itemList.add((item4));
         itemList.add((item1));
         itemList.add((item2));
-        itemList.add((item1));
-        itemList.add((item2));
-        itemList.add((item1));
-        itemList.add((item2));
+        itemList.add((item3));
+        itemList.add((item4));
 
 
         RecyclerView receiptRecyclerView = findViewById(R.id.rec_view_receipt);

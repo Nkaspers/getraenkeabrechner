@@ -2,6 +2,7 @@ package com.tcblauweiss.getraenkeabrechner.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,11 +22,9 @@ public class Receipt {
     }
 
     public int getNumberOfItems(Item item) {
-        try {
-            return Collections.frequency(itemList, item);}
-        catch(NullPointerException e) {
-            return 0;
-        }
+        if (itemList.contains(item)) {
+            return Collections.frequency(itemList, item);
+        } return 0;
     }
 
     public ArrayList<ItemWrapper> getItemsAndCount(){
@@ -35,6 +34,16 @@ public class Receipt {
             int count = getNumberOfItems(item);
             itemsAndCount.add(new ItemWrapper(item, count));
         }
+        itemsAndCount.sort(new Comparator<ItemWrapper>() {
+            @Override
+            public int compare(ItemWrapper itemWrapper1, ItemWrapper itemWrapper2) {
+                Item item1 = itemWrapper1.getItem();
+                Item item2 = itemWrapper2.getItem();
+
+                return item1.getName().compareTo(item2.getName());
+            }
+        });
+
         return itemsAndCount;
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.R;
@@ -49,6 +50,14 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
 
     public ReceiptAdapter(ArrayList<ItemWrapper> receiptItemList) {
         this.receiptItemList = receiptItemList;
+    }
+
+    public void updateData(ArrayList<ItemWrapper> newReceiptItemList) {
+        final ItemWrapperDiffCallback diffCallback = new ItemWrapperDiffCallback(this.receiptItemList, newReceiptItemList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.receiptItemList = newReceiptItemList;
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override

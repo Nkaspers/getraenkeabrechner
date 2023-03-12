@@ -13,11 +13,16 @@ public class ItemWrapper {
         return count;
     }
 
+
     public float getTotal() {
         return getCount() * item.getPrice();
     }
 
     public Item getItem() {
         return item;
+    }
+
+    public String toString() {
+        return getItem().getName() + ", Anzahl: " + getCount();
     }
 }

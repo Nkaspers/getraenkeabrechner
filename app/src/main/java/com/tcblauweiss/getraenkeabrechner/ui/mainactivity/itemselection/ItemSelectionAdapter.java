@@ -1,5 +1,6 @@
 package com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     private ArrayList<Item> localItemList;
     private Receipt receipt;
 
-    private RecyclerView.Adapter receiptAdapter;
+    private ReceiptAdapter receiptAdapter;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView, priceTextView, amountTextView;
         private final Button decreaseButton, increaseButton;
@@ -46,7 +47,7 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
         public Button getIncreaseButton() {return increaseButton;}
     }
 
-    public ItemSelectionAdapter(ArrayList<Item> itemList, Receipt receipt, RecyclerView.Adapter receiptAdapter) {
+    public ItemSelectionAdapter(ArrayList<Item> itemList, Receipt receipt, ReceiptAdapter receiptAdapter) {
         localItemList = itemList;
         this.receipt = receipt;
         this.receiptAdapter = receiptAdapter;
@@ -70,7 +71,8 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
             public void onClick(View view) {
                 int adapterPosition = viewHolder.getBindingAdapterPosition();
                 receipt.removeItem(localItemList.get(adapterPosition));
-                receiptAdapter.notifyDataSetChanged();
+                receiptAdapter.updateData(receipt.getItemsAndCount());
+                Log.d(null, receipt.getItemsAndCount().toString());
                 viewHolder.getAmountTextView().setText(String.valueOf(receipt.getNumberOfItems(localItemList.get(adapterPosition))));
             }
         });
@@ -80,7 +82,8 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
             public void onClick(View view) {
                 int adapterPosition = viewHolder. getBindingAdapterPosition();
                 receipt.addItem(localItemList.get(adapterPosition));
-                receiptAdapter.notifyDataSetChanged();
+                receiptAdapter.updateData(receipt.getItemsAndCount());
+                Log.d(null, receipt.getItemsAndCount().toString());
                 viewHolder.getAmountTextView().setText(String.valueOf(receipt.getNumberOfItems(localItemList.get(adapterPosition))));
             }
         });
