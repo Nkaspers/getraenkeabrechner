@@ -3,8 +3,6 @@ package com.tcblauweiss.getraenkeabrechner;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -12,7 +10,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +19,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.tcblauweiss.getraenkeabrechner.databinding.ActivityMainBinding;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
-import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
@@ -34,10 +30,7 @@ import se.warting.signatureview.views.SignedListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -50,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private RecyclerView lastEntriesRecyclerView;
+    private RecyclerView itemSelectionRecycleView;
     private Button resetEntryBtn;
     private Button submitEntryBtn;
     private MaterialAutoCompleteTextView memberNameInputField;
@@ -67,100 +62,23 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.toolbar);
-        setupLastEntriesView();
-        setupItemSelectionView();
+
+        lastEntriesRecyclerView = findViewById(R.id.rec_view_last_entries);
+        itemSelectionRecycleView = findViewById(R.id.rec_view_itemselection);
+        memberNameInputField = findViewById(R.id.text_input_member_name);
+        memberNameInputLayout = findViewById(R.id.layout_input_member_name);
         signaturePad = findViewById(R.id.signature_pad);
         resetEntryBtn = findViewById(R.id.btn_reset_entry);
         submitEntryBtn = findViewById(R.id.btn_submit_entry);
-        memberNameInputField = findViewById(R.id.text_input_member_name);
-        memberNameInputLayout = findViewById(R.id.layout_input_member_name);
 
-        List<String> members = new ArrayList<>();
-        members.add("Ninian Kaspers");
-        members.add("Leon Schmidt");
-        members.add("Max Mustermann");
-        members.add("Peter Müller");
-        members.add("Hans Meier");
-
-        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_dropdown_menu_item, members);
-        memberNameInputField.setThreshold(1);
-        memberNameInputField.setAdapter(memberInputFieldAdapter);
-        memberNameInputField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!members.contains(memberNameInputField.getText().toString())){
-                    memberNameInputLayout.setError(getString(R.string.name_imput_field_error_label));
-                }else{
-                    memberNameInputLayout.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        memberNameInputField.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                memberNameInputField.dismissDropDown();
-            }
-        });
-
-        signaturePad.setOnSignedListener(new SignedListener() {
-            @Override
-            public void onStartSigning() {
-                Log.d("SignedListener", "OnStartSigning");
-            }
-            @Override
-            public void onSigning() {
-                Log.d("SignedListener", "OnSigning");
-            }
-            @Override
-            public void onSigned() {
-                Log.d("SignedListener", "OnSigned");
-            }
-            @Override
-            public void onClear() {
-                Log.d("SignedListener", "OnClear");
-            }
-        });
-
+        setupLastEntriesView();
+        setupItemSelectionView();
+        setupMemberNameInputField();
+        setupSignaturePad();
         resetEntryBtn.setOnClickListener(view -> resetEntryAction());
-
         submitEntryBtn.setOnClickListener(view -> submitEntryAction());
     }
-
-    private Boolean submitEntryAction() {
-        if(memberNameInputLayout.getError() != null){
-            Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
-        }else{
-            resetInputElements();
-            //TODO: Submit Entry Action
-            Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
-        }
-        return true;
-    }
-
-    private void resetEntryAction() {
-        resetInputElements();
-    }
-
-    private void resetInputElements(){
-        signaturePad.clear();
-        memberNameInputField.setText("");
-        memberNameInputField.clearFocus();
-        memberNameInputLayout.setError(null);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -186,10 +104,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private Boolean submitEntryAction() {
+        if(memberNameInputLayout.getError() != null){
+            Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
+        }else{
+            resetInputElements();
+            //TODO: Submit Entry Action
+            Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
+    private void resetEntryAction() {
+        resetInputElements();
+    }
+
+    private void resetInputElements(){
+        signaturePad.clear();
+        memberNameInputField.setText("");
+        memberNameInputField.clearFocus();
+        memberNameInputLayout.setError(null);
+    }
+
     private void setupLastEntriesView() {
         LastEntriesAdapter lastEntriesAdapter;
-
-        RecyclerView lastEntriesRecyclerView = findViewById(R.id.rec_view_last_entries);
         lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -213,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupItemSelectionView() {
         ItemSelectionAdapter itemSelectionAdapter;
         Receipt receipt = new Receipt();
-        RecyclerView itemSelectionRecycleView = findViewById(R.id.rec_view_itemselection);
         itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
 
         ArrayList<Item> itemList = new ArrayList<>();
@@ -236,5 +173,63 @@ public class MainActivity extends AppCompatActivity {
         itemSelectionAdapter = new ItemSelectionAdapter(itemList, receipt,receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
     }
+
+    private void setupMemberNameInputField(){
+        List<String> members = new ArrayList<>();
+        members.add("Ninian Kaspers");
+        members.add("Leon Schmidt");
+        members.add("Max Mustermann");
+        members.add("Peter Müller");
+        members.add("Hans Meier");
+
+        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_dropdown_menu_item, members);
+        memberNameInputField.setThreshold(1);
+        memberNameInputField.setAdapter(memberInputFieldAdapter);
+        memberNameInputField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!members.contains(memberNameInputField.getText().toString())){
+                    memberNameInputLayout.setError(getString(R.string.name_input_field_error_label));
+                }else{
+                    memberNameInputLayout.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        memberNameInputField.setOnClickListener(view -> memberNameInputField.dismissDropDown());
+    }
+
+    private void setupSignaturePad(){
+        signaturePad.setOnSignedListener(new SignedListener() {
+            @Override
+            public void onStartSigning() {
+                Log.d("SignedListener", "OnStartSigning");
+            }
+            @Override
+            public void onSigning() {
+                Log.d("SignedListener", "OnSigning");
+            }
+            @Override
+            public void onSigned() {
+                Log.d("SignedListener", "OnSigned");
+            }
+            @Override
+            public void onClear() {
+                Log.d("SignedListener", "OnClear");
+            }
+        });
+    }
+
+
 
 }
