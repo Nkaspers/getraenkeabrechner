@@ -16,6 +16,7 @@
 
 
         <item name="colorOutline">@color/gray</item>
+        <item name="colorSurface">@color/tc_hellblau</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -57,6 +58,13 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="Theme.Getraenkeabrechner.ItemSelectionButton" parent="Widget.Material3.Button">
+        <item name="iconSize">20dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+    </style>
+
     <style name="Theme.Getraenkeabrechner.FabStyle" parent="Widget.Material3.FloatingActionButton.Primary">
-        <item name="colorAccent">@color/tc_mittelblau</item> </style>
+        <item name="colorAccent">@color/tc_mittelblau</item>
+    </style>
 </resources>

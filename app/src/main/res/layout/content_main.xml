@@ -60,9 +60,11 @@
         android:layout_height="300dp"
         android:background="@drawable/customborder"
         android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rec_view_itemselection"
@@ -175,7 +177,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginHorizontal="20dp"
-            android:text="@string/reset_entry_btn_label" />
+            android:text="@string/reset_entry_btn_label"
+            style="@style/Widget.Material3.Button.ElevatedButton"/>
 
         <Button
             android:id="@+id/btn_submit_entry"

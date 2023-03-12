@@ -38,5 +38,5 @@
     <string name="name_imput_field_error_label">Kein Vereinsmitglied</string>
     <string name="invalid_member_toast">Bitte gültiges Vereinsmitglied auswählen</string>
     <string name="submit_success_toast">Buchung erfolgreich</string>
-    <string name="signature_pad_label">Hier unterschreiben</string>
+    <string name="signature_pad_label">Bitte mit Stift unterschreiben</string>
 </resources>
