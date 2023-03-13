@@ -46,7 +46,7 @@
 
     <style name="Theme.Getraenkeabrechner.Header" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textColor">@color/tc_blau</item>
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:fontWeight">1000</item>
     </style>
     <style name="Theme.Getraenkeabrechner.BodyTextMedium" parent="TextAppearance.Material3.BodyLarge">

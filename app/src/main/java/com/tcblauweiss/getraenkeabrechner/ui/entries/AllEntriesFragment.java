@@ -21,8 +21,9 @@ public class AllEntriesFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_entries, container, false);
         parentActivity = (AppCompatActivity) requireActivity();
-        searchBar = view.findViewById(R.id.searchbar_all_entries);
+        searchBar = view.findViewById(R.id.searchbar);
         searchBar.setNavigationIcon(R.drawable.ic_menu);
+        searchBar.setHint(R.string.search_Entries_label);
         parentActivity.setSupportActionBar(searchBar);
         return view;
     }

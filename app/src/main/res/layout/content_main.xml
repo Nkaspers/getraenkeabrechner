@@ -23,7 +23,11 @@
         android:layout_marginTop="8dp"
         android:text="@string/last_bookings_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:drawableLeftCompat="@drawable/ic_list"
+        app:drawableTint="?attr/colorPrimary"
+        android:drawablePadding="8dp"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -52,7 +56,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/beverage_selection_label"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:drawableLeftCompat="@drawable/ic_shopping_cart"
+        app:drawableTint="?attr/colorPrimary"
+        android:drawablePadding="8dp"/>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -119,11 +126,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signature_label"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintStart_toStartOf="@+id/layout_input_member_name"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        app:layout_constraintVertical_bias="1.0" />
+        app:drawableLeftCompat="@drawable/ic_edit"
+        app:drawableTint="?attr/colorPrimary"
+        android:drawablePadding="8dp"/>
 
     <RelativeLayout
         android:id="@+id/frameLayout"

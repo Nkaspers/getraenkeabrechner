@@ -6,19 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Getraenkeabrechner.AppBarOverlay">
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/searchbar_edit_members"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="enterAlways"
-        android:hint="@string/search_members_label"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include layout="@layout/searchbar_layout"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_edit_members_fragment"
