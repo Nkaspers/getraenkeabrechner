@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private Entry entry1 = new Entry(LocalDateTime.now(),"Musterman", "Max", item1, 2,(float)3.0);
     private Entry entry2= new Entry(LocalDateTime.now(),"Meier", "Hans", item1, 1,(float)1.5);
     private Entry entry3 =  new Entry(LocalDateTime.now(),"Müller", "Peter", item2, 1,(float)1.0);
+    private RecyclerView receiptRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         lastEntriesRecyclerView = findViewById(R.id.rec_view_last_entries);
         itemSelectionRecycleView = findViewById(R.id.rec_view_itemselection);
+        receiptRecyclerView = findViewById(R.id.rec_view_receipt);
         memberNameInputField = findViewById(R.id.text_input_member_name);
         memberNameInputLayout = findViewById(R.id.layout_input_member_name);
         signaturePad = findViewById(R.id.signature_pad);
@@ -168,10 +170,7 @@ public class MainActivity extends AppCompatActivity {
         itemList.add((item3));
         itemList.add((item4));
 
-
-        RecyclerView receiptRecyclerView = findViewById(R.id.rec_view_receipt);
         receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         ReceiptAdapter receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
         receiptRecyclerView.setAdapter(receiptAdapter);
 

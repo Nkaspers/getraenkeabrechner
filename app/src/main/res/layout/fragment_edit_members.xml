@@ -4,16 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/searchbar_layout"/>
+    <include layout="@layout/searchbar_layout"
+        android:id="@+id/searchbar_layout"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_edit_members_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchbar_edit_members" />
+        android:layout_below="@id/searchbar_layout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_edit_members_fragment"

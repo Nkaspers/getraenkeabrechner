@@ -25,7 +25,7 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
             itemTextView = view.findViewById(R.id.text_lastentries_item);
             priceTextView = view.findViewById(R.id.text_lastentries_price);
             amountTextView = view.findViewById(R.id.text_lastentries_amount);
-            totalPriceTextView = view.findViewById(R.id.text_lastentries_price);
+            totalPriceTextView = view.findViewById(R.id.text_lastentries_totalprice);
         }
 
         public TextView getDateTextView(){
