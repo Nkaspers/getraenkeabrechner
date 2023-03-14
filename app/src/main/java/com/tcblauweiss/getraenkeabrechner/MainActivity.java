@@ -9,6 +9,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.tcblauweiss.getraenkeabrechner.databinding.ActivityMainBinding;
+import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private Entry entry2= new Entry(LocalDateTime.now(),"Meier", "Hans", item1, 1,(float)1.5);
     private Entry entry3 =  new Entry(LocalDateTime.now(),"Müller", "Peter", item2, 1,(float)1.0);
     private RecyclerView receiptRecyclerView;
+    private AppViewModel appViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
 
         lastEntriesRecyclerView = findViewById(R.id.rec_view_last_entries);
         itemSelectionRecycleView = findViewById(R.id.rec_view_itemselection);
@@ -153,6 +158,13 @@ public class MainActivity extends AppCompatActivity {
 
         lastEntriesAdapter = new LastEntriesAdapter(dataSet);
         lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
+
+        appViewModel.getAllEntries().observe(this, new Observer<List<Entry>>() {
+            @Override
+            public void onChanged(List<Entry> entries) {
+                lastEntriesAdapter.notifyItemInserted(lastEntriesAdapter.getItemCount()-1);
+            }
+        });
     }
 
     private void setupItemSelectionView() {

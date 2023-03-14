@@ -1,23 +1,37 @@
 package com.tcblauweiss.getraenkeabrechner.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
-
+@Entity
 public class Entry {
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+    @ColumnInfo(name="date_created")
     private LocalDateTime dateCreated;
-    private String surname;
-    private String forename;
+    @ColumnInfo(name="last_name")
+    private String lastName;
+    @ColumnInfo(name="first_name")
+    private String firstName;
+    @ColumnInfo(name="item")
     private Item item;
-    private Integer amount;
-    private Float totalPrice;
+    @ColumnInfo(name="item_price")
+    private float itemPrice;
+    @ColumnInfo(name="amount")
+    private int amount;
+    @ColumnInfo(name="total_price")
+    private float totalPrice;
 
-    public Entry(LocalDateTime dateCreated, String surname, String forename, Item item, Integer amount, Float totalPrice) {
+    public Entry(LocalDateTime dateCreated, String lastName, String firstName, Item item, int amount, float totalPrice) {
         this.dateCreated = dateCreated;
-        this.surname = surname;
-        this.forename = forename;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.item = item;
+        this.itemPrice = item.getPrice();
         this.amount = amount;
         this.totalPrice = totalPrice;
     }
@@ -30,16 +44,16 @@ public class Entry {
         return timeFormatted + ", " + dateFormatted;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getForename() {
-        return forename;
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getName(){
-        String name = surname + ", " + forename;
+        String name = lastName + ", " + firstName;
         return name;
     }
 
@@ -47,11 +61,20 @@ public class Entry {
         return item;
     }
 
-    public Integer getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public Float getTotalPrice() {
+    public String getAmountString(){
+        return String.valueOf(amount);
+    }
+
+    public float getTotalPrice() {
         return totalPrice;
     }
+
+    public String getTotalPriceString(){
+        return String.valueOf(Math.round(totalPrice*100)/100) + "€";
+    }
+
 }

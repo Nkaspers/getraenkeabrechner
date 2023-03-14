@@ -70,8 +70,8 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
         viewHolder.getNameTextView().setText(localDataSet.get(position).getName());
         viewHolder.getItemTextView().setText(localDataSet.get(position).getItem().getName());
         viewHolder.getPriceTextView().setText(localDataSet.get(position).getItem().getPrice().toString());
-        viewHolder.getAmountTextView().setText(localDataSet.get(position).getAmount().toString());
-        viewHolder.getTotalPriceTextView().setText(localDataSet.get(position).getTotalPrice().toString());
+        viewHolder.getAmountTextView().setText(localDataSet.get(position).getAmountString());
+        viewHolder.getTotalPriceTextView().setText(localDataSet.get(position).getTotalPriceString());
     }
 
     @Override
