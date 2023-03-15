@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Locale;
+
 @Entity
 public class Item {
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +24,27 @@ public class Item {
         return name;
     }
 
-    public Float getPrice() {
-        return (Float) price;
+    public float getPrice() {
+        return price;
+    }
+
+    public String getPriceString(){
+        return String.format(Locale.getDefault(),"%.2f", price);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

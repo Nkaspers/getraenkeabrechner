@@ -79,4 +79,8 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public int getItemCount(){
         return receiptItemList.size();
     }
+
+    public ArrayList<ItemWrapper> getReceiptItemList() {
+        return receiptItemList;
+    }
 }

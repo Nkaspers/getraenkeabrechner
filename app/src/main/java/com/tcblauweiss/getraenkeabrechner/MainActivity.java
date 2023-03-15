@@ -24,6 +24,7 @@ import com.tcblauweiss.getraenkeabrechner.databinding.ActivityMainBinding;
 import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
+import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
@@ -59,12 +60,9 @@ public class MainActivity extends AppCompatActivity {
     private Item item2 = new Item("Wasser (1l)", Float.valueOf((float)1));
     private Item item3 = new Item("Weizen (0,5l)", Float.valueOf((float)1.5));
     private Item item4 = new Item("Softdrink (1l)", Float.valueOf((float)1.3));
-
-    private Entry entry1 = new Entry(LocalDateTime.now(),"Musterman", "Max", item1, 2,(float)3.0);
-    private Entry entry2= new Entry(LocalDateTime.now(),"Meier", "Hans", item1, 1,(float)1.5);
-    private Entry entry3 =  new Entry(LocalDateTime.now(),"Müller", "Peter", item2, 1,(float)1.0);
     private RecyclerView receiptRecyclerView;
     private AppViewModel appViewModel;
+    private ReceiptAdapter receiptAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +118,21 @@ public class MainActivity extends AppCompatActivity {
         if(memberNameInputLayout.getError() != null){
             Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
         }else{
+            String signatureSvg = signaturePad.getSignatureSvg();
+            //TODO: store svg or filepath in database
+            String[] memberName =  memberNameInputField.getText().toString().split(" ");
+            List<ItemWrapper> items = receiptAdapter.getReceiptItemList();
+            Entry[] entries = new Entry[items.size()];
+            int i=0;
+            for(ItemWrapper itemWrapper: items){
+                Entry entry = new Entry(
+                        System.currentTimeMillis(), memberName[1], memberName[0],
+                        itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
+                        itemWrapper.getCount(), itemWrapper.getTotal());
+                entries[i++] = entry;
+            }
+            appViewModel.insertEntries(entries);
             resetInputElements();
-            //TODO: Submit Entry Action
             Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
         }
         return true;
@@ -143,28 +154,15 @@ public class MainActivity extends AppCompatActivity {
         lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        // some sample data for testing purposes
-        ArrayList<Entry> dataSet = new ArrayList<>();
-        dataSet.add(entry1);
-        dataSet.add(entry2);
-        dataSet.add(entry3);
-        dataSet.add(entry2);
-        dataSet.add(entry3);
-        dataSet.add(entry1);
-        dataSet.add(entry3);
-        dataSet.add(entry3);
-        dataSet.add(entry3);
-
-        lastEntriesAdapter = new LastEntriesAdapter(dataSet);
-        lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
+        lastEntriesAdapter = new LastEntriesAdapter();
 
         appViewModel.getAllEntries().observe(this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
-                lastEntriesAdapter.notifyItemInserted(lastEntriesAdapter.getItemCount()-1);
+                lastEntriesAdapter.submitList(entries);
             }
         });
+        lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
     }
 
     private void setupItemSelectionView() {
@@ -183,10 +181,10 @@ public class MainActivity extends AppCompatActivity {
         itemList.add((item4));
 
         receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ReceiptAdapter receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
+        receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
         receiptRecyclerView.setAdapter(receiptAdapter);
 
-        itemSelectionAdapter = new ItemSelectionAdapter(itemList, receipt,receiptAdapter);
+        itemSelectionAdapter = new ItemSelectionAdapter(itemList, receipt, receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
     }
 
@@ -204,9 +202,7 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(!members.contains(memberNameInputField.getText().toString())){
@@ -215,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
                     memberNameInputLayout.setError(null);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -245,7 +240,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

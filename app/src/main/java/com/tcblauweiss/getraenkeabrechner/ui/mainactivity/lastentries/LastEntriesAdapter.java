@@ -11,10 +11,11 @@ import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.ViewHolder> {
-    private ArrayList<Entry> localDataSet;
+    private List<Entry> localDataSet;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView dateTextView, nameTextView, itemTextView, priceTextView, amountTextView, totalPriceTextView;
 
@@ -53,8 +54,13 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
         }
     }
 
-    public LastEntriesAdapter(ArrayList<Entry> dataSet) {
-        localDataSet = dataSet;
+    public LastEntriesAdapter() {
+        this.localDataSet = new ArrayList<>();
+    }
+
+    public void submitList(final List<Entry> entries){
+        localDataSet = entries;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,10 +72,10 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getDateTextView().setText(localDataSet.get(position).getDateCreated());
+        viewHolder.getDateTextView().setText(localDataSet.get(position).getDateCreatedString());
         viewHolder.getNameTextView().setText(localDataSet.get(position).getName());
-        viewHolder.getItemTextView().setText(localDataSet.get(position).getItem().getName());
-        viewHolder.getPriceTextView().setText(localDataSet.get(position).getItem().getPrice().toString());
+        viewHolder.getItemTextView().setText(localDataSet.get(position).getItemName());
+        viewHolder.getPriceTextView().setText(localDataSet.get(position).getItemPriceString());
         viewHolder.getAmountTextView().setText(localDataSet.get(position).getAmountString());
         viewHolder.getTotalPriceTextView().setText(localDataSet.get(position).getTotalPriceString());
     }

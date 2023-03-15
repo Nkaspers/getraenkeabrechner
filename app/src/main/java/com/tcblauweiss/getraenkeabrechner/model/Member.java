@@ -13,9 +13,9 @@ public class Member {
     @ColumnInfo(name="last_name")
     public String lastName;
 
-    public Member(String firstname, String lastname){
-        this.firstName = firstname;
-        this.lastName = lastname;
+    public Member(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -24,5 +24,12 @@ public class Member {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    public long getId() {
+        return id;
     }
 }

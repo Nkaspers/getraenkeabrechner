@@ -64,7 +64,7 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.getNameTextView().setText(localItemList.get(position).getName());
-        viewHolder.getPriceTextView().setText(localItemList.get(position).getPrice().toString());
+        viewHolder.getPriceTextView().setText(localItemList.get(position).getPriceString());
         viewHolder.getAmountTextView().setText(String.valueOf(receipt.getNumberOfItems(localItemList.get(position))));
         viewHolder.getDecreaseButton().setOnClickListener(new View.OnClickListener() {
             @Override
