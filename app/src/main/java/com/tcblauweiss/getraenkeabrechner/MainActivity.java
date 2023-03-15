@@ -12,8 +12,6 @@ import android.util.Log;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,11 +34,9 @@ import se.warting.signatureview.views.SignedListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,46 +98,59 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent_launch_settings = new Intent(this, SettingsActivity.class);
             startActivity(intent_launch_settings);
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private Boolean submitEntryAction() {
-        if(memberNameInputLayout.getError() != null){
-            Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
+
+        if(!areInputFieldsValid()){
+            Log.d("MainActivity", "no valid user input");
         }else{
             String signatureSvg = signaturePad.getSignatureSvg();
             //TODO: store svg or filepath in database
-            String[] memberName =  memberNameInputField.getText().toString().split(" ");
-            List<ItemWrapper> items = receiptAdapter.getReceiptItemList();
-            Entry[] entries = new Entry[items.size()];
-            int i=0;
-            for(ItemWrapper itemWrapper: items){
-                Entry entry = new Entry(
-                        System.currentTimeMillis(), memberName[1], memberName[0],
-                        itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
-                        itemWrapper.getCount(), itemWrapper.getTotal());
-                entries[i++] = entry;
-            }
+            Entry[] entries = createEntries();
             appViewModel.insertEntries(entries);
             resetInputElements();
             Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
         }
         return true;
     }
-
     private void resetEntryAction() {
         resetInputElements();
     }
+    private Entry[] createEntries(){
+        String[] memberName = memberNameInputField.getText().toString().split("");
+        List<ItemWrapper> items = receiptAdapter.getReceiptItemList();
+        Entry[] entries = new Entry[items.size()];
+        int i=0;
+        for(ItemWrapper itemWrapper: items){
+            Entry entry = new Entry(
+                    System.currentTimeMillis(), memberName[1], memberName[0],
+                    itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
+                    itemWrapper.getCount(), itemWrapper.getTotal());
+            entries[i++] = entry;
+        }
+        return entries;
+    }
 
+    private Boolean areInputFieldsValid(){
+        if(memberNameInputLayout.getError() != null || memberNameInputField.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(signaturePad.isEmpty()){
+            Toast.makeText(getApplicationContext(), R.string.no_signature_toast, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        //TODO: check if Items are selected
+        return true;
+    }
     private void resetInputElements(){
         signaturePad.clear();
         memberNameInputField.setText("");
