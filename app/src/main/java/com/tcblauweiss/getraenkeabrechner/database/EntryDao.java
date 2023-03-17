@@ -13,7 +13,7 @@ import java.util.List;
 
 @Dao
 public interface EntryDao {
-    @Query("SELECT * FROM entry")
+    @Query("SELECT * FROM entry ORDER BY date_created DESC")
     LiveData<List<Entry>> getAll();
 
     @Query("SELECT * FROM entry WHERE first_name LIKE :first AND " +

@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView receiptRecyclerView;
     private AppViewModel appViewModel;
     private ReceiptAdapter receiptAdapter;
+    private LastEntriesAdapter lastEntriesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             //TODO: store svg or filepath in database
             Entry[] entries = createEntries();
             appViewModel.insertEntries(entries);
+            lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
             resetInputElements();
             Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
         }
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         resetInputElements();
     }
     private Entry[] createEntries(){
-        String[] memberName = memberNameInputField.getText().toString().split("");
+        String[] memberName = memberNameInputField.getText().toString().split(" ");
         List<ItemWrapper> items = receiptAdapter.getReceiptItemList();
         Entry[] entries = new Entry[items.size()];
         int i=0;
@@ -162,12 +164,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupLastEntriesView() {
-        LastEntriesAdapter lastEntriesAdapter;
         lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         lastEntriesAdapter = new LastEntriesAdapter();
-
         appViewModel.getAllEntries().observe(this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
