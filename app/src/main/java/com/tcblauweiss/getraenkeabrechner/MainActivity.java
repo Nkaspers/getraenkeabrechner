@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +24,7 @@ import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
+import com.tcblauweiss.getraenkeabrechner.model.Member;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
@@ -39,6 +41,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -198,23 +201,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupMemberNameInputField(){
-        List<String> members = new ArrayList<>();
-        members.add("Ninian Kaspers");
-        members.add("Leon Schmidt");
-        members.add("Max Mustermann");
-        members.add("Peter Müller");
-        members.add("Hans Meier");
-
-        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_dropdown_menu_item, members);
+        LiveData<List<Member>> allMembers = appViewModel.getAllMembers();
+        List<String> allMembersStr = new ArrayList<>();
+        allMembers.observe(this, new Observer<List<Member>>() {
+            @Override
+            public void onChanged(List<Member> members) {
+                    for(Member member: members){
+                        String memberStr = member.firstName + " " + member.lastName;
+                        allMembersStr.add(memberStr);
+                }
+            }
+        });
+        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_dropdown_menu_item,  allMembersStr);
         memberNameInputField.setThreshold(1);
         memberNameInputField.setAdapter(memberInputFieldAdapter);
+
         memberNameInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!members.contains(memberNameInputField.getText().toString())){
+                if(!allMembersStr.contains(memberNameInputField.getText().toString())){
                     memberNameInputLayout.setError(getString(R.string.name_input_field_error_label));
                 }else{
                     memberNameInputLayout.setError(null);

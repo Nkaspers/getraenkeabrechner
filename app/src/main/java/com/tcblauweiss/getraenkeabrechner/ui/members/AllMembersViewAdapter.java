@@ -40,8 +40,8 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
         }
     }
 
-    public AllMembersViewAdapter(List<Member> dataSet) {
-        localDataSet = dataSet;
+    public AllMembersViewAdapter() {
+        this.localDataSet = new ArrayList<>();
     }
 
     @NonNull
@@ -52,6 +52,11 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
         return new ViewHolder(view);
     }
 
+    public void submitList(final List<Member> members){
+        localDataSet = members;
+        //TODO: show animation on right position with diffutil
+        notifyDataSetChanged();
+    }
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         String lastName = localDataSet.get(position).getLastName();

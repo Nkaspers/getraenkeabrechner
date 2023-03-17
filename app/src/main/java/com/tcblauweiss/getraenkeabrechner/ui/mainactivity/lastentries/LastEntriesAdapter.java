@@ -60,7 +60,7 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
     public void submitList(final List<Entry> entries){
         localDataSet = entries;
-        notifyDataSetChanged();
+        notifyItemInserted(0);
     }
 
     @Override

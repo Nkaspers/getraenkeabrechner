@@ -17,25 +17,31 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchBar;
 import com.tcblauweiss.getraenkeabrechner.R;
+import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditMembersFragment extends Fragment {
-    FloatingActionButton addMemberFab;
-    AlertDialog addMemberDialog;
-    AppCompatActivity parentActivity;
-    SearchBar searchBar;
-    RecyclerView membersRecyclerView;
-    List<Member> memberDataSet;
+    private FloatingActionButton addMemberFab;
+    private AlertDialog addMemberDialog;
+    private AppCompatActivity parentActivity;
+    private SearchBar searchBar;
+    private RecyclerView membersRecyclerView;
     private AllMembersViewAdapter membersRecyclerViewAdapter;
+    private AppViewModel appViewModel;
+
+    private LiveData<List<Member>> allMembers;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,12 +55,7 @@ public class EditMembersFragment extends Fragment {
         searchBar.setNavigationIcon(R.drawable.ic_menu);
         searchBar.setHint(R.string.search_members_label);
         parentActivity.setSupportActionBar(searchBar);
-        //Init RecyclerView
-        memberDataSet = new ArrayList<>();
-        memberDataSet.add(new Member("Max", "Mustermann"));
-        membersRecyclerViewAdapter = new AllMembersViewAdapter(memberDataSet);
-        membersRecyclerView.setAdapter(membersRecyclerViewAdapter);
-        membersRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        setupAllMembersView();
         addMemberFab.setOnClickListener(view1 -> {
             if(addMemberDialog == null) setupNewMemberDialog();
             addMemberDialog.show();
@@ -77,10 +78,8 @@ public class EditMembersFragment extends Fragment {
                         Editable firstName = memberFirstNameInput.getEditableText();
                         Editable lastName = memberLastNameInput.getEditableText();
                         if(firstName != null && lastName != null){
-                            memberDataSet.add(new Member(firstName.toString(), lastName.toString()));
-                            //Inserts member at bottom. Change later when list is sorted Alphabetically
-                            membersRecyclerViewAdapter.notifyItemInserted(memberDataSet.size()-1);
-                            Log.d("addMemberDialog", "add Member: " + firstName + " " + lastName);
+                            appViewModel.insertMembers(new Member(firstName.toString(), lastName.toString()));
+                            Log.d("addMemberDialog", "added Member: " + firstName + " " + lastName);
                         }else{
                             Log.d("addMemberDialog", "member name is null");
                         }
@@ -93,6 +92,20 @@ public class EditMembersFragment extends Fragment {
                     }
                 })
                 .create();
+    }
+
+    private void setupAllMembersView(){
+        appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
+        allMembers = appViewModel.getAllMembers();
+        membersRecyclerViewAdapter = new AllMembersViewAdapter();
+        membersRecyclerView.setAdapter(membersRecyclerViewAdapter);
+        membersRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        allMembers.observe(requireActivity() , new Observer<List<Member>>() {
+            @Override
+            public void onChanged(List<Member> members) {
+                membersRecyclerViewAdapter.submitList(members);
+            }
+        });
     }
 
 
