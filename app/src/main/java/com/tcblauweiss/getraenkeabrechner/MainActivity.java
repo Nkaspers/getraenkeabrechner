@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputField.setText("");
         memberNameInputField.clearFocus();
         memberNameInputLayout.setError(null);
+        receiptAdapter.clearData();
     }
 
     private void setupLastEntriesView() {
