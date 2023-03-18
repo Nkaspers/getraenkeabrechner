@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.R;
@@ -53,9 +54,9 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     }
 
     public void submitList(final List<Member> members){
+        MemberDiffCallback diffCallback = new MemberDiffCallback(localDataSet, members);
         localDataSet = members;
-        //TODO: show animation on right position with diffutil
-        notifyDataSetChanged();
+        DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(this);
     }
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
