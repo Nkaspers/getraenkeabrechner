@@ -12,6 +12,7 @@ import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
     private ArrayList<ItemWrapper> receiptItemList;

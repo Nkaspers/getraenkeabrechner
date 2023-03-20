@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.BaseKeyListener;
+import android.text.method.KeyListener;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -33,10 +35,14 @@ import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntrie
 import se.warting.signatureview.views.SignaturePad;
 import se.warting.signatureview.views.SignedListener;
 
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -215,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_dropdown_menu_item,  allMembersStr);
         memberNameInputField.setThreshold(1);
         memberNameInputField.setAdapter(memberInputFieldAdapter);
-
+        //show error, if input string is not in Memberlist
         memberNameInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -232,6 +238,13 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
             }
+        });
+        //clear focus on enter (done) button action
+        memberNameInputField.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if(actionId== EditorInfo.IME_ACTION_DONE){
+                memberNameInputField.clearFocus();
+            }
+            return false;
         });
 
         memberNameInputField.setOnClickListener(view -> memberNameInputField.dismissDropDown());
