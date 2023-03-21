@@ -10,7 +10,7 @@
     <com.google.android.material.search.SearchBar
         android:id="@+id/searchbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="enterAlways"/>
-
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="enterAlways"
+        app:navigationIcon="@drawable/ic_menu"/>
 </com.google.android.material.appbar.AppBarLayout>

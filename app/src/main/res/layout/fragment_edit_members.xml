@@ -10,6 +10,23 @@
     <include layout="@layout/searchbar_layout"
         android:id="@+id/searchbar_layout"/>
 
+    <com.google.android.material.search.SearchView
+        android:id="@+id/searchview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search_members_label"
+        app:layout_anchor="@id/searchbar"
+        app:useDrawerArrowDrawable = "true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/searchbar_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    </com.google.android.material.search.SearchView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_edit_members_fragment"
         android:layout_width="match_parent"

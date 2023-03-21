@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.material.search.SearchView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.NonNull;
@@ -42,20 +43,25 @@ public class EditMembersFragment extends Fragment {
     private AppViewModel appViewModel;
 
     private LiveData<List<Member>> allMembers;
+    private SearchView searchView;
+    private RecyclerView searchRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Log.d("EditMembersFragment", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_edit_members, container, false);
         parentActivity = (AppCompatActivity) requireActivity();
 
         searchBar = view.findViewById(R.id.searchbar);
+        searchView = view.findViewById(R.id.searchview);
         membersRecyclerView = view.findViewById(R.id.recyclerview_edit_members_fragment);
+        searchRecyclerView = view.findViewById(R.id.recyclerview_search);
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);
         //Init Searchbar
-        searchBar.setNavigationIcon(R.drawable.ic_menu);
         searchBar.setHint(R.string.search_members_label);
         parentActivity.setSupportActionBar(searchBar);
         setupAllMembersView();
+        setupSearchView();
         addMemberFab.setOnClickListener(view1 -> {
             if(addMemberDialog == null) setupNewMemberDialog();
             addMemberDialog.show();
@@ -108,10 +114,45 @@ public class EditMembersFragment extends Fragment {
         });
     }
 
+    private void setupSearchView() {
+        searchRecyclerView.setAdapter(membersRecyclerViewAdapter);
+        searchRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        searchView.setupWithSearchBar(searchBar);
+        searchView
+                .getEditText()
+                .setOnEditorActionListener((v, actionId, event) -> {
+                            searchBar.setText(searchView.getText());
+                            searchView.hide();
+                            return false;
+                        });
+        searchView.getEditText().addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        membersRecyclerViewAdapter.getFilter().filter(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+    }
+
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d("EditMembersFragment", "OnResume");
+        super.onResume();
     }
 }

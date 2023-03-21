@@ -9,9 +9,9 @@ public class Member {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name="first_name")
-    public String firstName;
+    private String firstName;
     @ColumnInfo(name="last_name")
-    public String lastName;
+    private String lastName;
 
     public Member(String firstName, String lastName){
         this.firstName = firstName;

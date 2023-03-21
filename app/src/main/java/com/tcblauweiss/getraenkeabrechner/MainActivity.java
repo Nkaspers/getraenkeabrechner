@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Member> members) {
                     for(Member member: members){
-                        String memberStr = member.firstName + " " + member.lastName;
+                        String memberStr = member.getFirstName() + " " + member.getLastName();
                         allMembersStr.add(memberStr);
                 }
             }

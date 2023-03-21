@@ -3,6 +3,8 @@ package com.tcblauweiss.getraenkeabrechner.ui.members;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAdapter.ViewHolder> {
+public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAdapter.ViewHolder> implements Filterable {
+    private List<Member> localDataSetFiltered;
     private List<Member> localDataSet;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView lastNameTextView, firstNameTextView, firstLetterTextView;
 
@@ -42,6 +46,7 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     }
 
     public AllMembersViewAdapter() {
+        this.localDataSetFiltered = new ArrayList<>();
         this.localDataSet = new ArrayList<>();
     }
 
@@ -54,22 +59,56 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     }
 
     public void submitList(final List<Member> members){
-        MemberDiffCallback diffCallback = new MemberDiffCallback(localDataSet, members);
         localDataSet = members;
+        MemberDiffCallback diffCallback = new MemberDiffCallback(localDataSetFiltered, members);
+        localDataSetFiltered = members;
+        DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(this);
+    }
+
+    private void submitFilter(List<Member> filteredMembers){
+        MemberDiffCallback diffCallback = new MemberDiffCallback(localDataSetFiltered, filteredMembers);
+        localDataSetFiltered = filteredMembers;
         DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(this);
     }
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        String lastName = localDataSet.get(position).getLastName();
-        viewHolder.getLastNameTextView().setText(localDataSet.get(position).getLastName());
-        viewHolder.getFirstNameTextView().setText(localDataSet.get(position).getFirstName());
+        String lastName = localDataSetFiltered.get(position).getLastName();
+        viewHolder.getLastNameTextView().setText(localDataSetFiltered.get(position).getLastName()+",");
+        viewHolder.getFirstNameTextView().setText(localDataSetFiltered.get(position).getFirstName());
         viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
     }
 
     @Override
     public int getItemCount() {
-        return localDataSet.size();
+        return localDataSetFiltered.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String searchStr = charSequence.toString().toLowerCase();
+                List<Member> filteredMembers = new ArrayList<>();
+                if(searchStr.isEmpty()) {
+                    filteredMembers = localDataSet;
+                }
+                else {
+                    for(Member member: localDataSet){
+                        if(member.getLastName().toLowerCase().contains(searchStr) ||
+                                member.getFirstName().toLowerCase().contains(searchStr)){
+                            filteredMembers.add(member);
+                        }
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredMembers;
+                return filterResults;
+            }
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                submitFilter((List<Member>) filterResults.values);
+            }
+        };
+    }
 }
-
