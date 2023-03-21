@@ -42,4 +42,8 @@
     <string name="member_surname_input_label">Nachname</string>
     <string name="member_first_name_input_label">Vorname</string>
     <string name="no_signature_toast">Bitte unterschreiben</string>
+    <string name="delete_all_entries_alert_title">Alle Buchungen löschen?</string>
+    <string name="delete_all_entries_alert_message">Diese Aktion kann nicht rückgängig gemacht werden.</string>
+    <string name="delete_all_entries_dialog_confirm_button_label">Bestätigen</string>
+    <string name="delete_all_entries_dialog_cancel_button_label">Abbrechen</string>
 </resources>

@@ -1,17 +1,17 @@
 package com.tcblauweiss.getraenkeabrechner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -21,11 +21,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tcblauweiss.getraenkeabrechner.databinding.ActivitySettingsBinding;
+import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
+import com.tcblauweiss.getraenkeabrechner.ui.entries.AllEntriesFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivitySettingsBinding binding;
+    private AppViewModel viewModel;
+    private FragmentManager fragmentManager;
+    private NavController navController;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +40,11 @@ public class SettingsActivity extends AppCompatActivity {
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarSettings.toolbar);
-        DrawerLayout drawer = binding.drawerLayout;
+        drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
+        viewModel = new AppViewModel(getApplication());
+        fragmentManager = getSupportFragmentManager();
 
         //INITIALIZE DRAWER NAVIGATION MENU
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -45,9 +54,9 @@ public class SettingsActivity extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment_content_settings);
+                .findFragmentById(R.id.fragment_container_activity_settings);
         assert navHostFragment != null;
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         setNavigationDrawerListeners(navigationView);
@@ -74,8 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         navigationView.getMenu().findItem(R.id.nav_entries_delete_all).setOnMenuItemClickListener(view -> {
-            Toast.makeText(SettingsActivity.this,"Alle Buchungen löschen", Toast.LENGTH_SHORT).show();
-            //TODO: Alle Buchungen löschen
+              navController.navigate(R.id.action_delete_all_entries);
             return false;
         });
 
@@ -96,8 +104,15 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_settings);
+        NavController navController = Navigation.findNavController(this, R.id.fragment_container_activity_settings);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public AppViewModel getViewModel() {
+        return viewModel;
+    }
+    public DrawerLayout getDrawer() {
+        return drawer;
     }
 }

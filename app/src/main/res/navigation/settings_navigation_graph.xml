@@ -21,11 +21,26 @@
         android:id="@+id/nav_entries_show_all"
         android:name="com.tcblauweiss.getraenkeabrechner.ui.entries.AllEntriesFragment"
         android:label="@string/menu_all_entries"
-        tools:layout="@layout/fragment_all_entries" />
+        tools:layout="@layout/fragment_all_entries">
+        <argument
+            android:name="deleteAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/nav_items_edit"
         android:name="com.tcblauweiss.getraenkeabrechner.ui.items.AllItemsFragment"
         android:label="@string/menu_edit"
         tools:layout="@layout/items_viewholder" />
+
+    <action
+        android:id="@+id/action_delete_all_entries"
+        app:destination="@id/nav_entries_show_all">
+        <argument
+            android:name="deleteAllEntries"
+            app:argType="boolean"
+            android:defaultValue="true"/>
+    </action>
+
 
 </navigation>
