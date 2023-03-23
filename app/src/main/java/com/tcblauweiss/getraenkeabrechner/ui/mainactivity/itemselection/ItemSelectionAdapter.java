@@ -20,6 +20,13 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     private Receipt receipt;
 
     private ReceiptAdapter receiptAdapter;
+
+    private ReceiptChangedListener receiptChangedListener;
+
+    public interface ReceiptChangedListener {
+        void onReceiptChanged(Receipt receipt);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView, priceTextView, amountTextView;
         private final Button decreaseButton, increaseButton;
@@ -47,9 +54,6 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
 
         public Button getIncreaseButton() {return increaseButton;}
 
-        public void clearAmount() {
-             getAmountTextView().setText("0");
-        }
     }
 
     public ItemSelectionAdapter(ArrayList<Item> itemList, Receipt receipt, ReceiptAdapter receiptAdapter) {
@@ -77,8 +81,8 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
                 int adapterPosition = viewHolder.getBindingAdapterPosition();
                 receipt.removeItem(localItemList.get(adapterPosition));
                 receiptAdapter.updateData(receipt.getItemsAndCount());
-                Log.d(null, receipt.getItemsAndCount().toString());
                 viewHolder.getAmountTextView().setText(String.valueOf(receipt.getNumberOfItems(localItemList.get(adapterPosition))));
+                receiptChangedListener.onReceiptChanged(receipt);
             }
         });
 
@@ -88,10 +92,14 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
                 int adapterPosition = viewHolder. getBindingAdapterPosition();
                 receipt.addItem(localItemList.get(adapterPosition));
                 receiptAdapter.updateData(receipt.getItemsAndCount());
-                Log.d(null, receipt.getItemsAndCount().toString());
                 viewHolder.getAmountTextView().setText(String.valueOf(receipt.getNumberOfItems(localItemList.get(adapterPosition))));
+                receiptChangedListener.onReceiptChanged(receipt);
             }
         });
+    }
+
+    public void setReceiptChangedListender(ReceiptChangedListener receiptChangedListener) {
+        this.receiptChangedListener = receiptChangedListener;
     }
 
     public int getItemCount() {

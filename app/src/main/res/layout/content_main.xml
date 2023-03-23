@@ -29,8 +29,8 @@
         android:drawablePadding="8dp"
         />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <FrameLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_marginTop="8dp"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
-    </LinearLayout>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textView2"
@@ -56,7 +56,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/beverage_selection_label"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
         app:drawableLeftCompat="@drawable/ic_shopping_cart"
         app:drawableTint="?attr/colorPrimary"
         android:drawablePadding="8dp"/>
@@ -104,10 +104,10 @@
             />
         </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
+    <FrameLayout
+        android:id="@+id/frameLayout4"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/customborder"
         android:minHeight="150dp"
@@ -116,11 +116,48 @@
         app:layout_constraintStart_toEndOf="@+id/layout_input_member_name"
         app:layout_constraintTop_toTopOf="@+id/layout_input_member_name">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rec_view_receipt"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rec_view_receipt"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/divider3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="193dp"
+                tools:layout_conversion_absoluteWidth="408dp" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/text_receipt_total"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rec_view_receipt"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/text_receipt_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="0,00 €"
+                android:textAlignment="textEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/rec_view_receipt"
+                app:layout_constraintTop_toBottomOf="@id/divider3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/text_signature_header"
@@ -132,7 +169,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintStart_toStartOf="@+id/layout_input_member_name"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout4"
         app:drawableLeftCompat="@drawable/ic_edit"
         app:drawableTint="?attr/colorPrimary"
         android:drawablePadding="8dp"/>
@@ -144,7 +181,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/customborder"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout4"
         app:layout_constraintStart_toStartOf="@+id/text_signature_header">
 
         <FrameLayout

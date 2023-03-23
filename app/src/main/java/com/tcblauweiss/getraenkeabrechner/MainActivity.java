@@ -29,6 +29,7 @@ import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
+import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
 
 import se.warting.signatureview.views.SignaturePad;
 import se.warting.signatureview.views.SignedListener;
@@ -38,6 +39,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ItemSelectionAdapter itemSelectionAdapter;
     private Receipt receipt;
+    private TextView receiptTotalTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         signaturePad = findViewById(R.id.signature_pad);
         resetEntryBtn = findViewById(R.id.btn_reset_entry);
         submitEntryBtn = findViewById(R.id.btn_submit_entry);
+        receiptTotalTextView = findViewById(R.id.text_receipt_total);
 
         receipt = new Receipt();
 
@@ -169,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         receipt.clearData();
         receiptAdapter.updateData(receipt.getItemsAndCount());
         itemSelectionAdapter.refresh();
+        receiptTotalTextView.setText(StringFormatter.formatToCurrencyString(0));
     }
 
     private void setupLastEntriesView() {
@@ -203,6 +208,13 @@ public class MainActivity extends AppCompatActivity {
 
         itemSelectionAdapter = new ItemSelectionAdapter(itemList, receipt, receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
+        itemSelectionAdapter.setReceiptChangedListender(new ItemSelectionAdapter.ReceiptChangedListener() {
+            @Override
+            public void onReceiptChanged(Receipt receipt) {
+                receiptTotalTextView.setText(receipt.getTotalString());
+                Log.d(null, receipt.getTotalString());
+            }
+        });
     }
 
     private void setupMemberNameInputField(){

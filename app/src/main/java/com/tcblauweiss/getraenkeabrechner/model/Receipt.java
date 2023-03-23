@@ -1,5 +1,7 @@
 package com.tcblauweiss.getraenkeabrechner.model;
 
+import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,6 +51,19 @@ public class Receipt {
 
     public void clearData() {
         itemList.clear();
+    }
+
+    public double getTotal() {
+        double sum = 0;
+        for (Item item : itemList) {
+            sum += item.getPrice();
+        }
+
+        return sum;
+    }
+
+    public String getTotalString() {
+        return StringFormatter.formatToCurrencyString(getTotal());
     }
 }
 
