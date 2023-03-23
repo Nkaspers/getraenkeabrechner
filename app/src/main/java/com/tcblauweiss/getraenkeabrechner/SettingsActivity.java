@@ -64,6 +64,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void setNavigationDrawerListeners(NavigationView navigationView){
+
+        navigationView.getMenu().findItem(R.id.nav_members_edit).setOnMenuItemClickListener(view -> {
+            navController.navigate(R.id.nav_members_edit);
+            return false;
+        });
         navigationView.getMenu().findItem(R.id.nav_members_import).setOnMenuItemClickListener(view -> {
             Toast.makeText(SettingsActivity.this,"Mitglieder importieren", Toast.LENGTH_SHORT).show();
             //TODO: Mitglieder importieren
@@ -83,7 +88,12 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         navigationView.getMenu().findItem(R.id.nav_entries_delete_all).setOnMenuItemClickListener(view -> {
-              navController.navigate(R.id.action_delete_all_entries);
+            navController.navigate(R.id.action_delete_all_entries);
+            return false;
+        });
+
+        navigationView.getMenu().findItem(R.id.nav_items_edit).setOnMenuItemClickListener(view -> {
+            navController.navigate(R.id.nav_items_edit);
             return false;
         });
 
