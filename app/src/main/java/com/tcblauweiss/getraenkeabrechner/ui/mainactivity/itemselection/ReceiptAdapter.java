@@ -81,11 +81,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
         return receiptItemList.size();
     }
 
-    public void clearData() {
-        receiptItemList.clear();
-        notifyDataSetChanged();
-    }
-
     public ArrayList<ItemWrapper> getReceiptItemList() {
         return receiptItemList;
     }

@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private ReceiptAdapter receiptAdapter;
     private LastEntriesAdapter lastEntriesAdapter;
 
+    private Receipt receipt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         signaturePad = findViewById(R.id.signature_pad);
         resetEntryBtn = findViewById(R.id.btn_reset_entry);
         submitEntryBtn = findViewById(R.id.btn_submit_entry);
+
+        receipt = new Receipt();
 
         setupLastEntriesView();
         setupItemSelectionView();
@@ -167,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputField.setText("");
         memberNameInputField.clearFocus();
         memberNameInputLayout.setError(null);
-        receiptAdapter.clearData();
+        receipt.clearData();
+        receiptAdapter.updateData(receipt.getItemsAndCount());
     }
 
     private void setupLastEntriesView() {
@@ -185,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupItemSelectionView() {
         ItemSelectionAdapter itemSelectionAdapter;
-        Receipt receipt = new Receipt();
         itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
 
         ArrayList<Item> itemList = new ArrayList<>();

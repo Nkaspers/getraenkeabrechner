@@ -46,5 +46,9 @@ public class Receipt {
 
         return itemsAndCount;
     }
+
+    public void clearData() {
+        itemList.clear();
+    }
 }
 
