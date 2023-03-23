@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
+import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
         public Button getDecreaseButton() {return decreaseButton;}
 
         public Button getIncreaseButton() {return increaseButton;}
+
+        public void clearAmount() {
+             getAmountTextView().setText("0");
+        }
     }
 
     public ItemSelectionAdapter(ArrayList<Item> itemList, Receipt receipt, ReceiptAdapter receiptAdapter) {
@@ -92,4 +97,9 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     public int getItemCount() {
         return localItemList.size();
     }
+
+    public void refresh() {
+        notifyDataSetChanged();
+    }
+
 }

@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private ReceiptAdapter receiptAdapter;
     private LastEntriesAdapter lastEntriesAdapter;
 
+    private ItemSelectionAdapter itemSelectionAdapter;
     private Receipt receipt;
 
     @Override
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputLayout.setError(null);
         receipt.clearData();
         receiptAdapter.updateData(receipt.getItemsAndCount());
+        itemSelectionAdapter.refresh();
     }
 
     private void setupLastEntriesView() {
@@ -189,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupItemSelectionView() {
-        ItemSelectionAdapter itemSelectionAdapter;
         itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
 
         ArrayList<Item> itemList = new ArrayList<>();

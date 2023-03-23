@@ -85,4 +85,5 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
         return localDataSet.size();
     }
 
+
 }
