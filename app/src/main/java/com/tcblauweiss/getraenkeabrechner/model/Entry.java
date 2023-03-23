@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,13 +24,13 @@ public class Entry {
     @ColumnInfo(name="item_name")
     private final String itemName;
     @ColumnInfo(name="item_price")
-    private final float itemPrice;
+    private final double itemPrice;
     @ColumnInfo(name="amount")
     private final int amount;
     @ColumnInfo(name="total_price")
-    private final float totalPrice;
+    private final double totalPrice;
 
-    public Entry(long dateCreated, String lastName, String firstName, String itemName, float itemPrice, int amount, float totalPrice) {
+    public Entry(long dateCreated, String lastName, String firstName, String itemName, double itemPrice, int amount, double totalPrice) {
         this.dateCreated = dateCreated;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -64,11 +66,12 @@ public class Entry {
         return name;
     }
 
-    public float getItemPrice() {
+    public double getItemPrice() {
         return itemPrice;
     }
     public String getItemPriceString() {
-        return String.valueOf(itemPrice);
+
+        return StringFormatter.formatToCurrencyString(itemPrice);
     }
 
     public long getId() {
@@ -87,12 +90,12 @@ public class Entry {
         return String.valueOf(amount);
     }
 
-    public float getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
     public String getTotalPriceString(){
-        return String.valueOf(Math.round(totalPrice*100)/100) + "€";
+        return StringFormatter.formatToCurrencyString(totalPrice);
     }
 
     public void setId(long id) {

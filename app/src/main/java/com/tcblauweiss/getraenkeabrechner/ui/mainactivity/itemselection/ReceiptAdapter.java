@@ -72,8 +72,8 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.getCountTextView().setText(String.valueOf(receiptItemList.get(position).getCount()));
         viewHolder.getNameTextView().setText(receiptItemList.get(position).getItem().getName());
-        viewHolder.getPriceTextView().setText(String.valueOf(receiptItemList.get(position).getItem().getPrice()));
-        viewHolder.getTotalTextView().setText(String.valueOf(receiptItemList.get(position).getTotal()));
+        viewHolder.getPriceTextView().setText(receiptItemList.get(position).getItem().getPriceString());
+        viewHolder.getTotalTextView().setText(receiptItemList.get(position).getTotalString());
     }
 
     @Override

@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.BaseKeyListener;
-import android.text.method.KeyListener;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -35,19 +33,15 @@ import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntrie
 import se.warting.signatureview.views.SignaturePad;
 import se.warting.signatureview.views.SignedListener;
 
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -149,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             Entry entry = new Entry(
                     System.currentTimeMillis(), memberName[1], memberName[0],
                     itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
-                    itemWrapper.getCount(), itemWrapper.getTotal());
+                    itemWrapper.getCount(), (long) itemWrapper.getTotal());
             entries[i++] = entry;
         }
         return entries;

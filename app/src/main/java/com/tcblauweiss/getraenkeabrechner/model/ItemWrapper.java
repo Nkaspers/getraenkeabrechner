@@ -1,8 +1,11 @@
 package com.tcblauweiss.getraenkeabrechner.model;
 
+import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
+
 public class ItemWrapper {
     private Item item;
     private int count;
+
 
     public ItemWrapper(Item item, int count) {
         this.item = item;
@@ -14,8 +17,12 @@ public class ItemWrapper {
     }
 
 
-    public float getTotal() {
+    public double getTotal() {
         return getCount() * item.getPrice();
+    }
+
+    public String getTotalString() {
+        return StringFormatter.formatToCurrencyString(getTotal());
     }
 
     public Item getItem() {

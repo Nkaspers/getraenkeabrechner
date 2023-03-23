@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
+
 import java.util.Locale;
 
 @Entity
@@ -13,9 +15,9 @@ public class Item {
     @ColumnInfo(name="item_name")
     private String name;
     @ColumnInfo(name="price")
-    private float price;
+    private double price;
 
-    public Item(String name, float price) {
+    public Item(String name, double price) {
         this.name = name;
         this.price = price;
     }
@@ -24,12 +26,13 @@ public class Item {
         return name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
     public String getPriceString(){
-        return String.format(Locale.getDefault(),"%.2f", price);
+
+        return StringFormatter.formatToCurrencyString(price);
     }
 
     public long getId() {
@@ -40,7 +43,7 @@ public class Item {
         this.id = id;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
