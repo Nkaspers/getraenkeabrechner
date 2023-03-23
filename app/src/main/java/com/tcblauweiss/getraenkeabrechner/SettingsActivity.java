@@ -29,7 +29,6 @@ public class SettingsActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivitySettingsBinding binding;
     private AppViewModel viewModel;
-    private FragmentManager fragmentManager;
     private NavController navController;
     private DrawerLayout drawer;
 
@@ -44,9 +43,12 @@ public class SettingsActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
 
         viewModel = new AppViewModel(getApplication());
-        fragmentManager = getSupportFragmentManager();
 
-        //INITIALIZE DRAWER NAVIGATION MENU
+        setupNavigationLayout();
+        setNavigationDrawerListeners(navigationView);
+    }
+
+    private void setupNavigationLayout(){
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_members_edit, R.id.nav_members_import, R.id.nav_entries_show_all,
                 R.id.nav_entries_cancel, R.id.nav_entries_export, R.id.nav_entries_delete_all,
@@ -58,11 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        setNavigationDrawerListeners(navigationView);
-        drawer.openDrawer(GravityCompat.START);
     }
-
     public void setNavigationDrawerListeners(NavigationView navigationView){
 
         navigationView.getMenu().findItem(R.id.nav_members_edit).setOnMenuItemClickListener(view -> {
@@ -72,6 +70,11 @@ public class SettingsActivity extends AppCompatActivity {
         navigationView.getMenu().findItem(R.id.nav_members_import).setOnMenuItemClickListener(view -> {
             Toast.makeText(SettingsActivity.this,"Mitglieder importieren", Toast.LENGTH_SHORT).show();
             navController.navigate(R.id.action_import_members);
+            return false;
+        });
+
+        navigationView.getMenu().findItem(R.id.nav_entries_show_all).setOnMenuItemClickListener(view -> {
+            navController.navigate(R.id.nav_entries_show_all);
             return false;
         });
 
@@ -104,6 +107,12 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Open drawer after FragmentView ist created
+        drawer.openDrawer(GravityCompat.START);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

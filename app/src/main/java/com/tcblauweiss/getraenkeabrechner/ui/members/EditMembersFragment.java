@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -48,10 +49,10 @@ public class EditMembersFragment extends Fragment {
     private LiveData<List<Member>> allMembers;
     private SearchView searchView;
     private RecyclerView searchRecyclerView;
+    private DrawerLayout drawer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Log.d("EditMembersFragment", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_edit_members, container, false);
 
         parentActivity = (SettingsActivity) requireActivity();
@@ -59,7 +60,7 @@ public class EditMembersFragment extends Fragment {
         Bundle args = getArguments();
         assert args != null;
         boolean flag = args.getBoolean("importMembers");
-        Log.d("EditMembersFragment", "onCreateView->Arguments: " + flag);
+        Log.d("EditMembersFragment", "onCreateView->importMembers: " + flag);
 
         searchBar = view.findViewById(R.id.searchbar);
         searchView = view.findViewById(R.id.searchview);
@@ -67,10 +68,8 @@ public class EditMembersFragment extends Fragment {
         searchRecyclerView = view.findViewById(R.id.recyclerview_search);
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);
 
-        //Init Searchbar
-        searchBar.setHint(R.string.search_members_label);
-        parentActivity.setSupportActionBar(searchBar);
-
+        drawer = parentActivity.getDrawer();
+        setupSearchBar();
         setupAllMembersView();
         setupSearchView();
 
@@ -110,6 +109,16 @@ public class EditMembersFragment extends Fragment {
                     }
                 })
                 .create();
+    }
+
+    private void setupSearchBar(){
+        searchBar.setHint(R.string.search_members_label);
+        searchBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     private void setupAllMembersView(){
@@ -159,7 +168,6 @@ public class EditMembersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DrawerLayout drawer = parentActivity.getDrawer();
         drawer.close();
     }
 

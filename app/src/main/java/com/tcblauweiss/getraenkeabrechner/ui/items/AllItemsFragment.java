@@ -5,7 +5,10 @@ import android.os.Bundle;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tcblauweiss.getraenkeabrechner.R;
+import com.tcblauweiss.getraenkeabrechner.SettingsActivity;
 import com.tcblauweiss.getraenkeabrechner.ui.items.placeholder.PlaceholderContent;
 
 /**
@@ -27,7 +31,7 @@ public class AllItemsFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private AppCompatActivity parentActivity;
+    private SettingsActivity parentActivity;
     private MaterialToolbar toolbar;
 
     /**
@@ -60,7 +64,7 @@ public class AllItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
-        parentActivity = (AppCompatActivity) getActivity();
+        parentActivity = (SettingsActivity) getActivity();
 
         //reinitialize toolbar in case it was overwritten from previous fragments.
         toolbar = parentActivity.findViewById(R.id.toolbar);
@@ -77,6 +81,13 @@ public class AllItemsFragment extends Fragment {
             recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        DrawerLayout drawer = parentActivity.getDrawer();
+        drawer.close();
     }
 
     @Override
