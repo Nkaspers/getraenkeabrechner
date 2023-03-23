@@ -9,7 +9,12 @@
         android:id="@+id/nav_members_edit"
         android:name="com.tcblauweiss.getraenkeabrechner.ui.members.EditMembersFragment"
         android:label="@string/menu_edit"
-        tools:layout="@layout/fragment_edit_members" />
+        tools:layout="@layout/fragment_edit_members">
+    <argument
+        android:name="importMembers"
+        app:argType="boolean"
+        android:defaultValue="false"/>
+    </fragment>
     <action
         android:id="@+id/action_import_members"
         app:destination="@id/nav_members_edit">

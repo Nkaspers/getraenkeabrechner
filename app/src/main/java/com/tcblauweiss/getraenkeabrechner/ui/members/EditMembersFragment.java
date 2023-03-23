@@ -15,8 +15,10 @@ import com.google.android.material.search.SearchView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchBar;
 import com.tcblauweiss.getraenkeabrechner.R;
+import com.tcblauweiss.getraenkeabrechner.SettingsActivity;
 import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 
@@ -36,7 +39,7 @@ import java.util.List;
 public class EditMembersFragment extends Fragment {
     private FloatingActionButton addMemberFab;
     private AlertDialog addMemberDialog;
-    private AppCompatActivity parentActivity;
+    private SettingsActivity parentActivity;
     private SearchBar searchBar;
     private RecyclerView membersRecyclerView;
     private AllMembersViewAdapter membersRecyclerViewAdapter;
@@ -50,18 +53,27 @@ public class EditMembersFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         Log.d("EditMembersFragment", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_edit_members, container, false);
-        parentActivity = (AppCompatActivity) requireActivity();
+
+        parentActivity = (SettingsActivity) requireActivity();
+
+        Bundle args = getArguments();
+        assert args != null;
+        boolean flag = args.getBoolean("importMembers");
+        Log.d("EditMembersFragment", "onCreateView->Arguments: " + flag);
 
         searchBar = view.findViewById(R.id.searchbar);
         searchView = view.findViewById(R.id.searchview);
         membersRecyclerView = view.findViewById(R.id.recyclerview_edit_members_fragment);
         searchRecyclerView = view.findViewById(R.id.recyclerview_search);
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);
+
         //Init Searchbar
         searchBar.setHint(R.string.search_members_label);
         parentActivity.setSupportActionBar(searchBar);
+
         setupAllMembersView();
         setupSearchView();
+
         addMemberFab.setOnClickListener(view1 -> {
             if(addMemberDialog == null) setupNewMemberDialog();
             addMemberDialog.show();
@@ -144,6 +156,12 @@ public class EditMembersFragment extends Fragment {
     }
 
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        DrawerLayout drawer = parentActivity.getDrawer();
+        drawer.close();
+    }
 
     @Override
     public void onDestroyView() {
@@ -153,6 +171,9 @@ public class EditMembersFragment extends Fragment {
     @Override
     public void onResume() {
         Log.d("EditMembersFragment", "OnResume");
+        Bundle args = getArguments();
+        assert args != null;
+        args.putBoolean("deleteAllMembers", false);
         super.onResume();
     }
 }

@@ -28,10 +28,14 @@ public class AllEntriesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_entries, container, false);
+
         parentActivity = (SettingsActivity) requireActivity();
+
         Bundle args = getArguments();
+        assert args != null;
         boolean flag = args.getBoolean("deleteAllEntries");
-        Log.d("AllEntriesFragment", "onCreateView deleteAllEntries: " + flag);
+        Log.d("AllEntriesFragment", "onCreateView->Arguments: " + flag);
+
         searchBar = view.findViewById(R.id.searchbar);
         searchBar.setNavigationIcon(R.drawable.ic_menu);
         searchBar.setHint(R.string.search_Entries_label);
@@ -80,6 +84,7 @@ public class AllEntriesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Bundle args = getArguments();
+        assert args != null;
         args.putBoolean("deleteAllEntries", false);
     }
 }

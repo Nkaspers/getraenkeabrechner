@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
         navigationView.getMenu().findItem(R.id.nav_members_import).setOnMenuItemClickListener(view -> {
             Toast.makeText(SettingsActivity.this,"Mitglieder importieren", Toast.LENGTH_SHORT).show();
-            //TODO: Mitglieder importieren
+            navController.navigate(R.id.action_import_members);
             return false;
         });
 
