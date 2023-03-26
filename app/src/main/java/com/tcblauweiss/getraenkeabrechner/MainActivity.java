@@ -183,7 +183,9 @@ public class MainActivity extends AppCompatActivity {
         appViewModel.getAllEntries().observe(this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
+
                 lastEntriesAdapter.submitList(entries);
+                lastEntriesRecyclerView.scrollToPosition(0);
             }
         });
         lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
