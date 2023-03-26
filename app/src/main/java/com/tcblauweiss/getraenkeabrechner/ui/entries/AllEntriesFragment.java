@@ -15,18 +15,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.search.SearchBar;
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.SettingsActivity;
 import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
+import com.tcblauweiss.getraenkeabrechner.model.Entry;
+import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
+
+import java.util.List;
 
 
 public class AllEntriesFragment extends Fragment {
     SearchBar searchBar;
     SettingsActivity parentActivity;
     DrawerLayout drawer;
+    AppViewModel appViewModel;
+
+    RecyclerView lastEntriesRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,8 +45,12 @@ public class AllEntriesFragment extends Fragment {
 
         searchBar = view.findViewById(R.id.searchbar);
 
+        appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
+
         parentActivity = (SettingsActivity) requireActivity();
         drawer = parentActivity.getDrawer();
+
+        lastEntriesRecyclerView = view.findViewById(R.id.recyclerview_all_entries_fragment);
 
         setupSearchBar();
 
@@ -43,8 +58,22 @@ public class AllEntriesFragment extends Fragment {
         assert args != null;
         boolean flag = args.getBoolean("deleteAllEntries");
         Log.d("AllEntriesFragment", "onCreateView->deleteAllEntries: " + flag);
-
+        setupLastEntriesView();
         return view;
+    }
+
+    private void setupLastEntriesView() {
+        lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        LastEntriesAdapter lastEntriesAdapter = new LastEntriesAdapter();
+
+        appViewModel.getAllEntries().observe(this, new Observer<List<Entry>>() {
+            @Override
+            public void onChanged(List<Entry> entries) {
+                lastEntriesAdapter.submitList(entries);
+            }
+        });
+        lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
     }
 
     private AlertDialog createDeleteAllEntriesDialog() {

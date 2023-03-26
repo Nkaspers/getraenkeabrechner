@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.entries.AllEntriesFragment">
 
-    <include layout="@layout/searchbar_layout"/>
+    <include
+        android:id="@+id/searchbar_layout_all_entries"
+        layout="@layout/searchbar_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_all_entries_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchbar_all_entries" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
