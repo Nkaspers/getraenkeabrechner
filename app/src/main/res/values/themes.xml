@@ -49,6 +49,9 @@
         <item name="android:textSize">22sp</item>
         <item name="android:fontWeight">1000</item>
     </style>
+    <style name="Theme.Getraenkeabrechner.Title" parent="TextAppearance.Material3.TitleMedium">
+
+    </style>
     <style name="Theme.Getraenkeabrechner.BodyTextMedium" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">16sp</item>
     </style>
