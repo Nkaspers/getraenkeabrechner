@@ -3,18 +3,27 @@ package com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
+import com.tcblauweiss.getraenkeabrechner.model.Member;
+import com.tcblauweiss.getraenkeabrechner.ui.entries.EntryDiffCallback;
+import com.tcblauweiss.getraenkeabrechner.ui.members.MemberDiffCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.ViewHolder> {
+public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.ViewHolder> implements Filterable {
+    //list that contains elements that are currently shown in recyclerview
+    private List<Entry> localDataSetFiltered;
+    //set once and used as a fallback when nothing is filtered
     private List<Entry> localDataSet;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView dateTextView, nameTextView, itemTextView, priceTextView, amountTextView, totalPriceTextView;
@@ -56,11 +65,20 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
     public LastEntriesAdapter() {
         this.localDataSet = new ArrayList<>();
+        this.localDataSetFiltered = new ArrayList<>();
     }
 
     public void submitList(final List<Entry> entries){
         localDataSet = entries;
-        notifyItemInserted(0);
+        EntryDiffCallback diffCallback = new EntryDiffCallback(localDataSetFiltered, entries);
+        localDataSetFiltered = entries;
+        DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(this);
+    }
+
+    private void submitFilter(List<Entry> filteredEntries){
+        EntryDiffCallback diffCallback = new EntryDiffCallback(localDataSetFiltered, filteredEntries);
+        localDataSetFiltered = filteredEntries;
+        DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(this);
     }
 
     @Override
@@ -72,18 +90,45 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getDateTextView().setText(localDataSet.get(position).getDateCreatedString());
-        viewHolder.getNameTextView().setText(localDataSet.get(position).getName());
-        viewHolder.getItemTextView().setText(localDataSet.get(position).getItemName());
-        viewHolder.getPriceTextView().setText(localDataSet.get(position).getItemPriceString());
-        viewHolder.getAmountTextView().setText(localDataSet.get(position).getAmountString());
-        viewHolder.getTotalPriceTextView().setText(localDataSet.get(position).getTotalPriceString());
+        viewHolder.getDateTextView().setText(localDataSetFiltered.get(position).getDateCreatedString());
+        viewHolder.getNameTextView().setText(localDataSetFiltered.get(position).getName());
+        viewHolder.getItemTextView().setText(localDataSetFiltered.get(position).getItemName());
+        viewHolder.getPriceTextView().setText(localDataSetFiltered.get(position).getItemPriceString());
+        viewHolder.getAmountTextView().setText(localDataSetFiltered.get(position).getAmountString());
+        viewHolder.getTotalPriceTextView().setText(localDataSetFiltered.get(position).getTotalPriceString());
     }
 
     @Override
     public int getItemCount() {
-        return localDataSet.size();
+        return localDataSetFiltered.size();
     }
 
-
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String searchStr = charSequence.toString().toLowerCase();
+                List<Entry> filteredEntries = new ArrayList<>();
+                if(searchStr.isEmpty()) {
+                    filteredEntries = localDataSet;
+                }
+                else {
+                    for(Entry entry: localDataSet){
+                        if(entry.getLastName().toLowerCase().contains(searchStr) ||
+                                entry.getFirstName().toLowerCase().contains(searchStr)){
+                            filteredEntries.add(entry);
+                        }
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredEntries;
+                return filterResults;
+            }
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                submitFilter((List<Entry>) filterResults.values);
+            }
+        };
+    }
 }

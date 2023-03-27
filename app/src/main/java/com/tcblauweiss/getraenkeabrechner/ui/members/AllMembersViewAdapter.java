@@ -13,15 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
+import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAdapter.ViewHolder> implements Filterable {
+    //list that contains elements that are currently shown in recyclerview
     private List<Member> localDataSetFiltered;
+    //set once and used as a fallback when nothing is filtered
     private List<Member> localDataSet;
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView lastNameTextView, firstNameTextView, firstLetterTextView;
 

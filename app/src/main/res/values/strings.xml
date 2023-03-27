@@ -31,7 +31,7 @@
     <string name="add_member_dialog_title">Neues Mitglied hinzufügen</string>
     <string name="add_member_dialog_confirm_label">Bestätigen</string>
     <string name="add_member_dialog_cancel_label">Abbrechen</string>
-    <string name="search_Entries_label">Buchungen suchen</string>
+    <string name="search_entries_label">Buchungen suchen</string>
     <string name="reset_entry_btn_label">Zurücksetzen</string>
     <string name="submit_entry_btn_label">Buchen</string>
     <string name="input_member_name_label">Name</string>
