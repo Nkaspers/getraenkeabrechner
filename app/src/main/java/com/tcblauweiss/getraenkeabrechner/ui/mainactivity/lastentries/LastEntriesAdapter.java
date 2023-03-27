@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
-import com.tcblauweiss.getraenkeabrechner.model.Member;
 import com.tcblauweiss.getraenkeabrechner.ui.entries.EntryDiffCallback;
-import com.tcblauweiss.getraenkeabrechner.ui.members.MemberDiffCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +28,12 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
         public ViewHolder(View view) {
             super(view);
-            dateTextView = view.findViewById(R.id.text_lastentries_date);
-            nameTextView = view.findViewById(R.id.text_lastentries_name);
-            itemTextView = view.findViewById(R.id.text_lastentries_item);
-            priceTextView = view.findViewById(R.id.text_lastentries_price);
-            amountTextView = view.findViewById(R.id.text_lastentries_amount);
-            totalPriceTextView = view.findViewById(R.id.text_lastentries_totalprice);
+            dateTextView = view.findViewById(R.id.text_last_entries_date);
+            nameTextView = view.findViewById(R.id.text_last_entries_name);
+            itemTextView = view.findViewById(R.id.text_last_entries_item);
+            priceTextView = view.findViewById(R.id.text_last_entries_price);
+            amountTextView = view.findViewById(R.id.text_last_entries_amount);
+            totalPriceTextView = view.findViewById(R.id.text_last_entries_total);
         }
 
         public TextView getDateTextView(){

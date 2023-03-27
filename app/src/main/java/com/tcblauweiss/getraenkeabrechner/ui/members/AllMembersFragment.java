@@ -65,6 +65,8 @@ public class AllMembersFragment extends Fragment {
         searchRecyclerView = view.findViewById(R.id.recycler_search_all_entries);
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);
 
+        appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
+
         drawer = parentActivity.getDrawer();
         setupSearchBar();
         setupAllMembersView();
@@ -119,12 +121,10 @@ public class AllMembersFragment extends Fragment {
     }
 
     private void setupAllMembersView(){
-        appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
-        allMembers = appViewModel.getAllMembers();
         membersRecyclerViewAdapter = new AllMembersViewAdapter();
         membersRecyclerView.setAdapter(membersRecyclerViewAdapter);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        allMembers.observe(requireActivity() , new Observer<List<Member>>() {
+        appViewModel.getAllMembers().observe(requireActivity() , new Observer<List<Member>>() {
             @Override
             public void onChanged(List<Member> members) {
                 membersRecyclerViewAdapter.submitList(members);

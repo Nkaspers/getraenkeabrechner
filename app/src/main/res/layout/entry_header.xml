@@ -3,65 +3,76 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:id="@+id/l"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="5dp">
 
         <TextView
             android:id="@+id/text_lastentries_date_header"
             style="@style/Theme.Getraenkeabrechner.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Datum" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.15"
+            android:paddingHorizontal="5dp"
+            android:text="@string/entries_date_header_label" />
 
         <TextView
             android:id="@+id/text_lastentries_name_header"
             style="@style/Theme.Getraenkeabrechner.Title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="Name" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_lastentries_date_header"
+            app:layout_constraintWidth_percent="0.31"
+            android:paddingHorizontal="5dp"
+            android:text="@string/entries_name_header_label"/>
 
         <TextView
             android:id="@+id/text_lastentries_item_header"
             style="@style/Theme.Getraenkeabrechner.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Getränk" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_lastentries_name_header"
+            app:layout_constraintWidth_percent="0.2"
+            android:paddingHorizontal="5dp"
+            android:text="@string/entries_item_header_label" />
 
         <TextView
             android:id="@+id/text_lastentries_price_header"
             style="@style/Theme.Getraenkeabrechner.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Preis" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_lastentries_item_header"
+            app:layout_constraintWidth_percent="0.15"
+            android:paddingHorizontal="5dp"
+            android:text="@string/entries_price_header_label" />
 
         <TextView
-            android:id="@+id/text_lastentries_anzahl_header"
+            android:id="@+id/text_lastentries_amount_header"
             style="@style/Theme.Getraenkeabrechner.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Anzahl" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_lastentries_price_header"
+            app:layout_constraintWidth_percent="0.1"
+            android:text="@string/entries_amount_header_label" />
 
         <TextView
             android:id="@+id/text_lastentries_total_header"
             style="@style/Theme.Getraenkeabrechner.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Gesamt" />
-    </LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="5dp"
+            android:text="@string/entries_total_header_label" />
 </androidx.constraintlayout.widget.ConstraintLayout>
