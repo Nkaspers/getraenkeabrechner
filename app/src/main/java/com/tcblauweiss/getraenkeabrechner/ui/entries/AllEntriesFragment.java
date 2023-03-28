@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -131,6 +132,7 @@ public class AllEntriesFragment extends Fragment {
             @Override
             public void onMemberClicked(Member member) {
                 lastEntriesAdapter.filterByMember(member);
+                searchBar.setText(member.getName());
                 searchView.hide();
             }
         });
@@ -158,6 +160,7 @@ public class AllEntriesFragment extends Fragment {
 
             }
         });
+
     }
 
     @Override
@@ -185,4 +188,5 @@ public class AllEntriesFragment extends Fragment {
         assert args != null;
         args.putBoolean("deleteAllEntries", false);
     }
+
 }

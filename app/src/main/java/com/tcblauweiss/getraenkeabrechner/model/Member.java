@@ -26,6 +26,10 @@ public class Member {
         return lastName;
     }
 
+    public String getName() {
+        return lastName + ", " + firstName;
+    }
+
     public void setId(long id) {
         this.id = id;
     }

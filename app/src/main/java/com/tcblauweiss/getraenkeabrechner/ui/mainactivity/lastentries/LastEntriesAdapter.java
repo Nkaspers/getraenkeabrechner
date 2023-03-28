@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.ViewHolder> {
     private List<Entry> entryList;
+    private List<Entry> displayedEntryList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView dateTextView, nameTextView, itemTextView, priceTextView, amountTextView, totalPriceTextView;
@@ -62,11 +63,14 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
     }
 
     public LastEntriesAdapter() {
+
         this.entryList = new ArrayList<>();
+        this.displayedEntryList = new ArrayList<>(entryList);
     }
 
     public void addEntryToTop(final List<Entry> entries){
         entryList = entries;
+        displayedEntryList = new ArrayList<>(entryList);
         notifyItemInserted(0);
     }
 
@@ -82,7 +86,13 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
     public void filterByMember(Member member) {
         Predicate<Entry> memberPredicate = entry -> entry.getLastName().equals(member.getLastName()) && entry.getFirstName().equals(member.getFirstName());
         List<Entry> tempFilteredEntryList = entryList.stream().filter(memberPredicate).collect(Collectors.toList());
-        submitList(tempFilteredEntryList);
+
+        final EntriesDiffCallback entriesDiffCallback = new EntriesDiffCallback(this.displayedEntryList, tempFilteredEntryList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(entriesDiffCallback);
+
+        this.displayedEntryList.clear();
+        this.displayedEntryList.addAll(tempFilteredEntryList);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override
@@ -94,17 +104,18 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getDateTextView().setText(entryList.get(position).getDateCreatedString());
-        viewHolder.getNameTextView().setText(entryList.get(position).getName());
-        viewHolder.getItemTextView().setText(entryList.get(position).getItemName());
-        viewHolder.getPriceTextView().setText(entryList.get(position).getItemPriceString());
-        viewHolder.getAmountTextView().setText(entryList.get(position).getAmountString());
-        viewHolder.getTotalPriceTextView().setText(entryList.get(position).getTotalPriceString());
+        Entry entry = displayedEntryList.get(position);
+        viewHolder.getDateTextView().setText(entry.getDateCreatedString());
+        viewHolder.getNameTextView().setText(entry.getName());
+        viewHolder.getItemTextView().setText(entry.getItemName());
+        viewHolder.getPriceTextView().setText(entry.getItemPriceString());
+        viewHolder.getAmountTextView().setText(entry.getAmountString());
+        viewHolder.getTotalPriceTextView().setText(entry.getTotalPriceString());
     }
 
     @Override
     public int getItemCount() {
-        return entryList.size();
+        return displayedEntryList.size();
     }
 
 
