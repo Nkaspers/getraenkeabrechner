@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_members_edit"
-        android:name="com.tcblauweiss.getraenkeabrechner.ui.members.EditMembersFragment"
+        android:name="com.tcblauweiss.getraenkeabrechner.ui.members.AllMembersFragment"
         android:label="@string/menu_edit"
-        tools:layout="@layout/fragment_edit_members">
+        tools:layout="@layout/fragment_all_members">
     <argument
         android:name="importMembers"
         app:argType="boolean"

@@ -62,8 +62,7 @@ public class Entry {
     }
 
     public String getName(){
-        String name = lastName + ", " + firstName;
-        return name;
+        return lastName + ",  " + firstName;
     }
 
     public double getItemPrice() {

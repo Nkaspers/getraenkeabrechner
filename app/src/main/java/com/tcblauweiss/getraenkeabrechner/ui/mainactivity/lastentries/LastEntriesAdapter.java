@@ -29,12 +29,12 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
         public ViewHolder(View view) {
             super(view);
-            dateTextView = view.findViewById(R.id.text_lastentries_date);
-            nameTextView = view.findViewById(R.id.text_lastentries_name);
-            itemTextView = view.findViewById(R.id.text_lastentries_item);
-            priceTextView = view.findViewById(R.id.text_lastentries_price);
-            amountTextView = view.findViewById(R.id.text_lastentries_amount);
-            totalPriceTextView = view.findViewById(R.id.text_lastentries_totalprice);
+            dateTextView = view.findViewById(R.id.text_last_entries_date);
+            nameTextView = view.findViewById(R.id.text_last_entries_name);
+            itemTextView = view.findViewById(R.id.text_last_entries_item);
+            priceTextView = view.findViewById(R.id.text_last_entries_price);
+            amountTextView = view.findViewById(R.id.text_last_entries_amount);
+            totalPriceTextView = view.findViewById(R.id.text_last_entries_total);
         }
 
         public TextView getDateTextView(){

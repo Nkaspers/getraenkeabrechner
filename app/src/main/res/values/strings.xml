@@ -31,7 +31,7 @@
     <string name="add_member_dialog_title">Neues Mitglied hinzufügen</string>
     <string name="add_member_dialog_confirm_label">Bestätigen</string>
     <string name="add_member_dialog_cancel_label">Abbrechen</string>
-    <string name="search_Entries_label">Buchungen suchen</string>
+    <string name="search_entries_label">Buchungen suchen</string>
     <string name="reset_entry_btn_label">Zurücksetzen</string>
     <string name="submit_entry_btn_label">Buchen</string>
     <string name="input_member_name_label">Name</string>
@@ -46,4 +46,10 @@
     <string name="delete_all_entries_alert_message">Diese Aktion kann nicht rückgängig gemacht werden.</string>
     <string name="delete_all_entries_dialog_confirm_button_label">Bestätigen</string>
     <string name="delete_all_entries_dialog_cancel_button_label">Abbrechen</string>
+    <string name="entries_date_header_label">Datum</string>
+    <string name="entries_item_header_label">Getränk</string>
+    <string name="entries_price_header_label">Preis</string>
+    <string name="entries_amount_header_label">Anzahl</string>
+    <string name="entries_total_header_label">Gesamt</string>
+    <string name="entries_name_header_label">Name</string>
 </resources>

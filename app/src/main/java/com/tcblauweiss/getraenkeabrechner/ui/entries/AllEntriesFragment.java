@@ -107,7 +107,7 @@ public class AllEntriesFragment extends Fragment {
     }
 
     public void setupSearchBar(){
-        searchBar.setHint(R.string.search_Entries_label);
+        searchBar.setHint(R.string.search_members_label);
         searchBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

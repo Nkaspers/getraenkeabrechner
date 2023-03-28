@@ -34,7 +34,7 @@ import com.tcblauweiss.getraenkeabrechner.model.Member;
 
 import java.util.List;
 
-public class EditMembersFragment extends Fragment {
+public class AllMembersFragment extends Fragment {
     private FloatingActionButton addMemberFab;
     private AlertDialog addMemberDialog;
     private SettingsActivity parentActivity;
@@ -50,7 +50,7 @@ public class EditMembersFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_members, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_members, container, false);
 
         parentActivity = (SettingsActivity) requireActivity();
 
