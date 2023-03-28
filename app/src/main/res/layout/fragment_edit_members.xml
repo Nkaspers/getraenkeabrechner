@@ -11,11 +11,10 @@
         android:id="@+id/searchbar_layout"/>
 
     <com.google.android.material.search.SearchView
-        android:id="@+id/searchview"
+        android:id="@+id/searchview_member"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search_members_label"
-        app:layout_anchor="@id/searchbar"
         app:useDrawerArrowDrawable = "true">
 
         <androidx.recyclerview.widget.RecyclerView

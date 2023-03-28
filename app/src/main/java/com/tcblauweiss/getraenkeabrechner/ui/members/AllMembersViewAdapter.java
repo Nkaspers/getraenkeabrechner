@@ -22,6 +22,15 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     private List<Member> localDataSetFiltered;
     private List<Member> localDataSet;
 
+    private MemberClickedListener memberClickedListener;
+    public interface MemberClickedListener {
+        void onMemberClicked(Member member);
+    }
+
+    public void setMemberClickedListener(MemberClickedListener memberClickedListener) {
+        this.memberClickedListener = memberClickedListener;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView lastNameTextView, firstNameTextView, firstLetterTextView;
 
@@ -72,10 +81,19 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     }
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        String lastName = localDataSetFiltered.get(position).getLastName();
-        viewHolder.getLastNameTextView().setText(localDataSetFiltered.get(position).getLastName()+",");
-        viewHolder.getFirstNameTextView().setText(localDataSetFiltered.get(position).getFirstName());
+        Member member = localDataSetFiltered.get(position);
+        String lastName = member.getLastName();
+        viewHolder.getLastNameTextView().setText(member.getLastName()+",");
+        viewHolder.getFirstNameTextView().setText(member.getFirstName());
         viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
+        if (memberClickedListener != null) {
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    memberClickedListener.onMemberClicked(member);
+                }
+            });
+        }
     }
 
     @Override

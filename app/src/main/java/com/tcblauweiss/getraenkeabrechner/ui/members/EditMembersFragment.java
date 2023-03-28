@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.google.android.material.search.SearchView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -17,7 +16,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -34,7 +32,6 @@ import com.tcblauweiss.getraenkeabrechner.SettingsActivity;
 import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EditMembersFragment extends Fragment {
@@ -63,7 +60,7 @@ public class EditMembersFragment extends Fragment {
         Log.d("EditMembersFragment", "onCreateView->importMembers: " + flag);
 
         searchBar = view.findViewById(R.id.searchbar);
-        searchView = view.findViewById(R.id.searchview);
+        searchView = view.findViewById(R.id.searchview_member);
         membersRecyclerView = view.findViewById(R.id.recyclerview_edit_members_fragment);
         searchRecyclerView = view.findViewById(R.id.recyclerview_search);
         addMemberFab = view.findViewById(R.id.fab_edit_members_fragment);

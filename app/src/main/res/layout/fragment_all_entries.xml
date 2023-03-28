@@ -17,6 +17,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.search.SearchView
+        android:id="@+id/searchview_member"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search_members_label"
+        app:useDrawerArrowDrawable = "true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/searchbar_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    </com.google.android.material.search.SearchView>
+
     <include
         android:id="@+id/include"
         layout="@layout/entry_header"
@@ -28,6 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchbar_layout_all_entries" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_all_entries_fragment"

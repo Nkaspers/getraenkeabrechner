@@ -1,21 +1,28 @@
 package com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
+import com.tcblauweiss.getraenkeabrechner.model.Member;
+import com.tcblauweiss.getraenkeabrechner.ui.entries.EntriesDiffCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.ViewHolder> {
-    private List<Entry> localDataSet;
+    private List<Entry> entryList;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView dateTextView, nameTextView, itemTextView, priceTextView, amountTextView, totalPriceTextView;
 
@@ -55,12 +62,27 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
     }
 
     public LastEntriesAdapter() {
-        this.localDataSet = new ArrayList<>();
+        this.entryList = new ArrayList<>();
     }
 
-    public void submitList(final List<Entry> entries){
-        localDataSet = entries;
+    public void addEntryToTop(final List<Entry> entries){
+        entryList = entries;
         notifyItemInserted(0);
+    }
+
+    public void submitList(List<Entry> entries) {
+        final EntriesDiffCallback entriesDiffCallback = new EntriesDiffCallback(this.entryList, entries);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(entriesDiffCallback);
+
+        this.entryList.clear();
+        this.entryList.addAll(entries);
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void filterByMember(Member member) {
+        Predicate<Entry> memberPredicate = entry -> entry.getLastName().equals(member.getLastName()) && entry.getFirstName().equals(member.getFirstName());
+        List<Entry> tempFilteredEntryList = entryList.stream().filter(memberPredicate).collect(Collectors.toList());
+        submitList(tempFilteredEntryList);
     }
 
     @Override
@@ -72,17 +94,17 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getDateTextView().setText(localDataSet.get(position).getDateCreatedString());
-        viewHolder.getNameTextView().setText(localDataSet.get(position).getName());
-        viewHolder.getItemTextView().setText(localDataSet.get(position).getItemName());
-        viewHolder.getPriceTextView().setText(localDataSet.get(position).getItemPriceString());
-        viewHolder.getAmountTextView().setText(localDataSet.get(position).getAmountString());
-        viewHolder.getTotalPriceTextView().setText(localDataSet.get(position).getTotalPriceString());
+        viewHolder.getDateTextView().setText(entryList.get(position).getDateCreatedString());
+        viewHolder.getNameTextView().setText(entryList.get(position).getName());
+        viewHolder.getItemTextView().setText(entryList.get(position).getItemName());
+        viewHolder.getPriceTextView().setText(entryList.get(position).getItemPriceString());
+        viewHolder.getAmountTextView().setText(entryList.get(position).getAmountString());
+        viewHolder.getTotalPriceTextView().setText(entryList.get(position).getTotalPriceString());
     }
 
     @Override
     public int getItemCount() {
-        return localDataSet.size();
+        return entryList.size();
     }
 
 
