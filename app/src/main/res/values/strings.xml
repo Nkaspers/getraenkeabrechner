@@ -52,4 +52,5 @@
     <string name="entries_amount_header_label">Anzahl</string>
     <string name="entries_total_header_label">Gesamt</string>
     <string name="entries_name_header_label">Name</string>
+    <string name="delete_member_action_title">Mitglied löschen</string>
 </resources>

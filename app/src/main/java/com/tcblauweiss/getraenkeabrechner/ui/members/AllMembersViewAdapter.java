@@ -1,6 +1,10 @@
 package com.tcblauweiss.getraenkeabrechner.ui.members;
 
+import android.media.MediaMetadata;
+import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -21,10 +25,11 @@ import java.util.List;
 public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAdapter.ViewHolder> implements Filterable {
     private List<Member> localDataSetFiltered;
     private List<Member> localDataSet;
-
+    private final List<View> selectedViews;
     private MemberClickedListener memberClickedListener;
     public interface MemberClickedListener {
         void onMemberClicked(Member member);
+        void onMemberLongClicked(Member member);
     }
 
     public void setMemberClickedListener(MemberClickedListener memberClickedListener) {
@@ -57,6 +62,7 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     public AllMembersViewAdapter() {
         this.localDataSetFiltered = new ArrayList<>();
         this.localDataSet = new ArrayList<>();
+        this.selectedViews = new ArrayList<>();
     }
 
     @NonNull
@@ -83,14 +89,47 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Member member = localDataSetFiltered.get(position);
         String lastName = member.getLastName();
+
         viewHolder.getLastNameTextView().setText(member.getLastName()+",");
         viewHolder.getFirstNameTextView().setText(member.getFirstName());
         viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
+
         if (memberClickedListener != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(selectedViews.isEmpty()){
+                        return;
+                    }
+                    if(view.isActivated()){
+                        Log.d("AllMembersViewAdapter", "remove view from selection");
+                        selectedViews.remove(view);
+                        view.setActivated(false);
+                    }else{
+                        Log.d("AllMembersViewAdapter", "add view to selection");
+                        selectedViews.add(view);
+                        view.setActivated(true);
+                    }
                     memberClickedListener.onMemberClicked(member);
+                }
+            });
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                    //using setActivated is better than setSelected according to documentation
+                    if(view.isActivated()){
+                        Log.d("AllMembersViewAdapter", "remove view from selection");
+                        selectedViews.remove(view);
+                        view.setActivated(false);
+                    }else {
+                        Log.d("AllMembersViewAdapter", "add view to selection");
+                        selectedViews.add(view);
+                        view.setActivated(true);
+                    }
+                    memberClickedListener.onMemberLongClicked(member);
+                    //return true to consume event so that normal onClick() is not triggered
+                    return true;
                 }
             });
         }
@@ -128,5 +167,13 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
                 submitFilter((List<Member>) filterResults.values);
             }
         };
+    }
+
+    public void clearViewSelection(){
+        Log.d("AllMembersViewAdapter", "clear view selection");
+        for(View view: selectedViews){
+            view.setActivated(false);
+        }
+        selectedViews.clear();
     }
 }

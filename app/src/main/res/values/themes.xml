@@ -22,6 +22,11 @@
         <!-- Customize your theme here. -->
         <item name="android:windowTranslucentStatus">false</item>
         <item name="colorAccent">@color/tc_blau</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_cancel</item>
+        <item name="actionModeStyle">@style/Theme.Getraenkeabrechner.ActionMode</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Material3.ActionBar</item>
     </style>
 
     <style name="Theme.Getraenkeabrechner.NoActionBar">
@@ -70,4 +75,10 @@
     <style name="Theme.Getraenkeabrechner.FabStyle" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="colorAccent">@color/tc_mittelblau</item>
     </style>
+
+    <style name="Theme.Getraenkeabrechner.ActionMode" parent="@style/Widget.Material3.ActionMode">
+        <item name="height">76dp</item>
+        <item name="titleTextStyle">@style/Theme.Getraenkeabrechner.Header</item>
+    </style>
+
 </resources>

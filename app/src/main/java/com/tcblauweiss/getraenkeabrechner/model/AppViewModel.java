@@ -61,8 +61,8 @@ public class AppViewModel extends AndroidViewModel {
         appRepository.insertMembers(members);
     }
 
-    public void deleteMember(Member member) {
-        appRepository.deleteMember(member);
+    public void deleteMembers(Member... members) {
+        appRepository.deleteMember(members);
     }
 
     public void deleteAllMembers() {

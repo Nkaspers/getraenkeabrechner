@@ -99,11 +99,11 @@ public class AppRepository {
         });
     }
 
-    public void deleteMember(Member member) {
+    public void deleteMember(Member... members) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                memberDao.delete(member);
+                memberDao.delete(members);
             }
         });
     }

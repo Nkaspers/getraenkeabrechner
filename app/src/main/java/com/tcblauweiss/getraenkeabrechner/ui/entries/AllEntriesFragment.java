@@ -135,6 +135,9 @@ public class AllEntriesFragment extends Fragment {
                 searchBar.setText(member.getName());
                 searchView.hide();
             }
+
+            @Override
+            public void onMemberLongClicked(Member member) {}
         });
         searchView
                 .getEditText()

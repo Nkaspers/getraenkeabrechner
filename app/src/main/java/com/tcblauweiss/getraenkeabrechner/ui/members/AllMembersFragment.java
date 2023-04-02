@@ -3,10 +3,14 @@ package com.tcblauweiss.getraenkeabrechner.ui.members;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.VibrationEffect;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import androidx.appcompat.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,6 +36,7 @@ import com.tcblauweiss.getraenkeabrechner.SettingsActivity;
 import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllMembersFragment extends Fragment {
@@ -44,9 +49,13 @@ public class AllMembersFragment extends Fragment {
     private AppViewModel appViewModel;
 
     private LiveData<List<Member>> allMembers;
+    private List<Member> selectedMembers;
     private SearchView searchView;
     private RecyclerView searchRecyclerView;
     private DrawerLayout drawer;
+    private ActionMode.Callback itemSelectedActionCallback;
+    private ActionMode itemSelectedActionMode;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,12 +78,46 @@ public class AllMembersFragment extends Fragment {
         setupSearchBar();
         setupAllMembersView();
         setupSearchView();
+        setupActionMode();
 
         addMemberFab.setOnClickListener(view1 -> {
             if(addMemberDialog == null) setupNewMemberDialog();
             addMemberDialog.show();
         });
         return view;
+    }
+
+    private void setupActionMode() {
+        itemSelectedActionCallback = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                parentActivity.getMenuInflater().inflate(R.menu.action_bar_member_selected, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if (id == R.id.action_delete_selection){
+                    Member[] members = selectedMembers.toArray(new Member[0]);
+                    appViewModel.deleteMembers(members);
+                    actionMode.finish();
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                Log.d("AllMemberFragment", "destroy actionMode");
+                selectedMembers.clear();
+                membersRecyclerViewAdapter.clearViewSelection();
+            }
+        };
     }
 
     private void setupNewMemberDialog() {
@@ -124,6 +167,44 @@ public class AllMembersFragment extends Fragment {
         membersRecyclerViewAdapter = new AllMembersViewAdapter();
         membersRecyclerView.setAdapter(membersRecyclerViewAdapter);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        selectedMembers = new ArrayList<>();
+        membersRecyclerViewAdapter.setMemberClickedListener(new AllMembersViewAdapter.MemberClickedListener() {
+            @Override
+            public void onMemberClicked(Member member) {
+                if(selectedMembers.isEmpty()){
+                    return;
+                }
+                if(selectedMembers.contains(member)){
+                    Log.d("AllMembersFragment", "remove member from selection");
+                    selectedMembers.remove(member);
+                }else{
+                    Log.d("AllMembersFragment", "add member to selection");
+                    selectedMembers.add(member);
+                }
+                if(selectedMembers.isEmpty()){
+                    itemSelectedActionMode.finish();
+                }
+            }
+
+            @Override
+            public void onMemberLongClicked(Member member) {
+                Log.d("AllMembersFragment", "start ItemSelectedAction");
+                if(selectedMembers.isEmpty()){
+                    itemSelectedActionMode = parentActivity.startSupportActionMode(itemSelectedActionCallback);
+                }
+                if(selectedMembers.contains(member)){
+                    Log.d("AllMembersFragment", "remove member from selection");
+                    selectedMembers.remove(member);
+                }else {
+                    Log.d("AllMembersFragment", "add member to selection");
+                    selectedMembers.add(member);
+                }
+                if(selectedMembers.isEmpty()){
+                    Log.d("AllMembersFragment", "finish actionMode");
+                    itemSelectedActionMode.finish();
+                }
+            }
+        });
         allMembers.observe(requireActivity() , new Observer<List<Member>>() {
             @Override
             public void onChanged(List<Member> members) {

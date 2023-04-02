@@ -23,7 +23,7 @@ public interface MemberDao {
     void insertAll(Member... members);
 
     @Delete
-    void delete(Member member);
+    void delete(Member... members);
 
     @Query("DELETE FROM member")
     public void deleteAll();
