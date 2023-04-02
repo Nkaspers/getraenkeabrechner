@@ -81,8 +81,9 @@ public class AllMembersFragment extends Fragment {
         setupActionMode();
 
         addMemberFab.setOnClickListener(view1 -> {
-            if(addMemberDialog == null) setupNewMemberDialog();
-            addMemberDialog.show();
+            AlertDialog newMemberDialog = createNewMemberDialog();
+            newMemberDialog.show();
+
         });
         return view;
     }
@@ -120,12 +121,13 @@ public class AllMembersFragment extends Fragment {
         };
     }
 
-    private void setupNewMemberDialog() {
+    private AlertDialog createNewMemberDialog() {
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_member, null);
+
         TextInputEditText memberFirstNameInput = view.findViewById(R.id.text_input_new_member_firstname);
         TextInputEditText memberLastNameInput = view.findViewById(R.id.text_input_new_member_lastname);
 
-        addMemberDialog = new MaterialAlertDialogBuilder(requireContext())
+        AlertDialog addMemberDialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.add_member_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {
@@ -134,6 +136,7 @@ public class AllMembersFragment extends Fragment {
                         //TODO: Mitglied hinzufügen
                         Editable firstName = memberFirstNameInput.getEditableText();
                         Editable lastName = memberLastNameInput.getEditableText();
+
                         if(firstName != null && lastName != null){
                             appViewModel.insertMembers(new Member(firstName.toString(), lastName.toString()));
                             Log.d("addMemberDialog", "added Member: " + firstName + " " + lastName);
@@ -145,10 +148,11 @@ public class AllMembersFragment extends Fragment {
                 .setNegativeButton(R.string.add_member_dialog_cancel_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        addMemberDialog.hide();
                     }
                 })
                 .create();
+
+        return addMemberDialog;
     }
 
     private void setupSearchBar(){
