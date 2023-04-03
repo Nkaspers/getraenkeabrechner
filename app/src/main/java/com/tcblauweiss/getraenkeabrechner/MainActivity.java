@@ -194,23 +194,19 @@ public class MainActivity extends AppCompatActivity {
     private void setupItemSelectionView() {
         itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
 
-        ArrayList<Item> itemList = new ArrayList<>();
-        itemList.add((item1));
-        itemList.add((item2));
-        itemList.add((item3));
-        itemList.add((item4));
-        itemList.add((item1));
-        itemList.add((item2));
-        itemList.add((item3));
-        itemList.add((item4));
-
         receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
         receiptRecyclerView.setAdapter(receiptAdapter);
 
-        itemSelectionAdapter = new ItemSelectionAdapter(itemList, receipt, receiptAdapter);
+        itemSelectionAdapter = new ItemSelectionAdapter(receipt, receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
-        itemSelectionAdapter.setReceiptChangedListender(new ItemSelectionAdapter.ReceiptChangedListener() {
+        appViewModel.getAllItems().observe(this, new Observer<List<Item>>() {
+            @Override
+            public void onChanged(List<Item> items) {
+                itemSelectionAdapter.submitList(items);
+            }
+        });
+        itemSelectionAdapter.setReceiptChangedListener(new ItemSelectionAdapter.ReceiptChangedListener() {
             @Override
             public void onReceiptChanged(Receipt receipt) {
                 receiptTotalTextView.setText(receipt.getTotalString());

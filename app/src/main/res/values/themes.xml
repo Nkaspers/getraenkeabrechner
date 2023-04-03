@@ -3,7 +3,7 @@
     <style name="Theme.Getraenkeabrechner" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/tc_blau</item>
-        <item name="colorPrimaryVariant">@color/tc_mittelblau</item>
+        <item name="colorPrimaryVariant">@color/tc_primary_surface_height_3</item>
         <item name="colorOnPrimary">@color/tc_weiss</item>
         <item name="colorPrimaryContainer">@color/tc_blau</item>
         <item name="colorOnPrimaryContainer">@color/tc_weiss</item>>
@@ -14,11 +14,11 @@
         <item name="colorSecondaryContainer">@color/tc_mittelblau</item>
         <item name="colorOnSecondaryContainer">@color/tc_blau</item>
 
-
         <item name="colorOutline">@color/gray</item>
         <item name="colorSurface">@color/tc_hellblau</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:windowTranslucentStatus">false</item>
         <item name="colorAccent">@color/tc_blau</item>
@@ -38,19 +38,19 @@
         <item name="itemShapeFillColor">@color/navigation_item_background_color</item>
     </style>
 
-    <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="Theme.Getraenkeabrechner.AppBarOverlay" parent="ThemeOverlay.Material3.ActionBar">
         <item name="colorOnSurfaceVariant">@color/black</item>
     </style>
 
-    <style name="Theme.Getraenkeabrechner.SettingsToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="Theme.Getraenkeabrechner.SettingsToolbar" parent="ThemeOverlay.Material3.ActionBar">
         <item name="android:colorBackground">@color/tc_weiss</item>
-        <item name="android:textColorPrimary">@color/tc_blau</item>
+        <item name="android:textColorPrimary">?android:colorPrimary</item>
     </style>
 
     <style name="Theme.Getraenkeabrechner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Theme.Getraenkeabrechner.Header" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textColor">@color/tc_blau</item>
+        <item name="android:textColor">?android:colorPrimary</item>
         <item name="android:textSize">22sp</item>
         <item name="android:fontWeight">1000</item>
     </style>

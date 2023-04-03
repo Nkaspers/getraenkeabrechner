@@ -15,4 +15,16 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:listitem="@layout/items_viewholder" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_all_items_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_add_item_content_desc"
+        app:srcCompat="@drawable/ic_plus"
+        style="?attr/floatingActionButtonSecondaryStyle"
+        />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

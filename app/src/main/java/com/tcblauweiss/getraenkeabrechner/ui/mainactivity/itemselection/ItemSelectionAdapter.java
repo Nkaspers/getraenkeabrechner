@@ -1,6 +1,5 @@
 package com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
-import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdapter.ViewHolder> {
     private ArrayList<Item> localItemList;
@@ -56,10 +55,16 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
 
     }
 
-    public ItemSelectionAdapter(ArrayList<Item> itemList, Receipt receipt, ReceiptAdapter receiptAdapter) {
-        localItemList = itemList;
+    public ItemSelectionAdapter(Receipt receipt, ReceiptAdapter receiptAdapter) {
+        localItemList = new ArrayList<>();
         this.receipt = receipt;
         this.receiptAdapter = receiptAdapter;
+    }
+
+    public void submitList(List<Item> items){
+        localItemList.clear();
+        localItemList.addAll(items);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -98,7 +103,7 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
         });
     }
 
-    public void setReceiptChangedListender(ReceiptChangedListener receiptChangedListener) {
+    public void setReceiptChangedListener(ReceiptChangedListener receiptChangedListener) {
         this.receiptChangedListener = receiptChangedListener;
     }
 

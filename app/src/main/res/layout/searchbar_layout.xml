@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Theme.Getraenkeabrechner.AppBarOverlay"
-    app:layout_constraintTop_toBottomOf="parent">
+    app:layout_constraintTop_toBottomOf="parent"
+    android:background="@color/tc_weiss">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/searchbar"
