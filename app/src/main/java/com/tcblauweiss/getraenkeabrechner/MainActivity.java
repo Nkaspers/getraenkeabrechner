@@ -125,10 +125,19 @@ public class MainActivity extends AppCompatActivity {
         if(!areInputFieldsValid()){
             Log.d("MainActivity", "no valid user input");
         }else{
-            String signatureSvg = signaturePad.getSignatureSvg();
-            //TODO: store svg or filepath in database
             Entry[] entries = createEntries();
-            appViewModel.insertEntries(entries);
+            List<Long> entryIds = appViewModel.insertEntries(entries);
+            if (entryIds == null){
+                Log.d("MainActivity", "EntryIds are null");
+                Toast.makeText(getApplicationContext(), R.string.submit_failure_toast, Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            String signatureSvg = signaturePad.getSignatureSvg();
+            for(Long entryId : entryIds){
+                appViewModel.storeSignature(signatureSvg, entryId);
+            }
+
             lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
             resetInputElements();
             Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();

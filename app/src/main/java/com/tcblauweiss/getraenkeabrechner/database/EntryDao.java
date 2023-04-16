@@ -21,7 +21,7 @@ public interface EntryDao {
     List<Entry> findByName(String first, String last);
 
     @Insert
-    void insertAll(Entry... entries);
+    List<Long> insertAll(Entry... entries);
 
     @Query("DELETE FROM entry")
     public void deleteAll();

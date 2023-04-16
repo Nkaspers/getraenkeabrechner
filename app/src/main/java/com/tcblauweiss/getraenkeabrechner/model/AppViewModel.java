@@ -29,8 +29,8 @@ public class AppViewModel extends AndroidViewModel {
         return allEntries;
     }
 
-    public void insertEntries(Entry... entries){
-        appRepository.insertEntries(entries);
+    public List<Long> insertEntries(Entry... entries){
+        return appRepository.insertEntries(entries);
     }
 
     public void deleteAllEntries(){
@@ -67,5 +67,9 @@ public class AppViewModel extends AndroidViewModel {
 
     public void deleteAllMembers() {
         appRepository.deleteAllMembers();
+    }
+
+    public void storeSignature(String signature, Long entryId){
+        appRepository.storeSignatureFile(signature, entryId);
     }
 }

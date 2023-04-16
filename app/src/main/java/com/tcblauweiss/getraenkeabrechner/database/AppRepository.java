@@ -1,6 +1,7 @@
 package com.tcblauweiss.getraenkeabrechner.database;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -8,7 +9,14 @@ import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 public class AppRepository {
     private EntryDao entryDao;
@@ -20,7 +28,11 @@ public class AppRepository {
     private MemberDao memberDao;
     private LiveData<List<Member>> allMembers;
 
+    private Application application;
+
     public AppRepository(Application application) {
+        this.application = application;
+
         AppDatabase db = AppDatabase.getDatabase(application);
         entryDao = db.entryDao();
         allEntries = entryDao.getAll();
@@ -36,13 +48,21 @@ public class AppRepository {
         return allEntries;
     }
 
-    public void insertEntries(Entry... entries) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+    public List<Long> insertEntries(Entry... entries) {
+        List<Long> entryIds;
+        Future<List<Long>> idsFuture = AppDatabase.databaseWriteExecutor.submit(new Callable<List<Long>>() {
             @Override
-            public void run() {
-                entryDao.insertAll(entries);
+            public List<Long> call() throws Exception {
+                return entryDao.insertAll(entries);
             }
         });
+        try {
+            entryIds = idsFuture.get();
+        }catch (Exception e){
+            Log.d("AppRepository", e.toString());
+            entryIds = null;
+        }
+        return entryIds;
     }
 
 
@@ -53,6 +73,7 @@ public class AppRepository {
                 entryDao.deleteAll();
             }
         });
+        //TODO: delete signature files
     }
 
     public LiveData<List<Item>> getAllItems() {
@@ -115,5 +136,26 @@ public class AppRepository {
                 memberDao.deleteAll();
             }
         });
+    }
+
+    //Stores signature in /sign/ folder using the entryId as Filename
+    public void storeSignatureFile(String signatureSvg, Long entryId){
+        File rootDir = application.getFilesDir();
+        File signDir = new File(rootDir, "sign");
+        if(!signDir.exists()){
+            if(!signDir.mkdir()){
+                Log.d("AppRepository", "Failed to create directory: sign");
+            }
+        }
+        String filename = entryId.toString() + ".svg";
+        File signatureFile = new File(signDir, filename);
+        try {
+            FileOutputStream stream = new FileOutputStream(signatureFile);
+            stream.write(signatureSvg.getBytes());
+        } catch (IOException e) {
+            Log.d("AppRepository", "Failed to create or write file");
+            throw new RuntimeException(e);
+        }
+        Log.d("AppRepository", "Signature file created");
     }
 }
