@@ -23,7 +23,12 @@ import java.util.stream.Collectors;
 public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.ViewHolder> {
     private List<Entry> entryList;
     private List<Entry> displayedEntryList;
+    private EntryClickedListener entryClickedListener;
 
+    public interface EntryClickedListener {
+        void onEntryClicked(Entry entry);
+        void onEntryLongClicked(Entry entry);
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView dateTextView, nameTextView, itemTextView, priceTextView, amountTextView, totalPriceTextView;
 
@@ -63,9 +68,12 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
     }
 
     public LastEntriesAdapter() {
-
         this.entryList = new ArrayList<>();
         this.displayedEntryList = new ArrayList<>(entryList);
+    }
+
+    public void setEntryClickedListener(EntryClickedListener entryClickedListener){
+        this.entryClickedListener = entryClickedListener;
     }
 
     public void addEntryToTop(final List<Entry> entries){
@@ -111,6 +119,15 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
         viewHolder.getPriceTextView().setText(entry.getItemPriceString());
         viewHolder.getAmountTextView().setText(entry.getAmountString());
         viewHolder.getTotalPriceTextView().setText(entry.getTotalPriceString());
+
+        if(entryClickedListener != null){
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    entryClickedListener.onEntryClicked(entry);
+                }
+            });
+        }
     }
 
     @Override

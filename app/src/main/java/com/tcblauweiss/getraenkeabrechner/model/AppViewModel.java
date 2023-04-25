@@ -1,6 +1,7 @@
 package com.tcblauweiss.getraenkeabrechner.model;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -70,6 +71,10 @@ public class AppViewModel extends AndroidViewModel {
     }
 
     public void storeSignature(String signature, Long entryId){
-        appRepository.storeSignatureFile(signature, entryId);
+        appRepository.storeSignatureAsFile(signature, entryId);
+    }
+
+    public Drawable getSignature(Long entryId){
+        return appRepository.loadSignatureFromFile(entryId);
     }
 }

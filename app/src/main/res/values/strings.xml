@@ -58,4 +58,5 @@
     <string name="member_item_name_input_label">Getränk</string>
     <string name="item_price_input_label">Preis</string>
     <string name="submit_failure_toast">Fehler beim Speichern</string>
+    <string name="signature_dialog_title">Unterschrift</string>
 </resources>

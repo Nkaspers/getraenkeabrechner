@@ -1,19 +1,19 @@
 package com.tcblauweiss.getraenkeabrechner.database;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import com.pixplicity.sharp.Sharp;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -139,7 +139,7 @@ public class AppRepository {
     }
 
     //Stores signature in /sign/ folder using the entryId as Filename
-    public void storeSignatureFile(String signatureSvg, Long entryId){
+    public void storeSignatureAsFile(String signatureSvg, Long entryId){
         File rootDir = application.getFilesDir();
         File signDir = new File(rootDir, "sign");
         if(!signDir.exists()){
@@ -147,8 +147,10 @@ public class AppRepository {
                 Log.d("AppRepository", "Failed to create directory: sign");
             }
         }
+
         String filename = entryId.toString() + ".svg";
         File signatureFile = new File(signDir, filename);
+
         try {
             FileOutputStream stream = new FileOutputStream(signatureFile);
             stream.write(signatureSvg.getBytes());
@@ -157,5 +159,18 @@ public class AppRepository {
             throw new RuntimeException(e);
         }
         Log.d("AppRepository", "Signature file created");
+    }
+
+    public Drawable loadSignatureFromFile(Long entryId){
+        File signDir = new File(application.getFilesDir(), "sign");
+        String filename = entryId.toString() + ".svg";
+
+        File signatureFile = new File(signDir, filename);
+        if(!signatureFile.exists()){
+            Log.d("AppRepository", "Failed to open signature File");
+            return null;
+        }
+
+        return Sharp.loadFile(signatureFile).getDrawable();
     }
 }

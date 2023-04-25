@@ -1,6 +1,7 @@
 package com.tcblauweiss.getraenkeabrechner.ui.entries;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,6 +90,33 @@ public class AllEntriesFragment extends Fragment {
             }
         });
         lastEntriesRecyclerView.setAdapter(lastEntriesAdapter);
+
+        lastEntriesAdapter.setEntryClickedListener(new LastEntriesAdapter.EntryClickedListener() {
+            @Override
+            public void onEntryClicked(Entry entry) {
+                AlertDialog signatureDialog = createSignatureDialog(entry);
+                signatureDialog.show();
+            }
+
+            @Override
+            public void onEntryLongClicked(Entry entry) {
+
+            }
+        });
+    }
+
+    private AlertDialog createSignatureDialog(Entry entry) {
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_signature, null);
+
+        ImageView signatureView = view.findViewById(R.id.signature_dialog_signature_view);
+        Drawable signature = appViewModel.getSignature(entry.getId());
+
+        signatureView.setImageDrawable(signature);
+        return new MaterialAlertDialogBuilder(requireContext())
+                .setIcon(R.drawable.ic_edit)
+                .setTitle(entry.getName())
+                .setView(view)
+                .create();
     }
 
     private AlertDialog createDeleteAllEntriesDialog() {
