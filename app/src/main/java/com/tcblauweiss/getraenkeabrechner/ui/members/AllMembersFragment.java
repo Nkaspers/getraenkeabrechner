@@ -127,8 +127,9 @@ public class AllMembersFragment extends Fragment {
         TextInputEditText memberFirstNameInput = view.findViewById(R.id.text_input_new_member_firstname);
         TextInputEditText memberLastNameInput = view.findViewById(R.id.text_input_new_member_lastname);
 
-        AlertDialog addMemberDialog = new MaterialAlertDialogBuilder(requireContext())
+        AlertDialog addMemberDialog = new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
                 .setTitle(R.string.add_member_dialog_title)
+                .setIcon(R.drawable.ic_members)
                 .setView(view)
                 .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {
                     @Override

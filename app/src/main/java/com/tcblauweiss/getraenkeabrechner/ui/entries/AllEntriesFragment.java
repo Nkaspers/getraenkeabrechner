@@ -112,7 +112,7 @@ public class AllEntriesFragment extends Fragment {
         Drawable signature = appViewModel.getSignature(entry.getId());
 
         signatureView.setImageDrawable(signature);
-        return new MaterialAlertDialogBuilder(requireContext())
+        return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
                 .setIcon(R.drawable.ic_edit)
                 .setTitle(entry.getName())
                 .setView(view)
@@ -121,7 +121,8 @@ public class AllEntriesFragment extends Fragment {
 
     private AlertDialog createDeleteAllEntriesDialog() {
 
-        return new MaterialAlertDialogBuilder(requireContext())
+        return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+                .setIcon(R.drawable.ic_delete_all)
                 .setTitle(R.string.delete_all_entries_alert_title)
                 .setMessage(R.string.delete_all_entries_alert_message)
                 .setPositiveButton(R.string.delete_all_entries_dialog_confirm_button_label, new DialogInterface.OnClickListener() {

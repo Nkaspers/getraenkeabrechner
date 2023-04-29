@@ -102,7 +102,8 @@ public class AllItemsFragment extends Fragment {
         TextInputEditText itemNameInput = view.findViewById(R.id.text_input_new_item_name);
         TextInputEditText itemPriceInput = view.findViewById(R.id.text_input_new_item_price);
 
-        AlertDialog addMemberDialog = new MaterialAlertDialogBuilder(requireContext())
+        AlertDialog addMemberDialog = new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+                .setIcon(R.drawable.ic_beverage)
                 .setTitle(R.string.add_item_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {
