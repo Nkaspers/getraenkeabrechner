@@ -173,4 +173,16 @@ public class AppRepository {
 
         return Sharp.loadFile(signatureFile).getDrawable();
     }
+
+    public boolean deleteAllSignatureFiles(){
+        File signDir = new File(application.getFilesDir(), "sign");
+        Log.d("AppRepository", "Deleting signature files");
+        boolean success = true;
+        if (signDir.listFiles() != null) {
+            for (File child : signDir.listFiles()) {
+                if(!child.delete()) success = false;
+            }
+        }
+        return success;
+    }
 }

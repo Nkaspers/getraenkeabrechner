@@ -77,4 +77,8 @@ public class AppViewModel extends AndroidViewModel {
     public Drawable getSignature(Long entryId){
         return appRepository.loadSignatureFromFile(entryId);
     }
+
+    public boolean deleteAllSignatures(){
+        return appRepository.deleteAllSignatureFiles();
+    }
 }

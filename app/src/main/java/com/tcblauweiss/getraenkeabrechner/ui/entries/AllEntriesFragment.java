@@ -129,6 +129,9 @@ public class AllEntriesFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         parentActivity.getViewModel().deleteAllEntries();
+                        if(!parentActivity.getViewModel().deleteAllSignatures()){
+                            Log.d("AllEntriesFragment", "Failed to delete signatures");
+                        }
                     }
                 })
                 .setNegativeButton(R.string.delete_all_entries_dialog_cancel_button_label, new DialogInterface.OnClickListener() {
