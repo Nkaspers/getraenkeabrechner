@@ -70,7 +70,7 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.itemselection_viewholder, viewGroup, false);
+                .inflate(R.layout.viewholder_itemselection, viewGroup, false);
 
         return new ViewHolder(view);
     }

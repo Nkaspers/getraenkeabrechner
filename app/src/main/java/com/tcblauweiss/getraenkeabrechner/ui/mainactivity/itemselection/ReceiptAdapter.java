@@ -12,7 +12,6 @@ import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
     private ArrayList<ItemWrapper> receiptItemList;
@@ -64,7 +63,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.receipt_item_viewholder, viewGroup, false);
+                R.layout.viewholder_receipt_item, viewGroup, false);
         return new ViewHolder(view);
     }
 

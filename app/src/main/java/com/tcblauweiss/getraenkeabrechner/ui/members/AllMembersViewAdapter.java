@@ -1,10 +1,8 @@
 package com.tcblauweiss.getraenkeabrechner.ui.members;
 
-import android.media.MediaMetadata;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -69,7 +67,7 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.member_viewholder, viewGroup, false);
+                .inflate(R.layout.viewholder_member, viewGroup, false);
         return new ViewHolder(view);
     }
 

@@ -14,7 +14,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:listitem="@layout/items_viewholder" />
+    tools:listitem="@layout/viewholder_items" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_all_items_fragment"

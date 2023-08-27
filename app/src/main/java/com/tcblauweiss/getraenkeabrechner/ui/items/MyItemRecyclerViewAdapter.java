@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tcblauweiss.getraenkeabrechner.databinding.ItemsViewholderBinding;
+import com.tcblauweiss.getraenkeabrechner.databinding.ViewholderItemsBinding;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemDiffCallback;
 //import com.tcblauweiss.getraenkeabrechner.ui.items.databinding.FragmentAllItemsBinding;
@@ -28,7 +28,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(ItemsViewholderBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(ViewholderItemsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     public void submitList(List<Item> items) {
@@ -56,7 +56,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView, numberTextView, priceTextView;
 
-        public ViewHolder(ItemsViewholderBinding binding) {
+        public ViewHolder(ViewholderItemsBinding binding) {
             super(binding.getRoot());
             numberTextView = binding.itemNumber;
             nameTextView = binding.itemName;
