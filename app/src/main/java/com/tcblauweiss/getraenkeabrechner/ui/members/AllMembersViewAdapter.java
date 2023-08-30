@@ -30,37 +30,14 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
         void onMemberLongClicked(Member member);
     }
 
-    public void setMemberClickedListener(MemberClickedListener memberClickedListener) {
-        this.memberClickedListener = memberClickedListener;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView lastNameTextView, firstNameTextView, firstLetterTextView;
-
-        public ViewHolder(View view) {
-            super(view);
-            lastNameTextView = view.findViewById(R.id.text_member_last_name);
-            firstNameTextView = view.findViewById(R.id.text_member_first_name);
-            firstLetterTextView = view.findViewById(R.id.text_member_name_icon);
-        }
-
-        public TextView getLastNameTextView(){
-            return lastNameTextView;
-        }
-
-        public TextView getFirstNameTextView()  {
-            return firstNameTextView;
-        }
-
-        public TextView getFirstLetterTextView() {
-            return firstLetterTextView;
-        }
-    }
-
     public AllMembersViewAdapter() {
         this.localDataSetFiltered = new ArrayList<>();
         this.localDataSet = new ArrayList<>();
         this.selectedViews = new ArrayList<>();
+    }
+
+    public void setMemberClickedListener(MemberClickedListener memberClickedListener) {
+        this.memberClickedListener = memberClickedListener;
     }
 
     @NonNull
@@ -173,5 +150,28 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
             view.setActivated(false);
         }
         selectedViews.clear();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView lastNameTextView, firstNameTextView, firstLetterTextView;
+
+        public ViewHolder(View view) {
+            super(view);
+            lastNameTextView = view.findViewById(R.id.text_member_last_name);
+            firstNameTextView = view.findViewById(R.id.text_member_first_name);
+            firstLetterTextView = view.findViewById(R.id.text_member_name_icon);
+        }
+
+        public TextView getLastNameTextView(){
+            return lastNameTextView;
+        }
+
+        public TextView getFirstNameTextView()  {
+            return firstNameTextView;
+        }
+
+        public TextView getFirstLetterTextView() {
+            return firstLetterTextView;
+        }
     }
 }

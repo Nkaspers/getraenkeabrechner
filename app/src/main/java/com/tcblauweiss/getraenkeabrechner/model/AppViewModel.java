@@ -46,8 +46,8 @@ public class AppViewModel extends AndroidViewModel {
         appRepository.insertItems(items);
     }
 
-    public void deleteItem(Item item) {
-        appRepository.deleteItem(item);
+    public void deleteItems(Item... items) {
+        appRepository.deleteItem(items);
     }
 
     public void deleteAllItems() {

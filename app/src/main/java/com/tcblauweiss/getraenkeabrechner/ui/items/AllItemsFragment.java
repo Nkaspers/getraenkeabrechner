@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.util.Log;
+import androidx.appcompat.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +32,7 @@ import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.util.DecimalDigitsInputFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,11 +45,14 @@ public class AllItemsFragment extends Fragment {
     private MaterialToolbar toolbar;
     private AppViewModel viewModel;
     private RecyclerView recyclerView;
+    private MyItemRecyclerViewAdapter allItemsViewAdapter;
     private FloatingActionButton addItemFab;
-
-
-    public AllItemsFragment() {
-    }
+    private LiveData<List<Item>> allItems;
+    private List<Item> selectedItems;
+    private ActionMode.Callback itemSelectedActionCallback;
+    private ActionMode itemSelectedActionMode;
+    
+    public AllItemsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,7 @@ public class AllItemsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_all_items);
         addItemFab = view.findViewById(R.id.fab_all_items_fragment);
         setupAllItemsView();
+        setupActionMode();
 
         addItemFab.setOnClickListener(view1 -> {
             AlertDialog newMemberDialog = createNewItemDialog();
@@ -79,13 +87,85 @@ public class AllItemsFragment extends Fragment {
         return view;
     }
 
+    private void setupActionMode() {
+        itemSelectedActionCallback = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                Log.d("AllItemFragment", "create actionMode");
+                parentActivity.getMenuInflater().inflate(R.menu.action_bar_member_selected, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if (id == R.id.action_delete_selection){
+                    Item[] items = selectedItems.toArray(new Item[0]);
+                    viewModel.deleteItems(items);
+                    actionMode.finish();
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                Log.d("AllItemFragment", "destroy actionMode");
+                selectedItems.clear();
+                allItemsViewAdapter.clearViewSelection();
+            }
+        };
+    }
+
     private void setupAllItemsView(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        MyItemRecyclerViewAdapter recyclerViewAdapter = new MyItemRecyclerViewAdapter();
-        recyclerView.setAdapter(recyclerViewAdapter);
+        allItemsViewAdapter = new MyItemRecyclerViewAdapter();
+        recyclerView.setAdapter(allItemsViewAdapter);
+        selectedItems = new ArrayList<>();
+        allItems = viewModel.getAllItems();
+        allItemsViewAdapter.setItemClickedListener(new MyItemRecyclerViewAdapter.ItemClickedListener() {
+            @Override
+            public void onItemClicked(Item item) {
+                if(selectedItems.isEmpty()){
+                    return;
+                }
+                if(selectedItems.contains(item)){
+                    Log.d("AllItemsFragment", "remove item from selection");
+                    selectedItems.remove(item);
+                }else{
+                    Log.d("AllItemsFragment", "add item to selection");
+                    selectedItems.add(item);
+                }
+                if(selectedItems.isEmpty()){
+                    itemSelectedActionMode.finish();
+                }
+            }
 
-        LiveData<List<Item>> itemsLiveData = viewModel.getAllItems();
-        itemsLiveData.observe(requireActivity(), recyclerViewAdapter::submitList);
+            @Override
+            public void onItemLongClicked(Item item) {
+                Log.d("AllItemsFragment", "start ItemSelectedAction");
+                if(selectedItems.isEmpty()){
+                    itemSelectedActionMode = parentActivity.startSupportActionMode(itemSelectedActionCallback);
+                }
+                if(selectedItems.contains(item)){
+                    Log.d("AllItemsFragment", "remove item from selection");
+                    selectedItems.remove(item);
+                }else {
+                    Log.d("AllItemsFragment", "add item to selection");
+                    selectedItems.add(item);
+                }
+                if(selectedItems.isEmpty()){
+                    Log.d("AllItemsFragment", "finish actionMode");
+                    itemSelectedActionMode.finish();
+                }
+            }
+        });
+
+        allItems.observe(requireActivity(), allItemsViewAdapter::submitList);
     }
 
     private AlertDialog createNewItemDialog() {

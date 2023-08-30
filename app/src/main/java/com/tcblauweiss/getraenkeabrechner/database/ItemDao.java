@@ -23,7 +23,7 @@ public interface ItemDao {
     void insertAll(Item... items);
 
     @Delete
-    void delete(Item item);
+    void delete(Item... items);
 
     @Query("DELETE FROM item")
     public void deleteAll();

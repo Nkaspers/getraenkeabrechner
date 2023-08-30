@@ -89,11 +89,11 @@ public class AppRepository {
         });
     }
 
-    public void deleteItem(Item item) {
+    public void deleteItem(Item... items) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                itemDao.delete(item);
+                itemDao.delete(items);
             }
         });
     }

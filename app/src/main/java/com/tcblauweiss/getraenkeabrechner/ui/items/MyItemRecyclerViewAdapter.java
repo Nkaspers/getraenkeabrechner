@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -19,11 +22,21 @@ import java.util.List;
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<Item> itemList;
-
-    public MyItemRecyclerViewAdapter() {
-        itemList = new ArrayList<>();
+    private final List<View> selectedViews;
+    private ItemClickedListener itemClickedListener;
+    public interface ItemClickedListener {
+        void onItemClicked(Item item);
+        void onItemLongClicked(Item item);
     }
 
+    public MyItemRecyclerViewAdapter() {
+        this.itemList = new ArrayList<>();
+        this.selectedViews = new ArrayList<>();
+    }
+
+    public void setItemClickedListener(ItemClickedListener itemClickedListener) {
+        this.itemClickedListener = itemClickedListener;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,11 +54,59 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         Item item = itemList.get(position);
-        holder.getNumberTextView().setText(String.valueOf(position));
-        holder.getNameTextView().setText(item.getName());
-        holder.getPriceTextView().setText(item.getPriceString());
+        viewHolder.getNumberTextView().setText(String.valueOf(position));
+        viewHolder.getNameTextView().setText(item.getName());
+        viewHolder.getPriceTextView().setText(item.getPriceString());
+
+        if (itemClickedListener != null) {
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(selectedViews.isEmpty()){
+                        return;
+                    }
+                    if(view.isActivated()){
+                        Log.d("AllItemsViewAdapter", "remove view from selection");
+                        selectedViews.remove(view);
+                        view.setActivated(false);
+                    }else{
+                        Log.d("AllItemsViewAdapter", "add view to selection");
+                        selectedViews.add(view);
+                        view.setActivated(true);
+                    }
+                    itemClickedListener.onItemClicked(item);
+                }
+            });
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                    //using setActivated is better than setSelected according to documentation
+                    if(view.isActivated()){
+                        Log.d("AllItemsViewAdapter", "remove view from selection");
+                        selectedViews.remove(view);
+                        view.setActivated(false);
+                    }else {
+                        Log.d("AllItemsViewAdapter", "add view to selection");
+                        selectedViews.add(view);
+                        view.setActivated(true);
+                    }
+                    itemClickedListener.onItemLongClicked(item);
+                    //return true to consume event so that normal onClick() is not triggered
+                    return true;
+                }
+            });
+        }
+    }
+
+    public void clearViewSelection(){
+        Log.d("AllItemsViewAdapter", "clear view selection");
+        for(View view: selectedViews){
+            view.setActivated(false);
+        }
+        selectedViews.clear();
     }
 
     @Override

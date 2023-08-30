@@ -3,7 +3,6 @@ package com.tcblauweiss.getraenkeabrechner.ui.members;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.VibrationEffect;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -47,7 +46,6 @@ public class AllMembersFragment extends Fragment {
     private RecyclerView membersRecyclerView;
     private AllMembersViewAdapter membersRecyclerViewAdapter;
     private AppViewModel appViewModel;
-
     private LiveData<List<Member>> allMembers;
     private List<Member> selectedMembers;
     private SearchView searchView;
