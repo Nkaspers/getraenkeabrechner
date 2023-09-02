@@ -41,16 +41,15 @@ import java.util.List;
 
 
 public class AllEntriesFragment extends Fragment {
-    SearchBar searchBar;
-    SearchView searchView;
-    RecyclerView searchRecycleView;
-    SettingsActivity parentActivity;
-    DrawerLayout drawer;
-    AppViewModel appViewModel;
-
-    RecyclerView lastEntriesRecyclerView;
-    LiveData<List<Member>> allMembers;
-    LastEntriesAdapter lastEntriesAdapter;
+    private SearchBar searchBar;
+    private SearchView searchView;
+    private RecyclerView searchRecycleView;
+    private SettingsActivity parentActivity;
+    private DrawerLayout drawer;
+    private AppViewModel appViewModel;
+    private RecyclerView lastEntriesRecyclerView;
+    private LiveData<List<Member>> allMembers;
+    private LastEntriesAdapter lastEntriesAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

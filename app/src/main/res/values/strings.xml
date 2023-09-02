@@ -59,4 +59,7 @@
     <string name="item_price_input_label">Preis</string>
     <string name="submit_failure_toast">Fehler beim Speichern</string>
     <string name="signature_dialog_title">Unterschrift</string>
+    <string name="menu_lock_device">Gerät sperren</string>
+    <string name="lock_device_alert_title">Gerät sperren?</string>
+    <string name="lock_device_alert_message">Es können keine Funktionen mehr außerhalb der App ausgeführt werden.</string>
 </resources>

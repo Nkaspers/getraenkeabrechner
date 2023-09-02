@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_members_edit, R.id.nav_members_import, R.id.nav_entries_show_all,
                 R.id.nav_entries_cancel, R.id.nav_entries_export, R.id.nav_entries_delete_all,
-                R.id.nav_items_edit, R.id.nav_password_change, R.id.nav_return_to_main)
+                R.id.nav_items_edit, R.id.nav_password_change, R.id.nav_device_lock, R.id.nav_return_to_main)
                 .setOpenableLayout(drawer)
                 .build();
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
@@ -97,6 +97,16 @@ public class SettingsActivity extends AppCompatActivity {
 
         navigationView.getMenu().findItem(R.id.nav_items_edit).setOnMenuItemClickListener(view -> {
             navController.navigate(R.id.nav_items_edit);
+            return false;
+        });
+
+        navigationView.getMenu().findItem(R.id.nav_password_change).setOnMenuItemClickListener(view -> {
+            navController.navigate(R.id.nav_password_change);
+            return false;
+        });
+
+        navigationView.getMenu().findItem(R.id.nav_device_lock).setOnMenuItemClickListener(view -> {
+            navController.navigate(R.id.action_lock_device);
             return false;
         });
 

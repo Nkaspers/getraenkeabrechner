@@ -54,17 +54,17 @@ public class AllMembersFragment extends Fragment {
     private ActionMode.Callback itemSelectedActionCallback;
     private ActionMode itemSelectedActionMode;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_members, container, false);
 
         parentActivity = (SettingsActivity) requireActivity();
 
+
         Bundle args = getArguments();
         assert args != null;
         boolean flag = args.getBoolean("importMembers");
-        Log.d("EditMembersFragment", "onCreateView->importMembers: " + flag);
+        Log.d("EditMembersFragment", "onCreate->importMembers: " + flag);
 
         searchBar = view.findViewById(R.id.searchbar);
         searchView = view.findViewById(R.id.searchview_member);
