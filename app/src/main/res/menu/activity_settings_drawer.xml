@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
@@ -62,9 +63,11 @@
                 android:title="@string/menu_change_password" />
 
             <item
-                android:id="@+id/nav_device_lock"
+                android:id="@+id/nav_kiosk_mode"
                 android:icon="@drawable/ic_lock"
-                android:title="@string/menu_lock_device" />
+                android:title="@string/menu_lock_device"
+                app:actionLayout="@layout/nav_switch_item"
+                app:showAsAction="always" />
 
             <item
                 android:id="@+id/nav_return_to_main"
