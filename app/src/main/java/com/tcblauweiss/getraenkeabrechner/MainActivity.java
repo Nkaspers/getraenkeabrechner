@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             Entry entry = new Entry(
                     System.currentTimeMillis(), memberName[1], memberName[0],
                     itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
-                    itemWrapper.getCount(), (long) itemWrapper.getTotal());
+                    itemWrapper.getCount(), itemWrapper.getTotal());
             entries[i++] = entry;
         }
         return entries;

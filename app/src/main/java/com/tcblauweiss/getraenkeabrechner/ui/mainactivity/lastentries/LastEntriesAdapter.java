@@ -119,6 +119,7 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
         viewHolder.getPriceTextView().setText(entry.getItemPriceString());
         viewHolder.getAmountTextView().setText(entry.getAmountString());
         viewHolder.getTotalPriceTextView().setText(entry.getTotalPriceString());
+        String price = entry.getTotalPriceString();
 
         if(entryClickedListener != null){
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
