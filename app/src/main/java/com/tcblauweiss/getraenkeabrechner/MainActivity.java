@@ -3,12 +3,16 @@ package com.tcblauweiss.getraenkeabrechner;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,6 +48,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -69,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private ItemSelectionAdapter itemSelectionAdapter;
     private Receipt receipt;
     private TextView receiptTotalTextView;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo biometricPromptInfo;
+    private Executor executor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         receipt = new Receipt();
 
+        setupBiometricPrompt();
         setupLastEntriesView();
         setupItemSelectionView();
         setupMemberNameInputField();
@@ -107,14 +116,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent_launch_settings = new Intent(this, SettingsActivity.class);
-            startActivity(intent_launch_settings);
+            //Authentifizierungsprozess starten
+            biometricPrompt.authenticate(biometricPromptInfo);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -185,6 +191,38 @@ public class MainActivity extends AppCompatActivity {
         receiptTotalTextView.setText(StringFormatter.formatToCurrencyString(0));
     }
 
+    private void setupBiometricPrompt() {
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(), R.string.auth_error_toast, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), R.string.auth_success_toast, Toast.LENGTH_SHORT).show();
+
+                //SettingsActivity starten
+                Intent intent_launch_settings = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent_launch_settings);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), R.string.auth_failed_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        biometricPromptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getResources().getString(R.string.auth_prompt_title))
+                .setSubtitle("")
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                .build();
+    }
     private void setupLastEntriesView() {
         lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));

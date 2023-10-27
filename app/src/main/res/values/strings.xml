@@ -62,4 +62,8 @@
     <string name="menu_lock_device">Gerät sperren</string>
     <string name="lock_device_alert_title">Gerät sperren?</string>
     <string name="lock_device_alert_message">Es können keine Funktionen mehr außerhalb der App ausgeführt werden.</string>
+    <string name="auth_error_toast">Fehler bei Authentifizierung</string>
+    <string name="auth_success_toast">Authentifizierung erfolgreich</string>
+    <string name="auth_failed_toast">Authentifizierung fehlgeschlagen</string>
+    <string name="auth_prompt_title">Authentifizierung erforderlich</string>
 </resources>
