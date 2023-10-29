@@ -1,6 +1,5 @@
 package com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,19 +74,12 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
     public void setEntryClickedListener(EntryClickedListener entryClickedListener){
         this.entryClickedListener = entryClickedListener;
     }
-
-    public void addEntryToTop(final List<Entry> entries){
-        entryList = entries;
-        displayedEntryList = new ArrayList<>(entryList);
-        notifyItemInserted(0);
-    }
-
-    public void submitList(List<Entry> entries) {
+    public void submitList(final List<Entry> entries) {
         final EntriesDiffCallback entriesDiffCallback = new EntriesDiffCallback(this.entryList, entries);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(entriesDiffCallback);
 
-        this.entryList.clear();
-        this.entryList.addAll(entries);
+        entryList = entries;
+        displayedEntryList = new ArrayList<>(entryList);
         diffResult.dispatchUpdatesTo(this);
     }
 

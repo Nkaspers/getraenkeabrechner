@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Entry> entries) {
 
-                lastEntriesAdapter.addEntryToTop(entries);
+                lastEntriesAdapter.submitList(entries);
                 lastEntriesRecyclerView.scrollToPosition(0);
             }
         });
