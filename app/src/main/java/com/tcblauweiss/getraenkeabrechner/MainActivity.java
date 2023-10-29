@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -119,6 +120,25 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //Prüfe, ob Authentifizierung verfügbar
+            BiometricManager biometricManager = BiometricManager.from(this);
+            switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+                case BiometricManager.BIOMETRIC_SUCCESS:
+                    Log.d("MainActivity", "App can authenticate using biometrics.");
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                    Log.e("MainActivity", "No biometric features available on this device.");
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    Log.e("MainActivity", "Biometric features are currently unavailable.");
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+                    enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
+                    startActivity(enrollIntent);
+                    break;
+            }
+
             //Authentifizierungsprozess starten
             biometricPrompt.authenticate(biometricPromptInfo);
             return true;
