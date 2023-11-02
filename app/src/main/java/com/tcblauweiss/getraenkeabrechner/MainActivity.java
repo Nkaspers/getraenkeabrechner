@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,8 +54,6 @@ import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
     private RecyclerView lastEntriesRecyclerView;
     private RecyclerView itemSelectionRecycleView;
     private Button resetEntryBtn;
@@ -64,10 +61,6 @@ public class MainActivity extends AppCompatActivity {
     private MaterialAutoCompleteTextView memberNameInputField;
     private TextInputLayout memberNameInputLayout;
     private SignaturePad signaturePad;
-    private Item item1 = new Item("Bier (0,5l)", Float.valueOf((float)1.5));
-    private Item item2 = new Item("Wasser (1l)", Float.valueOf((float)1));
-    private Item item3 = new Item("Weizen (0,5l)", Float.valueOf((float)1.5));
-    private Item item4 = new Item("Softdrink (1l)", Float.valueOf((float)1.3));
     private RecyclerView receiptRecyclerView;
     private AppViewModel appViewModel;
     private ReceiptAdapter receiptAdapter;
@@ -78,13 +71,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView receiptTotalTextView;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo biometricPromptInfo;
-    private Executor executor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
@@ -109,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         resetEntryBtn.setOnClickListener(view -> resetEntryAction());
         submitEntryBtn.setOnClickListener(view -> submitEntryAction());
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -149,60 +142,71 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean submitEntryAction() {
 
-        if(!areInputFieldsValid()){
+        if (!areInputFieldsValid()) {
             Log.d("MainActivity", "no valid user input");
-        }else{
-            Entry[] entries = createEntries();
-            List<Long> entryIds = appViewModel.insertEntries(entries);
-            if (entryIds == null){
-                Log.d("MainActivity", "EntryIds are null");
-                Toast.makeText(getApplicationContext(), R.string.submit_failure_toast, Toast.LENGTH_LONG).show();
-                return false;
-            }
-
-            String signatureSvg = signaturePad.getSignatureSvg();
-            Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
-            for(Long entryId : entryIds){
-                appViewModel.storeSignature(signatureBitmap, entryId);
-            }
-
-            lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
-            resetInputElements();
-            Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
+            return false;
         }
+
+        Entry[] entries = createEntries();
+        List<Long> entryIds = appViewModel.insertEntries(entries);
+        if (entryIds == null) {
+            Log.d("MainActivity", "EntryIds are null");
+            Toast.makeText(getApplicationContext(), R.string.submit_failure_toast, Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
+        for (Long entryId : entryIds) {
+            appViewModel.storeSignature(signatureBitmap, entryId);
+        }
+
+        lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
+        resetInputElements();
+        Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
+
         return true;
     }
+
     private void resetEntryAction() {
         resetInputElements();
     }
-    private Entry[] createEntries(){
+
+    private Entry[] createEntries() {
         String[] memberName = memberNameInputField.getText().toString().split(" ");
         List<ItemWrapper> items = receiptAdapter.getReceiptItemList();
         Entry[] entries = new Entry[items.size()];
-        int i=0;
-        for(ItemWrapper itemWrapper: items){
+
+        int i = 0;
+        for (ItemWrapper itemWrapper : items) {
             Entry entry = new Entry(
                     System.currentTimeMillis(), memberName[1], memberName[0],
                     itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
                     itemWrapper.getCount(), itemWrapper.getTotal());
             entries[i++] = entry;
         }
+
         return entries;
     }
 
-    private Boolean areInputFieldsValid(){
-        if(memberNameInputLayout.getError() != null || memberNameInputField.getText().toString().equals("")){
+    private Boolean areInputFieldsValid() {
+        if (memberNameInputLayout.getError() != null || memberNameInputField.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
             return false;
         }
-        if(signaturePad.isEmpty()){
+        if (signaturePad.isEmpty()) {
             Toast.makeText(getApplicationContext(), R.string.no_signature_toast, Toast.LENGTH_LONG).show();
             return false;
         }
-        //TODO: check if Items are selected
+
+        if (receiptAdapter.getItemCount() == 0) {
+            Toast.makeText(getApplicationContext(), R.string.no_items_selected_toast, Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         return true;
     }
-    private void resetInputElements(){
+
+    private void resetInputElements() {
         signaturePad.clear();
         memberNameInputField.setText("");
         memberNameInputField.clearFocus();
@@ -214,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupBiometricPrompt() {
-        executor = ContextCompat.getMainExecutor(this);
+        Executor executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
@@ -245,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                 .build();
     }
+
     private void setupLastEntriesView() {
         lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -261,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupItemSelectionView() {
-        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this,3));
+        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this, 3));
 
         receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
@@ -275,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
                 itemSelectionAdapter.submitList(items);
             }
         });
+
         itemSelectionAdapter.setReceiptChangedListener(new ItemSelectionAdapter.ReceiptChangedListener() {
             @Override
             public void onReceiptChanged(Receipt receipt) {
@@ -284,19 +290,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setupMemberNameInputField(){
+    private void setupMemberNameInputField() {
         LiveData<List<Member>> allMembers = appViewModel.getAllMembers();
         List<String> allMembersStr = new ArrayList<>();
         allMembers.observe(this, new Observer<List<Member>>() {
             @Override
             public void onChanged(List<Member> members) {
-                    for(Member member: members){
-                        String memberStr = member.getFirstName() + " " + member.getLastName();
-                        allMembersStr.add(memberStr);
+                for (Member member : members) {
+                    String memberStr = member.getFirstName() + " " + member.getLastName();
+                    allMembersStr.add(memberStr);
                 }
             }
         });
-        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_dropdown_menu_item,  allMembersStr);
+
+        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.list_dropdown_menu_item, allMembersStr);
         memberNameInputField.setThreshold(1);
         memberNameInputField.setAdapter(memberInputFieldAdapter);
         //show error, if input string is not in Memberlist
@@ -304,22 +311,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!allMembersStr.contains(memberNameInputField.getText().toString())){
+                if (!allMembersStr.contains(memberNameInputField.getText().toString())) {
                     memberNameInputLayout.setError(getString(R.string.name_input_field_error_label));
-                }else{
+                } else {
                     memberNameInputLayout.setError(null);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
+
         });
+
         //clear focus on enter (done) button action
         memberNameInputField.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if(actionId== EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 memberNameInputField.clearFocus();
             }
             return false;
@@ -328,20 +338,23 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputField.setOnClickListener(view -> memberNameInputField.dismissDropDown());
     }
 
-    private void setupSignaturePad(){
+    private void setupSignaturePad() {
         signaturePad.setOnSignedListener(new SignedListener() {
             @Override
             public void onStartSigning() {
                 Log.d("SignedListener", "OnStartSigning");
             }
+
             @Override
             public void onSigning() {
                 Log.d("SignedListener", "OnSigning");
             }
+
             @Override
             public void onSigned() {
                 Log.d("SignedListener", "OnSigned");
             }
+
             @Override
             public void onClear() {
                 Log.d("SignedListener", "OnClear");
