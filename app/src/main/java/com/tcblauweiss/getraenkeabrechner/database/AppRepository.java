@@ -1,6 +1,9 @@
 package com.tcblauweiss.getraenkeabrechner.database;
 
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
@@ -58,7 +61,7 @@ public class AppRepository {
         });
         try {
             entryIds = idsFuture.get();
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("AppRepository", e.toString());
             entryIds = null;
         }
@@ -139,11 +142,11 @@ public class AppRepository {
     }
 
     //Stores signature in /sign/ folder using the entryId as Filename
-    public void storeSignatureAsFile(String signatureSvg, Long entryId){
+    public void storeSignatureSvgAsFile(String signatureSvg, Long entryId) {
         File rootDir = application.getFilesDir();
         File signDir = new File(rootDir, "sign");
-        if(!signDir.exists()){
-            if(!signDir.mkdir()){
+        if (!signDir.exists()) {
+            if (!signDir.mkdir()) {
                 Log.d("AppRepository", "Failed to create directory: sign");
             }
         }
@@ -161,26 +164,48 @@ public class AppRepository {
         Log.d("AppRepository", "Signature file created");
     }
 
-    public Drawable loadSignatureFromFile(Long entryId){
-        File signDir = new File(application.getFilesDir(), "sign");
-        String filename = entryId.toString() + ".svg";
-
-        File signatureFile = new File(signDir, filename);
-        if(!signatureFile.exists()){
-            Log.d("AppRepository", "Failed to open signature File");
-            return null;
+    //Stores signature in /sign/ folder using the entryId as Filename
+    public void storeSignatureBitmapAsFile(Bitmap signatureBitmap, Long entryId) {
+        File rootDir = application.getFilesDir();
+        File signDir = new File(rootDir, "sign");
+        if (!signDir.exists()) {
+            if (!signDir.mkdir()) {
+                Log.d("AppRepository", "Failed to create directory: sign");
+            }
         }
 
-        return Sharp.loadFile(signatureFile).getDrawable();
+        String filename = entryId.toString() + ".bmp";
+        File signatureFile = new File(signDir, filename);
+
+        boolean success;
+        try {
+            FileOutputStream stream = new FileOutputStream(signatureFile);
+             success = signatureBitmap.compress(Bitmap.CompressFormat.PNG, 30, stream);
+        } catch (IOException e) {
+            Log.d("AppRepository", "Failed to create or write file");
+            throw new RuntimeException(e);
+        }
+        if (success) {
+            Log.d("AppRepository", "Signature file created");
+        } else {
+            Log.d("AppRepository", "Failed to compress signature bitmap ");
+        }
     }
 
-    public boolean deleteAllSignatureFiles(){
+
+    public Drawable loadSignatureFromFile(Long entryId) {
+        String filepath = application.getFilesDir() + "/sign/" + entryId.toString() + ".bmp";
+
+        return new BitmapDrawable(application.getResources(),BitmapFactory.decodeFile( filepath ));
+    }
+
+    public boolean deleteAllSignatureFiles() {
         File signDir = new File(application.getFilesDir(), "sign");
         Log.d("AppRepository", "Deleting signature files");
         boolean success = true;
         if (signDir.listFiles() != null) {
             for (File child : signDir.listFiles()) {
-                if(!child.delete()) success = false;
+                if (!child.delete()) success = false;
             }
         }
         return success;

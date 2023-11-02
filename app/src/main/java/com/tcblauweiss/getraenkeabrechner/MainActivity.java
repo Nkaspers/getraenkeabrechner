@@ -1,6 +1,7 @@
 package com.tcblauweiss.getraenkeabrechner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -160,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             String signatureSvg = signaturePad.getSignatureSvg();
+            Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
             for(Long entryId : entryIds){
-                appViewModel.storeSignature(signatureSvg, entryId);
+                appViewModel.storeSignature(signatureBitmap, entryId);
             }
 
             lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
