@@ -16,6 +16,10 @@ public interface EntryDao {
     @Query("SELECT * FROM entry ORDER BY date_created DESC")
     LiveData<List<Entry>> getAll();
 
+
+    @Query("SELECT * FROM entry WHERE date_created >= :timestamp ORDER BY date_created DESC")
+    LiveData<List<Entry>> getAllEntriesAfterDate(long timestamp);
+
     @Query("SELECT * FROM entry WHERE first_name LIKE :first AND " +
             "last_name LIKE :last")
     List<Entry> findByName(String first, String last);
@@ -25,4 +29,5 @@ public interface EntryDao {
 
     @Query("DELETE FROM entry")
     public void deleteAll();
+
 }

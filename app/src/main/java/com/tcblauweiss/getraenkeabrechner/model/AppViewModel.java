@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AppViewModel extends AndroidViewModel {
     private AppRepository appRepository;
-    private final LiveData<List<Entry>> allEntries;
+    private final LiveData<List<Entry>> entriesToday;
     private final LiveData<List<Item>> allItems;
     private final LiveData<List<Member>> allMembers;
 
@@ -22,13 +22,13 @@ public class AppViewModel extends AndroidViewModel {
     public AppViewModel(@NonNull Application application) {
         super(application);
         appRepository = new AppRepository(application);
-        allEntries = appRepository.getAllEntries();
+        entriesToday = appRepository.getAllEntriesOfToday();
         allItems = appRepository.getAllItems();
         allMembers = appRepository.getAllMembers();
     }
 
-    public LiveData<List<Entry>> getAllEntries() {
-        return allEntries;
+    public LiveData<List<Entry>> getEntriesToday() {
+        return entriesToday;
     }
 
     public List<Long> insertEntries(Entry... entries){

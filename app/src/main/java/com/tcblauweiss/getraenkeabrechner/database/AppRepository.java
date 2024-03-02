@@ -17,9 +17,17 @@ import com.tcblauweiss.getraenkeabrechner.model.Member;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+
+
 
 public class AppRepository {
     private EntryDao entryDao;
@@ -49,6 +57,11 @@ public class AppRepository {
 
     public LiveData<List<Entry>> getAllEntries() {
         return allEntries;
+    }
+
+    public LiveData<List<Entry>> getAllEntriesOfToday() {
+        LocalDateTime todayMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+        return entryDao.getAllEntriesAfterDate(todayMidnight.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())) * 1000);
     }
 
     public List<Long> insertEntries(Entry... entries) {

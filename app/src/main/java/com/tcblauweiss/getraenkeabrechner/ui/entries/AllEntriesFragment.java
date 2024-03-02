@@ -79,7 +79,7 @@ public class AllEntriesFragment extends Fragment {
 
         lastEntriesAdapter = new LastEntriesAdapter();
 
-        appViewModel.getAllEntries().observe(requireActivity(), new Observer<List<Entry>>() {
+        appViewModel.getEntriesToday().observe(requireActivity(), new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
                 lastEntriesAdapter.submitList(entries);

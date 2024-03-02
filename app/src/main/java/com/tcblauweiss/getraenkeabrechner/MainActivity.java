@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         lastEntriesRecyclerView.setHasFixedSize(true);
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         lastEntriesAdapter = new LastEntriesAdapter();
-        appViewModel.getAllEntries().observe(this, new Observer<List<Entry>>() {
+        appViewModel.getEntriesToday().observe(this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
 
