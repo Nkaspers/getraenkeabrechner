@@ -4,35 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/text_receipt_item_count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:text="1" />
 
         <TextView
             android:id="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/text_receipt_item_count"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:text="x" />
 
         <TextView
             android:id="@+id/text_receipt_item_name"
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:text="Getränk" />
 
         <TextView
             android:id="@+id/textView7"
+            app:layout_constraintEnd_toStartOf="@id/text_receipt_item_price"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:text="á"
@@ -40,13 +39,17 @@
 
         <TextView
             android:id="@+id/text_receipt_item_price"
-            android:layout_width="40dp"
+            app:layout_constraintEnd_toStartOf="@id/textView9"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="1,50€"
             android:textAlignment="textEnd" />
 
         <TextView
             android:id="@+id/textView9"
+            app:layout_constraintEnd_toStartOf="@id/text_receipt_item_price"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:text="="
@@ -54,9 +57,11 @@
 
         <TextView
             android:id="@+id/text_receipt_item_total"
-            android:layout_width="50dp"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="1,50€"
             android:textAlignment="textEnd" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
