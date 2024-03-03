@@ -10,8 +10,12 @@
         android:name="com.tcblauweiss.getraenkeabrechner.ui.members.AllMembersFragment"
         android:label="@string/menu_edit"
         tools:layout="@layout/fragment_all_members">
-    <argument
+        <argument
         android:name="importMembers"
+        app:argType="boolean"
+        android:defaultValue="false"/>
+        <argument
+        android:name="deleteAllMembers"
         app:argType="boolean"
         android:defaultValue="false"/>
     </fragment>
@@ -23,6 +27,24 @@
             android:name="importMembers"
             app:argType="boolean"
             android:defaultValue="true"/>
+        <argument
+            android:name="deleteAllMembers"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </action>
+
+
+    <action
+        android:id="@+id/action_delete_all_members"
+        app:destination="@id/nav_members_edit">
+        <argument
+            android:name="deleteAllMembers"
+            app:argType="boolean"
+            android:defaultValue="true"/>
+        <argument
+            android:name="importMembers"
+            app:argType="boolean"
+            android:defaultValue="false"/>
     </action>
 
     <fragment
@@ -34,15 +56,36 @@
             android:name="deleteAllEntries"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="exportAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <action
-        android:id="@+id/action_delete_all_entries"
+        android:id="@+id/action_entries_export"
+        app:destination="@id/nav_entries_show_all">
+        <argument
+            android:name="exportAllEntries"
+            app:argType="boolean"
+            android:defaultValue="true"/>
+        <argument
+            android:name="deleteAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </action>
+
+    <action
+       android:id="@+id/action_delete_all_entries"
         app:destination="@id/nav_entries_show_all">
         <argument
             android:name="deleteAllEntries"
             app:argType="boolean"
             android:defaultValue="true"/>
+        <argument
+            android:name="exportAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false"/>
     </action>
 
     <fragment

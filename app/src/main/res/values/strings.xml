@@ -44,8 +44,10 @@
     <string name="no_signature_toast">Bitte unterschreiben</string>
     <string name="delete_all_entries_alert_title">Alle Buchungen löschen?</string>
     <string name="delete_all_entries_alert_message">Es werden alle Buchungen und Unterschriften gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</string>
-    <string name="delete_all_entries_dialog_confirm_button_label">Bestätigen</string>
-    <string name="delete_all_entries_dialog_cancel_button_label">Abbrechen</string>
+    <string name="delete_all_members_alert_title">Alle Mitglieder löschen?</string>
+    <string name="delete_all_members_alert_message">Es werden alle Mitglieder gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</string>
+    <string name="confirm_action_button_label">Bestätigen</string>
+    <string name="cancel_action_button_label">Abbrechen</string>
     <string name="entries_date_header_label">Datum</string>
     <string name="entries_item_header_label">Getränk</string>
     <string name="entries_price_header_label">Preis</string>
@@ -67,4 +69,7 @@
     <string name="auth_failed_toast">Authentifizierung fehlgeschlagen</string>
     <string name="auth_prompt_title">Authentifizierung erforderlich</string>
     <string name="no_items_selected_toast">Bitte Getränk auswählen</string>
+    <string name="menu_delete_all_members">Alle Mitglieder löschen</string>
+    <string name="import_members_alert_title">Mitglieder importieren</string>
+    <string name="import_members_alert_message">Die Mitgliederliste muss als .csv-Datei im Download Ordner gespeichert sein.\nDie Tabelle muss die Spalten \"vorname\" und \"nachname\" enthalten.\nDas Trennzeichen ist ein Semikolon (\";\").</string>
 </resources>

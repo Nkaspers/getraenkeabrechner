@@ -31,6 +31,9 @@ public class AppViewModel extends AndroidViewModel {
         return entriesToday;
     }
 
+    public LiveData<List<Entry>> getAllEntries() {
+        return appRepository.getAllEntries();
+    }
     public List<Long> insertEntries(Entry... entries){
         return appRepository.insertEntries(entries);
     }
@@ -85,5 +88,13 @@ public class AppViewModel extends AndroidViewModel {
 
     public boolean deleteAllSignatures(){
         return appRepository.deleteAllSignatureFiles();
+    }
+
+    public int importMembersFromCsv(String path){
+        return appRepository.importMembersFromCsv(path);
+    }
+
+    public String exportAllEntries(List<Entry> entries) {
+        return appRepository.exportAllEntriesToCsv(entries);
     }
 }

@@ -5,14 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.pixplicity.sharp.Sharp;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
+import com.tcblauweiss.getraenkeabrechner.util.CsvImporter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,9 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -222,5 +222,18 @@ public class AppRepository {
             }
         }
         return success;
+    }
+
+    public int importMembersFromCsv(String path){
+        List<Member> members = CsvImporter.importMembersFromCsv(path);
+        insertMembers(members.toArray(new Member[members.size()]));
+        return members.size();
+    }
+
+    public String exportAllEntriesToCsv(List<Entry> entries){
+        File rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String path = rootDir.getAbsolutePath() + "/getraenkeliste.csv";
+        CsvImporter.exportEntriesToCsv(entries, path);
+        return path;
     }
 }

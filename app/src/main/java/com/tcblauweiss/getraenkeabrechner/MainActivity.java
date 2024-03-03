@@ -48,6 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         for (ItemWrapper itemWrapper : items) {
             Entry entry = new Entry(
-                    System.currentTimeMillis(), memberName[1], memberName[0],
+                    new Date(), memberName[1], memberName[0],
                     itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
                     itemWrapper.getCount(), itemWrapper.getTotal());
             entries[i++] = entry;

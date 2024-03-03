@@ -8,6 +8,7 @@ import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Entry.class, Item.class, Member.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ItemDao itemDao();
     public abstract EntryDao entryDao();

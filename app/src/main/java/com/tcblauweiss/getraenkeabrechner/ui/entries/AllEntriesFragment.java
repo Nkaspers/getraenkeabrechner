@@ -1,8 +1,13 @@
 package com.tcblauweiss.getraenkeabrechner.ui.entries;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,6 +39,7 @@ import com.tcblauweiss.getraenkeabrechner.model.Member;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.members.AllMembersViewAdapter;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -46,6 +52,7 @@ public class AllEntriesFragment extends Fragment {
     private AppViewModel appViewModel;
     private RecyclerView lastEntriesRecyclerView;
     private LiveData<List<Member>> allMembers;
+    private LiveData<List<Entry>> allEntries;
     private LastEntriesAdapter lastEntriesAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,6 +63,7 @@ public class AllEntriesFragment extends Fragment {
 
         appViewModel = new ViewModelProvider(this).get(AppViewModel.class);
         allMembers = appViewModel.getAllMembers();
+        allEntries = appViewModel.getAllEntries();
         parentActivity = (SettingsActivity) requireActivity();
         drawer = parentActivity.getDrawer();
 
@@ -75,11 +83,12 @@ public class AllEntriesFragment extends Fragment {
     }
 
     private void setupLastEntriesView() {
+
         lastEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         lastEntriesAdapter = new LastEntriesAdapter();
 
-        appViewModel.getEntriesToday().observe(requireActivity(), new Observer<List<Entry>>() {
+        allEntries.observe(requireActivity(), new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
                 lastEntriesAdapter.submitList(entries);
@@ -121,7 +130,7 @@ public class AllEntriesFragment extends Fragment {
                 .setIcon(R.drawable.ic_delete_all)
                 .setTitle(R.string.delete_all_entries_alert_title)
                 .setMessage(R.string.delete_all_entries_alert_message)
-                .setPositiveButton(R.string.delete_all_entries_dialog_confirm_button_label, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.confirm_action_button_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         parentActivity.getViewModel().deleteAllEntries();
@@ -130,7 +139,7 @@ public class AllEntriesFragment extends Fragment {
                         }
                     }
                 })
-                .setNegativeButton(R.string.delete_all_entries_dialog_cancel_button_label, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel_action_button_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -206,9 +215,16 @@ public class AllEntriesFragment extends Fragment {
         if(args != null && args.getBoolean("deleteAllEntries", false)){
             AlertDialog deleteAllEntriesDialog = createDeleteAllEntriesDialog();
             deleteAllEntriesDialog.show();
+        } else if (args != null && args.getBoolean("exportAllEntries", false)){
+            allEntries.observe(requireActivity(), new Observer<List<Entry>>() {
+                @Override
+                public void onChanged(List<Entry> entries) {
+                    String path = parentActivity.getViewModel().exportAllEntries(entries);
+                    showShareScreen(path);
+                }
+            });
         }
     }
-
 
     @Override
     public void onDestroyView() {
@@ -221,6 +237,27 @@ public class AllEntriesFragment extends Fragment {
         Bundle args = getArguments();
         assert args != null;
         args.putBoolean("deleteAllEntries", false);
+        args.putBoolean("exportAllEntries", false);
+    }
+
+    public void showShareScreen(String path) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        String[] paths = new String[1];
+        paths[0] = path;
+        MediaScannerConnection.scanFile(getContext(), paths, null, new MediaScannerConnection.MediaScannerConnectionClient() {
+            @Override
+            public void onMediaScannerConnected() {
+
+            }
+
+            @Override
+            public void onScanCompleted(String s, Uri uri) {
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                shareIntent.setType("*/*");
+                startActivity(Intent.createChooser(shareIntent, null));
+            }
+        });
     }
 
 }

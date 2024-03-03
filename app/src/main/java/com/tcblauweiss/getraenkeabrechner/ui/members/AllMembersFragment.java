@@ -2,16 +2,24 @@ package com.tcblauweiss.getraenkeabrechner.ui.members;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.search.SearchView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -63,8 +71,10 @@ public class AllMembersFragment extends Fragment {
 
         Bundle args = getArguments();
         assert args != null;
-        boolean flag = args.getBoolean("importMembers");
-        Log.d("EditMembersFragment", "onCreate->importMembers: " + flag);
+        boolean importMembersFlag = args.getBoolean("importMembers");
+        Log.d("EditMembersFragment", "onCreate->importMembers: " + importMembersFlag);
+        boolean deleteAllMembersFlag = args.getBoolean("deleteAllMembers");
+        Log.d("EditMembersFragment", "onCreate->deleteAllMembers: " + deleteAllMembersFlag);
 
         searchBar = view.findViewById(R.id.searchbar);
         searchView = view.findViewById(R.id.searchview_member);
@@ -245,11 +255,87 @@ public class AllMembersFragment extends Fragment {
                 });
     }
 
+    private AlertDialog createDeleteAllMembersDialog() {
+
+        return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+                .setIcon(R.drawable.ic_delete_all)
+                .setTitle(R.string.delete_all_members_alert_title)
+                .setMessage(R.string.delete_all_members_alert_message)
+                .setPositiveButton(R.string.confirm_action_button_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        parentActivity.getViewModel().deleteAllMembers();
+                    }
+                })
+                .setNegativeButton(R.string.cancel_action_button_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create();
+    }
+
+    private AlertDialog createImportMembersDialog() {
+
+        return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+                .setIcon(R.drawable.ic_info)
+                .setTitle(R.string.import_members_alert_title)
+                .setMessage(R.string.import_members_alert_message)
+                .setPositiveButton(R.string.confirm_action_button_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        launchFilePickerAndImportMembers();
+                    }
+                })
+                .setNegativeButton(R.string.cancel_action_button_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         drawer.close();
+        Bundle args = getArguments();
+        if(args != null && args.getBoolean("deleteAllMembers", false)){
+            AlertDialog deleteAllMembersDialog = createDeleteAllMembersDialog();
+            deleteAllMembersDialog.show();
+        } else if (args != null && args.getBoolean("importMembers", false)){
+            AlertDialog importMembersDialog = createImportMembersDialog();
+            importMembersDialog.show();
+        }
+
+    }
+
+    ActivityResultLauncher<String> filePickerIntent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    Log.d("AllMembersFragment",result.toString());
+
+                    String filePath;
+                    Log.d("AllMembersFragment","URI = "+ result);
+                    if ("content".equals(result.getScheme())) {
+                        Cursor cursor = requireActivity().getContentResolver().query(result, new String[] { MediaStore.Downloads.DATA}, null, null, null);
+                        assert cursor != null;
+                        cursor.moveToFirst();
+                        filePath = cursor.getString(0);
+                        cursor.close();
+                    } else {
+                        filePath = result.getPath();
+                    }
+                    Log.d("AllMembersFragment","Filepath = "+ filePath);
+                    int num = parentActivity.getViewModel().importMembersFromCsv(filePath);
+
+                    Toast.makeText(getContext() ,num + " Mitglieder importiert", Toast.LENGTH_SHORT).show();
+                }
+
+            });
+
+    private void launchFilePickerAndImportMembers() {
+        filePickerIntent.launch("text/comma-separated-values");
     }
 
     @Override
@@ -262,6 +348,7 @@ public class AllMembersFragment extends Fragment {
         Log.d("EditMembersFragment", "OnResume");
         Bundle args = getArguments();
         assert args != null;
+        args.putBoolean("importMembers", false);
         args.putBoolean("deleteAllMembers", false);
         super.onResume();
     }

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.provider.Settings;
 import android.view.Menu;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -76,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setupNavigationLayout(){
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_members_edit, R.id.nav_members_import, R.id.nav_entries_show_all,
+                R.id.nav_members_edit, R.id.nav_members_import, R.id.nav_members_delete_all, R.id.nav_entries_show_all,
                 R.id.nav_entries_cancel, R.id.nav_entries_export, R.id.nav_entries_delete_all,
                 R.id.nav_items_edit, R.id.nav_password_change, R.id.nav_kiosk_mode, R.id.nav_return_to_main)
                 .setOpenableLayout(drawer)
@@ -94,8 +93,12 @@ public class SettingsActivity extends AppCompatActivity {
             return false;
         });
         navigationView.getMenu().findItem(R.id.nav_members_import).setOnMenuItemClickListener(view -> {
-            Toast.makeText(SettingsActivity.this,"Mitglieder importieren", Toast.LENGTH_SHORT).show();
             navController.navigate(R.id.action_import_members);
+            return false;
+        });
+
+        navigationView.getMenu().findItem(R.id.nav_members_delete_all).setOnMenuItemClickListener(view -> {
+            navController.navigate(R.id.action_delete_all_members);
             return false;
         });
 
@@ -112,7 +115,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         navigationView.getMenu().findItem(R.id.nav_entries_export).setOnMenuItemClickListener(view -> {
             Toast.makeText(SettingsActivity.this,"Buchungen exportieren", Toast.LENGTH_SHORT).show();
-            //TODO: Buchungen exportieren
+            navController.navigate(R.id.action_entries_export);
             return false;
         });
 
@@ -181,13 +184,13 @@ public class SettingsActivity extends AppCompatActivity {
                 .setIcon(R.drawable.ic_lock)
                 .setTitle(R.string.lock_device_alert_title)
                 .setMessage(R.string.lock_device_alert_message)
-                .setPositiveButton(R.string.delete_all_entries_dialog_confirm_button_label, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.confirm_action_button_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         setDefaultDeviceLockPolicies(true);
                     }
                 })
-                .setNegativeButton(R.string.delete_all_entries_dialog_cancel_button_label, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel_action_button_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         kioskModeSwitch.setChecked(false);
