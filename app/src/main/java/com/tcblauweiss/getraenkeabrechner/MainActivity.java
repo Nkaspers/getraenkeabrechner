@@ -324,6 +324,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                if (editable.length() > 0 && editable.charAt(0) == ' ') {
+                    editable.delete(0, 1);
+                }
             }
 
         });
