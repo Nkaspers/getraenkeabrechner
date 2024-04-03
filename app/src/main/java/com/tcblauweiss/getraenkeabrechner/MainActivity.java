@@ -1,5 +1,6 @@
 package com.tcblauweiss.getraenkeabrechner;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -41,7 +42,10 @@ import se.warting.signatureview.views.SignedListener;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -339,7 +343,14 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        memberNameInputField.setOnClickListener(view -> memberNameInputField.dismissDropDown());
+        memberNameInputField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+                memberNameInputField.clearFocus();
+            }
+        });
     }
 
     private void setupSignaturePad() {
