@@ -2,6 +2,7 @@ package com.tcblauweiss.getraenkeabrechner.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.opencsv.bean.CsvBindByName;
@@ -21,6 +22,7 @@ public class Member {
     @ColumnInfo(name="last_name")
     private String lastName;
 
+    @Ignore
     public Member(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;

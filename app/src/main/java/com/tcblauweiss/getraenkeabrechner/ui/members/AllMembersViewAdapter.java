@@ -65,7 +65,7 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
         Member member = localDataSetFiltered.get(position);
         String lastName = member.getLastName();
 
-        viewHolder.getLastNameTextView().setText(member.getLastName()+",");
+        viewHolder.getLastNameTextView().setText(String.format("%s,", member.getLastName()));
         viewHolder.getFirstNameTextView().setText(member.getFirstName());
         viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
 
