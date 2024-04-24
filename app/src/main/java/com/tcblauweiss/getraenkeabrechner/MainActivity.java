@@ -343,6 +343,8 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+        memberNameInputField.setOnClickListener(view -> memberNameInputField.dismissDropDown());
+
         memberNameInputField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
