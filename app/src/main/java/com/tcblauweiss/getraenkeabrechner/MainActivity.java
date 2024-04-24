@@ -136,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
                     enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
                     startActivity(enrollIntent);
                     break;
+                default:
+                    Log.e("MainActivity", "Biometric features are unavailable.");
+                    break;
             }
 
             //Authentifizierungsprozess starten
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Boolean areInputFieldsValid() {
-        if (memberNameInputLayout.getError() != null || memberNameInputField.getText().toString().equals("")) {
+        if (memberNameInputLayout.getError() != null || memberNameInputField.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), R.string.invalid_member_toast, Toast.LENGTH_LONG).show();
             return false;
         }
