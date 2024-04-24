@@ -1,5 +1,6 @@
 package com.tcblauweiss.getraenkeabrechner;
 
+import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.UserManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -65,9 +67,9 @@ public class SettingsActivity extends AppCompatActivity {
         kioskModeSwitch = Objects.requireNonNull(navigationView.getMenu().findItem(R.id.nav_kiosk_mode).getActionView()).findViewById(R.id.nav_switch);
 
         kioskModeSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if(isChecked){
-                enableKioskMode();
-            }else{
+            if(isChecked && !isKioskMode){
+                createLockDeviceDialog().show();
+            }else if (!isChecked && isKioskMode){
                 disableKioskMode();
             }
         });
@@ -151,6 +153,13 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
         //Open drawer after FragmentView ist created
         drawer.openDrawer(GravityCompat.START);
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+
+        isKioskMode = activityManager.getLockTaskModeState() == ActivityManager.LOCK_TASK_MODE_LOCKED;
+
+        if( isKioskMode ) {
+            kioskModeSwitch.setChecked(true);
+        }
     }
 
     @Override
@@ -169,13 +178,16 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void enableKioskMode() {
+        setDefaultDeviceLockPolicies(true);
+        startLockTask();
         isKioskMode = true;
-        createLockDeviceDialog().show();
-
+        Toast.makeText(this, "Gesperrter Modus wurde aktiviert", Toast.LENGTH_SHORT).show();
     }
     private void disableKioskMode() {
-        isKioskMode = false;
+        stopLockTask();
         setDefaultDeviceLockPolicies(false);
+        isKioskMode = false;
+        Toast.makeText(this, "Gesperrter Modus wurde deaktiviert", Toast.LENGTH_SHORT).show();
     }
 
     private AlertDialog createLockDeviceDialog() {
@@ -187,7 +199,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.confirm_action_button_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        setDefaultDeviceLockPolicies(true);
+                        enableKioskMode();
                     }
                 })
                 .setNegativeButton(R.string.cancel_action_button_label, new DialogInterface.OnClickListener() {
@@ -199,6 +211,13 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setDefaultDeviceLockPolicies(boolean active){
+
+        if ( !devicePolicyManager.isDeviceOwnerApp( getPackageName() ) ){
+            Log.d("SettingsActivity", "App is not device owner.");
+            Toast.makeText(this, "App muss Besitzer des Gerätes sein, um den gesperrten Modus zu aktivieren", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
 
         final String[] LOCKED_APPS = {getApplicationContext().getPackageName()};
 
@@ -213,10 +232,10 @@ public class SettingsActivity extends AppCompatActivity {
         devicePolicyManager.setKeyguardDisabled(adminComponentName, active);
         devicePolicyManager.setStatusBarDisabled(adminComponentName, active);
         devicePolicyManager.setLockTaskPackages(adminComponentName, LOCKED_APPS);
+        devicePolicyManager.setLockTaskFeatures(adminComponentName, DevicePolicyManager.LOCK_TASK_FEATURE_SYSTEM_INFO);
 
         // enable STAY_ON_WHILE_PLUGGED_IN
         enableStayOnWhilePluggedIn(active);
-
     }
 
     private void setUserRestriction(String restriction, boolean disallow) {
