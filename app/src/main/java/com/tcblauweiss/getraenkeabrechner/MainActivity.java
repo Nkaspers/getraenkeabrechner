@@ -180,14 +180,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Entry[] createEntries() {
-        String[] memberName = memberNameInputField.getText().toString().split(" ");
+        String[] memberName = memberNameInputField.getText().toString().split(", ");
         List<ItemWrapper> items = receiptAdapter.getReceiptItemList();
         Entry[] entries = new Entry[items.size()];
 
         int i = 0;
         for (ItemWrapper itemWrapper : items) {
             Entry entry = new Entry(
-                    new Date(), memberName[1], memberName[0],
+                    new Date(), memberName[0], memberName[1],
                     itemWrapper.getItem().getName(), itemWrapper.getItem().getPrice(),
                     itemWrapper.getCount(), itemWrapper.getTotal());
             entries[i++] = entry;
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Member> members) {
                 for (Member member : members) {
-                    String memberStr = member.getFirstName() + " " + member.getLastName();
+                    String memberStr = member.getLastName() + ", " + member.getFirstName();
                     allMembersStr.add(memberStr);
                 }
             }
