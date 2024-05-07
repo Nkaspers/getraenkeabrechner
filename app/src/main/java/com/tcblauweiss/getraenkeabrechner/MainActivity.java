@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
+
+import com.tcblauweiss.getraenkeabrechner.UncaughtExceptionHandler;
 import com.tcblauweiss.getraenkeabrechner.databinding.ActivityMainBinding;
 import com.tcblauweiss.getraenkeabrechner.model.AppViewModel;
 import com.tcblauweiss.getraenkeabrechner.model.Entry;
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler(this, MainActivity.class));
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
