@@ -111,7 +111,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         navigationView.getMenu().findItem(R.id.nav_entries_cancel).setOnMenuItemClickListener(view -> {
             Toast.makeText(SettingsActivity.this,"Buchungen stornieren", Toast.LENGTH_SHORT).show();
-            //TODO: Buchungen stornieren
+            navController.navigate(R.id.action_cancel_entry);
             return false;
         });
 

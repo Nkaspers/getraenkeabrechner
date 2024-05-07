@@ -1,15 +1,18 @@
 package com.tcblauweiss.getraenkeabrechner;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -160,25 +164,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Entry[] entries = createEntries();
-        List<Long> entryIds = appViewModel.insertEntries(entries);
-        if (entryIds == null) {
-            Log.d("MainActivity", "EntryIds are null");
-            Toast.makeText(getApplicationContext(), R.string.submit_failure_toast, Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
-        for (Long entryId : entryIds) {
-            appViewModel.storeSignature(signatureBitmap, entryId);
-        }
-
-        lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
-        resetInputElements();
-        Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
+        AlertDialog dialog = createEntryConfirmationDialog(entries);
+        dialog.show();
 
         return true;
     }
-
     private void resetEntryAction() {
         resetInputElements();
     }
@@ -217,6 +207,45 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
+    private AlertDialog createEntryConfirmationDialog(Entry[] entries) {
+        double total = 0;
+        for (Entry entry : entries) {
+            total += entry.getTotalPrice();
+        }
+
+        String message = String.format("Bist du <b>%s %s</b> und möchtest Getränke im Wert von <b>%.2f€</b> buchen?", entries[0].getFirstName(), entries[0].getLastName(), total);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered);
+        builder.setTitle(R.string.dialog_title_entry_confirmation);
+        builder.setIcon(R.drawable.ic_done);
+        builder.setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_LEGACY));
+        builder.setPositiveButton(R.string.submit_entry_btn_label, (dialogInterface, i) -> {
+
+            List <Long> entryIds = appViewModel.insertEntries(entries);
+            if (entryIds == null) {
+                Log.d("MainActivity", "EntryIds are null");
+                Toast.makeText(getApplicationContext(), R.string.submit_failure_toast, Toast.LENGTH_LONG).show();
+            }
+
+            Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
+            for (Long entryId : entryIds) {
+                appViewModel.storeSignature(signatureBitmap, entryId);
+            }
+
+            lastEntriesRecyclerView.post(() -> lastEntriesRecyclerView.smoothScrollToPosition(0));
+            resetInputElements();
+            Toast.makeText(getApplicationContext(), R.string.submit_success_toast, Toast.LENGTH_LONG).show();
+        });
+
+        builder.setNegativeButton(R.string.cancel_action_button_label, (dialogInterface, i) -> {
+
+        });
+
+        return builder.create();
+    }
+
+
 
     private void resetInputElements() {
         signaturePad.clear();

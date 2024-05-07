@@ -72,4 +72,5 @@
     <string name="menu_delete_all_members">Alle Mitglieder löschen</string>
     <string name="import_members_alert_title">Mitglieder importieren</string>
     <string name="import_members_alert_message">Die Mitgliederliste muss als .csv-Datei im Download Ordner gespeichert sein.\nDie Tabelle muss die Spalten \"vorname\" und \"nachname\" enthalten.\nDas Trennzeichen ist ein Semikolon (\";\").</string>
+    <string name="dialog_title_entry_confirmation">Buchung bestätigen</string>
 </resources>

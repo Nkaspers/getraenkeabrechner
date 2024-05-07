@@ -63,6 +63,24 @@
     </fragment>
 
     <action
+        android:id="@+id/action_cancel_entry"
+        app:destination="@id/nav_entries_show_all">
+        <argument
+            android:name="cancelEntry"
+            app:argType="boolean"
+            android:defaultValue="true"/>
+        <argument
+            android:name="deleteAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+        <argument
+            android:name="exportAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+
+    </action>
+
+    <action
         android:id="@+id/action_entries_export"
         app:destination="@id/nav_entries_show_all">
         <argument
@@ -71,6 +89,10 @@
             android:defaultValue="true"/>
         <argument
             android:name="deleteAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+        <argument
+            android:name="cancelEntry"
             app:argType="boolean"
             android:defaultValue="false"/>
     </action>
@@ -84,6 +106,10 @@
             android:defaultValue="true"/>
         <argument
             android:name="exportAllEntries"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+        <argument
+            android:name="cancelEntry"
             app:argType="boolean"
             android:defaultValue="false"/>
     </action>
