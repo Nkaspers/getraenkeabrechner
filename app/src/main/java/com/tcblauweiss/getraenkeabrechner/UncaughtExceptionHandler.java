@@ -1,14 +1,7 @@
 package com.tcblauweiss.getraenkeabrechner;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import android.os.Process;
 
 public class UncaughtExceptionHandler implements
         java.lang.Thread.UncaughtExceptionHandler {
