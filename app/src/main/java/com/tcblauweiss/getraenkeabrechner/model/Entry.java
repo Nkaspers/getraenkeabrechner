@@ -66,11 +66,9 @@ public class Entry {
 
     public String getDateCreatedString() {
         LocalDateTime dateTime = this.dateCreated.toInstant().atZone(TimeZone.getDefault().toZoneId()).toLocalDateTime();
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMM");
-        String timeFormatted = dateTime.format(timeFormatter);
-        String dateFormatted = dateTime.format(dateFormatter);
-        return timeFormatted + ", " + dateFormatted;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm, dd MMM");
+
+        return dateTime.format(dateTimeFormatter);
     }
 
     public String getLastName() {
