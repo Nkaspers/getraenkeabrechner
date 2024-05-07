@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -23,7 +22,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -226,13 +228,20 @@ public class AppRepository {
 
     public int importMembersFromCsv(String path){
         List<Member> members = CsvImporter.importMembersFromCsv(path);
-        insertMembers(members.toArray(new Member[members.size()]));
+        insertMembers(members.toArray(new Member[0]));
         return members.size();
     }
 
     public String exportAllEntriesToCsv(List<Entry> entries){
+        Date date = new Date( System.currentTimeMillis() );
+        LocalDateTime dateTime = date.toInstant().atZone(TimeZone.getDefault().toZoneId()).toLocalDateTime();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
+        String timeFormatted = dateTime.format(timeFormatter);
+        String filename = "/getraenkeliste_" + timeFormatted + ".csv";
+
         File rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String path = rootDir.getAbsolutePath() + "/getraenkeliste.csv";
+        String path = rootDir.getAbsolutePath() + filename;
+
         CsvImporter.exportEntriesToCsv(entries, path);
         return path;
     }
