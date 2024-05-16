@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -185,13 +186,14 @@ public class AllItemsFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Editable itemName = itemNameInput.getEditableText();
                         Editable itemPrice = itemPriceInput.getEditableText();
-                        double itemPriceDouble = Double.parseDouble(itemPrice.toString().replace(",", "."));
 
-                        if(!itemName.toString().equals("") && !itemPrice.toString().equals("")){
+                        if( !itemPrice.toString().isEmpty() && !itemName.toString().isEmpty()){
+                            double itemPriceDouble = Double.parseDouble(itemPrice.toString().replace(",", "."));
                             viewModel.insertItems(new Item(itemName.toString(), itemPriceDouble));
                             Log.d("addItemDialog", "added Item: " + itemName + " " + itemPrice);
                         }else{
-                            Log.d("addItemDialog", "item name is null");
+                            Log.d("addItemDialog", "item name or price is null");
+                            Toast.makeText(getContext(), R.string.add_item_dialog_error_message, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
