@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView receiptTotalTextView;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo biometricPromptInfo;
+    private ArrayAdapter<String> memberInputFieldAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -334,17 +335,20 @@ public class MainActivity extends AppCompatActivity {
     private void setupMemberNameInputField() {
         LiveData<List<Member>> allMembers = appViewModel.getAllMembers();
         List<String> allMembersStr = new ArrayList<>();
+        memberInputFieldAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.list_dropdown_menu_item);
+
         allMembers.observe(this, new Observer<List<Member>>() {
             @Override
             public void onChanged(List<Member> members) {
                 for (Member member : members) {
                     String memberStr = member.getLastName() + ", " + member.getFirstName();
                     allMembersStr.add(memberStr);
+                    memberInputFieldAdapter.addAll(allMembersStr);
+                    memberInputFieldAdapter.notifyDataSetChanged();
                 }
             }
         });
 
-        ArrayAdapter<String> memberInputFieldAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.list_dropdown_menu_item, allMembersStr);
         memberNameInputField.setThreshold(1);
         memberNameInputField.setAdapter(memberInputFieldAdapter);
         //show error, if input string is not in Memberlist
