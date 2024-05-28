@@ -1,5 +1,6 @@
 package com.tcblauweiss.getraenkeabrechner.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -48,6 +49,11 @@ public class Member {
 
     public String getName() {
         return lastName + ", " + firstName;
+    }
+
+    @NonNull
+    public String toString() {
+        return getName();
     }
 
     public void setId(long id) {
