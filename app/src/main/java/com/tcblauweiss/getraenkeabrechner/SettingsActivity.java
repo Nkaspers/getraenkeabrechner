@@ -233,9 +233,6 @@ public class SettingsActivity extends AppCompatActivity {
         devicePolicyManager.setStatusBarDisabled(adminComponentName, active);
         devicePolicyManager.setLockTaskPackages(adminComponentName, LOCKED_APPS);
         devicePolicyManager.setLockTaskFeatures(adminComponentName, DevicePolicyManager.LOCK_TASK_FEATURE_SYSTEM_INFO);
-
-        // enable STAY_ON_WHILE_PLUGGED_IN
-        enableStayOnWhilePluggedIn(active);
     }
 
     private void setUserRestriction(String restriction, boolean disallow) {
@@ -245,23 +242,6 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             devicePolicyManager.clearUserRestriction(adminComponentName,
                     restriction);
-        }
-    }
-
-    private void enableStayOnWhilePluggedIn(boolean enabled) {
-        if (enabled) {
-            devicePolicyManager.setGlobalSetting(
-                    adminComponentName,
-                    Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
-                    Integer.toString(BatteryManager.BATTERY_PLUGGED_AC
-                            | BatteryManager.BATTERY_PLUGGED_USB
-                            | BatteryManager.BATTERY_PLUGGED_WIRELESS));
-        } else {
-            devicePolicyManager.setGlobalSetting(
-                    adminComponentName,
-                    Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
-                    "0"
-            );
         }
     }
 
