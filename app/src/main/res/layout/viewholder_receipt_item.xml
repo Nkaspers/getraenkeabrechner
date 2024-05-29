@@ -10,6 +10,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="1" />
 
         <TextView
@@ -18,6 +19,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="x" />
 
         <TextView
@@ -26,6 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="Getränk" />
 
         <TextView
@@ -34,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="á"
             android:textAlignment="center" />
 
@@ -43,6 +47,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="1,50€"
             android:textAlignment="textEnd" />
 
@@ -52,6 +57,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="="
             android:textAlignment="center" />
 
@@ -62,6 +68,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="1,50€"
             android:textAlignment="textEnd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -307,7 +307,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupItemSelectionView() {
-        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this, 3));
+        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this, 3){
+            @Override
+            public boolean checkLayoutParams( RecyclerView.LayoutParams lp) {
+                lp.width = (int) (getWidth() * 0.30);
+                lp.height = (int) (getHeight() * 0.43);
+                return true;
+            }
+        });
 
         receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());

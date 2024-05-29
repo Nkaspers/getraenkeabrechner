@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="5dp">
+
+    <TextView
+        android:id="@+id/text_last_entries_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.15"
+        android:paddingHorizontal="5dp"/>
+
+    <ImageView
+        android:id="@+id/img_last_entries_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="7dp"
+        android:paddingEnd="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_last_entries_date"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_member_with_background" />
+
+    <TextView
+        android:id="@+id/text_last_entries_name"
+        style="@style/Theme.Getraenkeabrechner.BodyTextMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_last_entries_ic"
+        app:layout_constraintWidth_percent="0.27"
+        android:paddingHorizontal="5dp"/>
+
+    <TextView
+        android:id="@+id/text_last_entries_item"
+        style="@style/Theme.Getraenkeabrechner.BodyTextMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_last_entries_name"
+        app:layout_constraintWidth_percent="0.2"
+        android:paddingHorizontal="5dp"/>
+
+    <TextView
+        android:id="@+id/text_last_entries_price"
+        style="@style/Theme.Getraenkeabrechner.BodyTextMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_last_entries_item"
+        app:layout_constraintWidth_percent="0.15"
+        android:paddingHorizontal="5dp"/>
+
+    <TextView
+        android:id="@+id/text_last_entries_amount"
+        style="@style/Theme.Getraenkeabrechner.BodyTextMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_last_entries_price"
+        app:layout_constraintWidth_percent="0.08"
+        android:paddingHorizontal="5dp"/>
+
+    <TextView
+        android:id="@+id/text_last_entries_total"
+        style="@style/Theme.Getraenkeabrechner.BodyTextMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="5dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

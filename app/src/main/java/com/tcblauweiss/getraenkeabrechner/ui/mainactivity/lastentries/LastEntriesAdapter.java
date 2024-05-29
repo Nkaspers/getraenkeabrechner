@@ -98,7 +98,7 @@ public class LastEntriesAdapter extends RecyclerView.Adapter<LastEntriesAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.entry_viewholder, viewGroup, false);
+                .inflate(R.layout.viewholder_entry, viewGroup, false);
         return new ViewHolder(view);
     }
 
