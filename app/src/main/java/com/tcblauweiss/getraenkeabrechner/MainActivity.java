@@ -57,6 +57,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
@@ -66,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView lastEntriesRecyclerView;
     private RecyclerView itemSelectionRecycleView;
-    private Button resetEntryBtn;
-    private Button submitEntryBtn;
     private MaterialAutoCompleteTextView memberNameInputField;
     private TextInputLayout memberNameInputLayout;
     private SignaturePad signaturePad;
@@ -100,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputField = findViewById(R.id.text_input_member_name);
         memberNameInputLayout = findViewById(R.id.layout_input_member_name);
         signaturePad = findViewById(R.id.signature_pad);
-        resetEntryBtn = findViewById(R.id.btn_reset_entry);
-        submitEntryBtn = findViewById(R.id.btn_submit_entry);
         receiptTotalTextView = findViewById(R.id.text_receipt_total);
 
         receipt = new Receipt();
@@ -111,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
         setupItemSelectionView();
         setupMemberNameInputField();
         setupSignaturePad();
+
+        Button resetEntryBtn = findViewById(R.id.btn_reset_entry);
+        Button submitEntryBtn = findViewById(R.id.btn_submit_entry);
         resetEntryBtn.setOnClickListener(view -> resetEntryAction());
         submitEntryBtn.setOnClickListener(view -> submitEntryAction());
     }
@@ -156,19 +156,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private Boolean submitEntryAction() {
+    private void submitEntryAction() {
 
         if (!areInputFieldsValid()) {
             Log.d("MainActivity", "no valid user input");
-            return false;
+            return;
         }
 
         Entry[] entries = createEntries();
         AlertDialog dialog = createEntryConfirmationDialog(entries);
         dialog.show();
-
-        return true;
     }
+
     private void resetEntryAction() {
         resetInputElements();
     }
@@ -214,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             total += entry.getTotalPrice();
         }
 
-        String message = String.format("Bist du <b>%s %s</b> und möchtest Getränke im Wert von <b>%.2f€</b> buchen?", entries[0].getFirstName(), entries[0].getLastName(), total);
+        String message = String.format(Locale.GERMANY, "Bist du <b>%s %s</b> und möchtest Getränke im Wert von <b>%.2f€</b> buchen?", entries[0].getFirstName(), entries[0].getLastName(), total);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered);
         builder.setTitle(R.string.dialog_title_entry_confirmation);
@@ -229,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Bitmap signatureBitmap = signaturePad.getSignatureBitmap();
+            assert entryIds != null;
             for (Long entryId : entryIds) {
                 appViewModel.storeSignature(signatureBitmap, entryId);
             }
@@ -307,25 +307,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupItemSelectionView() {
-        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this, 3){
-            @Override
-            public boolean checkLayoutParams( RecyclerView.LayoutParams lp) {
-                lp.width = (int) (getWidth() * 0.30);
-                lp.height = (int) (getHeight() * 0.43);
-                return true;
-            }
-        });
 
         receiptRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         receiptAdapter = new ReceiptAdapter(receipt.getItemsAndCount());
         receiptRecyclerView.setAdapter(receiptAdapter);
 
+        itemSelectionRecycleView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
+            @Override
+            public boolean checkLayoutParams(RecyclerView.LayoutParams lp) {
+                lp.width = (int) (getWidth() * 0.31);
+                lp.height = (int) (getHeight() * 0.43);
+                return true;
+            }
+        });
+
         itemSelectionAdapter = new ItemSelectionAdapter(receipt, receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
+
         appViewModel.getAllItems().observe(this, new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
                 itemSelectionAdapter.submitList(items);
+
+                // Disable overscroll effect when scrolling is not possible
+                if(itemSelectionRecycleView.computeHorizontalScrollRange() > 0) {
+                    itemSelectionRecycleView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+                } else {
+                    itemSelectionRecycleView.setOverScrollMode(RecyclerView.OVER_SCROLL_ALWAYS);
+                }
             }
         });
 
