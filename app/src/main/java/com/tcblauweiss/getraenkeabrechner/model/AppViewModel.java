@@ -13,7 +13,7 @@ import com.tcblauweiss.getraenkeabrechner.database.AppRepository;
 import java.util.List;
 
 public class AppViewModel extends AndroidViewModel {
-    private AppRepository appRepository;
+    private final AppRepository appRepository;
     private final LiveData<List<Entry>> entriesToday;
     private final LiveData<List<Item>> allItems;
     private final LiveData<List<Member>> allMembers;
@@ -48,6 +48,10 @@ public class AppViewModel extends AndroidViewModel {
 
     public void insertItems(Item... items) {
         appRepository.insertItems(items);
+    }
+
+    public void updateItem(long id, String name, double price){
+        appRepository.updateItem(id, name, price);
     }
 
     public void deleteItems(Item... items) {

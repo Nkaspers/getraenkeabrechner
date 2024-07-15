@@ -64,17 +64,16 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(selectedViews.isEmpty()){
-                        return;
-                    }
-                    if(view.isActivated()){
-                        Log.d("AllItemsViewAdapter", "remove view from selection");
-                        selectedViews.remove(view);
-                        view.setActivated(false);
-                    }else{
-                        Log.d("AllItemsViewAdapter", "add view to selection");
-                        selectedViews.add(view);
-                        view.setActivated(true);
+                    if(!selectedViews.isEmpty()) {
+                        if(view.isActivated()){
+                            Log.d("AllItemsViewAdapter", "remove view from selection");
+                            selectedViews.remove(view);
+                            view.setActivated(false);
+                        }else{
+                            Log.d("AllItemsViewAdapter", "add view to selection");
+                            selectedViews.add(view);
+                            view.setActivated(true);
+                        }
                     }
                     itemClickedListener.onItemClicked(item);
                 }

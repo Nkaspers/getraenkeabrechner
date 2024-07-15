@@ -68,7 +68,7 @@ public class AllItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_items, container, false);
-        parentActivity = (SettingsActivity) getActivity();
+        parentActivity = (SettingsActivity) requireActivity();
 
         //reinitialize toolbar in case it was overwritten from previous fragments.
         toolbar = parentActivity.findViewById(R.id.toolbar);
@@ -132,6 +132,8 @@ public class AllItemsFragment extends Fragment {
             @Override
             public void onItemClicked(Item item) {
                 if(selectedItems.isEmpty()){
+                    Log.d("AllItemsFragment", "edit item");
+                    createEditItemDialog(item).show();
                     return;
                 }
                 if(selectedItems.contains(item)){
@@ -191,6 +193,45 @@ public class AllItemsFragment extends Fragment {
                             double itemPriceDouble = Double.parseDouble(itemPrice.toString().replace(",", "."));
                             viewModel.insertItems(new Item(itemName.toString(), itemPriceDouble));
                             Log.d("addItemDialog", "added Item: " + itemName + " " + itemPrice);
+                        }else{
+                            Log.d("addItemDialog", "item name or price is null");
+                            Toast.makeText(getContext(), R.string.add_item_dialog_error_message, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.add_member_dialog_cancel_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create();
+    }
+
+    private AlertDialog createEditItemDialog(Item item) {
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_item, null);
+
+        TextInputEditText itemNameInput = view.findViewById(R.id.text_input_new_item_name);
+        TextInputEditText itemPriceInput = view.findViewById(R.id.text_input_new_item_price);
+
+        itemNameInput.setText(item.getName());
+        itemPriceInput.setText(String.valueOf(item.getPrice()));
+
+        itemPriceInput.setFilters(new InputFilter[] { new DecimalDigitsInputFilter(3,2)});
+
+        return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+                .setIcon(R.drawable.ic_beverage)
+                .setTitle(R.string.edit_item_dialog_title)
+                .setView(view)
+                .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Editable itemName = itemNameInput.getEditableText();
+                        Editable itemPrice = itemPriceInput.getEditableText();
+
+                        if( !itemPrice.toString().isEmpty() && !itemName.toString().isEmpty()){
+                            double itemPriceDouble = Double.parseDouble(itemPrice.toString().replace(",", "."));
+                            viewModel.updateItem(item.getId(), itemName.toString(), itemPriceDouble);
+                            Log.d("addItemDialog", "edited Item: " + itemName + " " + itemPrice);
                         }else{
                             Log.d("addItemDialog", "item name or price is null");
                             Toast.makeText(getContext(), R.string.add_item_dialog_error_message, Toast.LENGTH_SHORT).show();

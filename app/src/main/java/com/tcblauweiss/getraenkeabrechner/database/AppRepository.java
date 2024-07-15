@@ -32,16 +32,16 @@ import java.util.concurrent.Future;
 
 
 public class AppRepository {
-    private EntryDao entryDao;
-    private LiveData<List<Entry>> allEntries;
+    private final EntryDao entryDao;
+    private final LiveData<List<Entry>> allEntries;
 
-    private ItemDao itemDao;
-    private LiveData<List<Item>> allItems;
+    private final ItemDao itemDao;
+    private final LiveData<List<Item>> allItems;
 
-    private MemberDao memberDao;
-    private LiveData<List<Member>> allMembers;
+    private final MemberDao memberDao;
+    private final LiveData<List<Member>> allMembers;
 
-    private Application application;
+    private final Application application;
 
     public AppRepository(Application application) {
         this.application = application;
@@ -103,6 +103,15 @@ public class AppRepository {
             @Override
             public void run() {
                 itemDao.insertAll(items);
+            }
+        });
+    }
+
+    public void updateItem(long id, String name, double price) {
+        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                itemDao.update(id, name, price);
             }
         });
     }

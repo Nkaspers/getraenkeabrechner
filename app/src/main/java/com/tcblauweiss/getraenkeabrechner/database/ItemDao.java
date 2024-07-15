@@ -7,7 +7,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.tcblauweiss.getraenkeabrechner.model.Item;
-import com.tcblauweiss.getraenkeabrechner.model.Item;
 
 import java.util.List;
 
@@ -22,9 +21,12 @@ public interface ItemDao {
     @Insert
     void insertAll(Item... items);
 
+    @Query("UPDATE item SET item_name = :name, price = :price WHERE id = :id")
+    void update(long id, String name, double price);
+
     @Delete
     void delete(Item... items);
 
     @Query("DELETE FROM item")
-    public void deleteAll();
+    void deleteAll();
 }

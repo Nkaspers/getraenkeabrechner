@@ -54,7 +54,7 @@
     <string name="entries_amount_header_label">Anzahl</string>
     <string name="entries_total_header_label">Gesamt</string>
     <string name="entries_name_header_label">Name</string>
-    <string name="delete_member_action_title">Mitglied löschen</string>
+    <string name="delete_selection_action_title">Auswahl löschen</string>
     <string name="fab_add_item_content_desc">neues Getränk hinzufügen</string>
     <string name="add_item_dialog_title">Neues Getränk hinzufügen</string>
     <string name="member_item_name_input_label">Getränk</string>
@@ -74,4 +74,6 @@
     <string name="import_members_alert_message">Die Mitgliederliste muss als .csv-Datei im Download Ordner gespeichert sein.\nDie Tabelle muss die Spalten \"vorname\" und \"nachname\" enthalten.\nDas Trennzeichen ist ein Semikolon (\";\").</string>
     <string name="dialog_title_entry_confirmation">Buchung bestätigen</string>
     <string name="add_item_dialog_error_message">Ungültiger Getränkename oder Preis</string>
+    <string name="delete_item_action_title">Artikel löschen</string>
+    <string name="edit_item_dialog_title">Artikel bearbeiten</string>
 </resources>
