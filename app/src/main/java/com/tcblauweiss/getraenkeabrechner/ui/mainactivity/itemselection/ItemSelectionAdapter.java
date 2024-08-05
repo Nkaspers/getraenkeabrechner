@@ -27,6 +27,10 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public static final int DUMMY = 0;
+        public static final int ITEM = 1;
+
         private final TextView nameTextView, priceTextView, amountTextView;
         private final Button decreaseButton, increaseButton;
 
@@ -64,19 +68,45 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     public void submitList(List<Item> items){
         localItemList.clear();
         localItemList.addAll(items);
+        int numEmptyItems = 12 - items.size();
+
+        for (int i = 0; i < numEmptyItems; i++) {
+            localItemList.add(new Item("", 0));
+        }
         this.notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.viewholder_itemselection, viewGroup, false);
+
+        View view = (viewType == ViewHolder.DUMMY) ?
+                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewholder_itemselection_dummy, viewGroup, false) :
+                LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewholder_itemselection, viewGroup, false);
 
         return new ViewHolder(view);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return (int) getItemId(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+       if ( localItemList.get(position).getName().isEmpty() ) {
+           return ViewHolder.DUMMY;
+       } else {
+           return ViewHolder.ITEM;
+       }
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+
+        if (viewHolder.getItemViewType() == ViewHolder.DUMMY) {
+            return;
+        }
+
         viewHolder.getNameTextView().setText(localItemList.get(position).getName());
         viewHolder.getPriceTextView().setText(localItemList.get(position).getPriceString());
         viewHolder.getAmountTextView().setText(String.valueOf(receipt.getNumberOfItems(localItemList.get(position))));
@@ -114,5 +144,6 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
     public void refresh() {
         notifyDataSetChanged();
     }
+
 
 }

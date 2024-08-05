@@ -23,7 +23,7 @@
     <string name="menu_delete_all_bookings">Alle Buchungen löschen</string>
     <string name="menu_cancel">Stornieren</string>
     <string name="menu_change_password">Passwort ändern</string>
-    <string name="beverage_selection_label">Getränkeauswahl</string>
+    <string name="item_selection_label">Produktauswahl</string>
     <string name="signature_label">Unterschrift</string>
     <string name="menu_back_to_mainpage">Zurück zur Startseite</string>
     <string name="search_members_label">Mitglieder suchen</string>

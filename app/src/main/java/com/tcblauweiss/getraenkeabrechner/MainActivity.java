@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -37,6 +38,7 @@ import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
+import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionSnapHelper;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
 import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
     private AppViewModel appViewModel;
     private ReceiptAdapter receiptAdapter;
     private LastEntriesAdapter lastEntriesAdapter;
-
     private ItemSelectionAdapter itemSelectionAdapter;
+    private MaterialButtonToggleGroup categoryButtonGroup;
     private Receipt receipt;
     private TextView receiptTotalTextView;
     private BiometricPrompt biometricPrompt;
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         memberNameInputLayout = findViewById(R.id.layout_input_member_name);
         signaturePad = findViewById(R.id.signature_pad);
         receiptTotalTextView = findViewById(R.id.text_receipt_total);
+        categoryButtonGroup = findViewById(R.id.toggleCategoryButton);
 
         receipt = new Receipt();
 
@@ -113,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         Button submitEntryBtn = findViewById(R.id.btn_submit_entry);
         resetEntryBtn.setOnClickListener(view -> resetEntryAction());
         submitEntryBtn.setOnClickListener(view -> submitEntryAction());
+        categoryButtonGroup.check(R.id.category1Button);
     }
 
     @Override
@@ -323,6 +327,36 @@ public class MainActivity extends AppCompatActivity {
 
         itemSelectionAdapter = new ItemSelectionAdapter(receipt, receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
+        itemSelectionRecycleView.setItemViewCacheSize(6);
+        ItemSelectionSnapHelper itemSelectionSnapHelper = new ItemSelectionSnapHelper();
+
+        itemSelectionRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    return;
+                }
+
+                if (!recyclerView.canScrollHorizontally(-1) && categoryButtonGroup.getCheckedButtonId() != R.id.category1Button) {
+                    categoryButtonGroup.check(R.id.category1Button);
+                } else if (!recyclerView.canScrollHorizontally(1) && categoryButtonGroup.getCheckedButtonId() != R.id.category2Button) {
+                    categoryButtonGroup.check(R.id.category2Button);
+                } else {
+                    View view = itemSelectionSnapHelper.findSnapView(recyclerView.getLayoutManager());
+                    if (view != null) {
+                        int position = recyclerView.getLayoutManager().getPosition(view);
+
+                        if (position < itemSelectionAdapter.getItemCount() / 2) {
+                            recyclerView.smoothScrollToPosition(0);
+                        } else {
+                            recyclerView.smoothScrollToPosition(itemSelectionAdapter.getItemCount() - 1);
+                        }
+                    }
+                }
+            }
+        });
+
 
         appViewModel.getAllItems().observe(this, new Observer<List<Item>>() {
             @Override
@@ -330,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                 itemSelectionAdapter.submitList(items);
 
                 // Disable overscroll effect when scrolling is not possible
-                if(itemSelectionRecycleView.computeHorizontalScrollRange() > 0) {
+                if (itemSelectionRecycleView.computeHorizontalScrollRange() > 0) {
                     itemSelectionRecycleView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
                 } else {
                     itemSelectionRecycleView.setOverScrollMode(RecyclerView.OVER_SCROLL_ALWAYS);
@@ -343,6 +377,16 @@ public class MainActivity extends AppCompatActivity {
             public void onReceiptChanged(Receipt receipt) {
                 receiptTotalTextView.setText(receipt.getTotalString());
                 Log.d(null, receipt.getTotalString());
+            }
+        });
+
+        categoryButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.category1Button) {
+                    itemSelectionRecycleView.smoothScrollToPosition(0);
+                } else if (checkedId == R.id.category2Button) {
+                    itemSelectionRecycleView.smoothScrollToPosition(itemSelectionAdapter.getItemCount());
+                }
             }
         });
     }

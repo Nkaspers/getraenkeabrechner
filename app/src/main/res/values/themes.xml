@@ -70,6 +70,10 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="Theme.Getraenkeabrechner.CategorySelectionButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="Theme.Getraenkeabrechner.ItemSelectionButton" parent="Widget.Material3.Button.IconButton.Filled">
         <item name="iconSize">20dp</item>
         <item name="iconGravity">textStart</item>
