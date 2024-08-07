@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -36,6 +37,7 @@ import com.tcblauweiss.getraenkeabrechner.util.DecimalDigitsInputFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A fragment representing a list of Items.
@@ -50,10 +52,15 @@ public class AllItemsFragment extends Fragment {
     private MyItemRecyclerViewAdapter allItemsViewAdapter1;
     private MyItemRecyclerViewAdapter allItemsViewAdapter2;
     private FloatingActionButton addItemFab;
+    private FloatingActionButton addCategory1Fab;
+    private FloatingActionButton addCategory2Fab;
+
     private LiveData<List<Item>> allItems;
     private List<Item> selectedItems;
     private ActionMode.Callback itemSelectedActionCallback;
     private ActionMode itemSelectedActionMode;
+
+    private boolean isFabMenuOpen = false;
     
     public AllItemsFragment() {}
 
@@ -80,14 +87,30 @@ public class AllItemsFragment extends Fragment {
         itemRecyclerView1 = view.findViewById(R.id.list_items_1);
         itemRecyclerView2 = view.findViewById(R.id.list_items_2);
         addItemFab = view.findViewById(R.id.fab_all_items_fragment);
+        addCategory1Fab = view.findViewById(R.id.fab_all_items_fragment_add_category_1);
+        addCategory2Fab = view.findViewById(R.id.fab_all_items_fragment_add_category_2);
+
         setupAllItemsView();
         setupActionMode();
 
         addItemFab.setOnClickListener(view1 -> {
-            AlertDialog newMemberDialog = createNewItemDialog();
-            newMemberDialog.show();
-
+             if( !isFabMenuOpen ){
+                 openFabMenu();
+             } else {
+                 closeFabMenu();
+             }
         });
+
+        addCategory1Fab.setOnClickListener(view1 -> {
+            createNewItemDialog(0).show();
+            closeFabMenu();
+        });
+
+        addCategory2Fab.setOnClickListener(view1 -> {
+            createNewItemDialog(1).show();
+            closeFabMenu();
+        });
+
         return view;
     }
 
@@ -184,13 +207,40 @@ public class AllItemsFragment extends Fragment {
         allItems.observe(requireActivity(), new Observer<List<Item>>() {
             @Override
             public void onChanged(List<Item> items) {
-                allItemsViewAdapter1.submitList( items.subList( 0, 6));
-                allItemsViewAdapter2.submitList( items.subList( 6, items.size()));
+                allItemsViewAdapter1.submitList( items.stream().filter(item -> item.getCategory() == 0).collect(Collectors.toList()));
+                allItemsViewAdapter2.submitList( items.stream().filter(item -> item.getCategory() == 1).collect(Collectors.toList()));
             }
         });
     }
 
-    private AlertDialog createNewItemDialog() {
+    private void openFabMenu() {
+        isFabMenuOpen = true;
+        addItemFab.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_cancel, null));
+        addCategory1Fab.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        addCategory2Fab.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        addCategory1Fab.setVisibility(View.VISIBLE);
+        addCategory2Fab.setVisibility(View.VISIBLE);
+    }
+
+    private void closeFabMenu() {
+        isFabMenuOpen = false;
+        addItemFab.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_plus, null));
+        addCategory1Fab.animate().translationY(0).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                addCategory1Fab.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        addCategory2Fab.animate().translationY(0).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                addCategory2Fab.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private AlertDialog createNewItemDialog(int category) {
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_item, null);
 
         TextInputEditText itemNameInput = view.findViewById(R.id.text_input_new_item_name);
@@ -198,9 +248,12 @@ public class AllItemsFragment extends Fragment {
 
         itemPriceInput.setFilters(new InputFilter[] { new DecimalDigitsInputFilter(3,2)});
 
+        String title = category == 0 ? getString(R.string.add_item_category_1_dialog_title) : getString(R.string.add_item_category_2_dialog_title);
+        int icon = category == 0 ? R.drawable.ic_beverage : R.drawable.ic_snack;
+
         return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
-                .setIcon(R.drawable.ic_beverage)
-                .setTitle(R.string.add_item_dialog_title)
+                .setIcon(icon)
+                .setTitle(title)
                 .setView(view)
                 .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {
                     @Override
@@ -210,7 +263,7 @@ public class AllItemsFragment extends Fragment {
 
                         if( !itemPrice.toString().isEmpty() && !itemName.toString().isEmpty()){
                             double itemPriceDouble = Double.parseDouble(itemPrice.toString().replace(",", "."));
-                            viewModel.insertItems(new Item(itemName.toString(), itemPriceDouble));
+                            viewModel.insertItems(new Item(itemName.toString(), itemPriceDouble, category));
                             Log.d("addItemDialog", "added Item: " + itemName + " " + itemPrice);
                         }else{
                             Log.d("addItemDialog", "item name or price is null");

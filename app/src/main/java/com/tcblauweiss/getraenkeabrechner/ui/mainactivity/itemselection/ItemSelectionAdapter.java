@@ -6,19 +6,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.tcblauweiss.getraenkeabrechner.R;
 import com.tcblauweiss.getraenkeabrechner.model.Item;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdapter.ViewHolder> {
-    private ArrayList<Item> localItemList;
-    private Receipt receipt;
+    private final ArrayList<Item> localItemList;
+    private final Receipt receipt;
 
-    private ReceiptAdapter receiptAdapter;
+    private final ReceiptAdapter receiptAdapter;
 
     private ReceiptChangedListener receiptChangedListener;
 
@@ -65,19 +67,34 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
         this.receiptAdapter = receiptAdapter;
     }
 
-    public void submitList(List<Item> items){
+    public void submitList(@NonNull List<Item> items){
         localItemList.clear();
-        localItemList.addAll(items);
-        int numEmptyItems = 12 - items.size();
+        items.stream()
+                .filter(item -> item.getCategory() == 0)
+                .sorted(Comparator.comparing(Item::getId))
+                .forEach(localItemList::add);
 
-        for (int i = 0; i < numEmptyItems; i++) {
-            localItemList.add(new Item("", 0));
-        }
-        this.notifyDataSetChanged();
+        addDummyItems(6);
+
+        items.stream()
+                .filter(item -> item.getCategory() == 1)
+                .sorted(Comparator.comparing(Item::getId))
+                .forEach(localItemList::add);
+
+        addDummyItems(12);
+
+        notifyDataSetChanged();
     }
 
+    private void addDummyItems(int targetSize) {
+        while (localItemList.size() < targetSize) {
+            localItemList.add(new Item("", 0, 0));
+        }
+    }
+
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
         View view = (viewType == ViewHolder.DUMMY) ?
                 LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.viewholder_itemselection_dummy, viewGroup, false) :

@@ -16,10 +16,13 @@ public class Item {
     private String name;
     @ColumnInfo(name="price")
     private double price;
+    @ColumnInfo(name="category")
+    private int category;
 
-    public Item(String name, double price) {
+    public Item(String name, double price, int category) {
         this.name = name;
         this.price = price;
+        this.category = category;
     }
 
     public String getName() {
@@ -28,6 +31,10 @@ public class Item {
 
     public double getPrice() {
         return price;
+    }
+
+    public int getCategory() {
+        return category;
     }
 
     public String getPriceString(){
@@ -49,5 +56,9 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 }

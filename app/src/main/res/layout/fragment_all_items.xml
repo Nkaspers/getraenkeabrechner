@@ -22,7 +22,7 @@
             android:layout_marginStart="8dp"
             android:drawablePadding="8dp"
             android:text="@string/item_category_label_1"
-            app:drawableLeftCompat="@drawable/ic_shopping_cart"
+            app:drawableLeftCompat="@drawable/ic_beverage"
             app:drawableTint="?attr/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
             android:drawablePadding="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/item_category_label_2"
-            app:drawableLeftCompat="@drawable/ic_shopping_cart"
+            app:drawableLeftCompat="@drawable/ic_snack"
             app:drawableTint="?attr/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/list_items_2"
             app:layout_constraintStart_toStartOf="@+id/label_item_category_1" />
@@ -74,5 +74,27 @@
     android:contentDescription="@string/fab_add_item_content_desc"
     app:srcCompat="@drawable/ic_plus"
     style="?attr/floatingActionButtonSecondaryStyle" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_all_items_fragment_add_category_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_add_item_content_desc"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_beverage"
+        style="?attr/floatingActionButtonSecondaryStyle" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_all_items_fragment_add_category_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_add_item_content_desc"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_snack"
+        style="?attr/floatingActionButtonSecondaryStyle" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
