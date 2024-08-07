@@ -14,7 +14,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="menu_subheader_members">Mitglieder</string>
     <string name="menu_subheader_security">Sicherheit</string>
-    <string name="menu_subheader_beverages">Getränke</string>
+    <string name="menu_subheader_items">Getränke und Snacks</string>
     <string name="menu_subheader_entries">Buchungen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_import">Importieren</string>
@@ -68,7 +68,7 @@
     <string name="auth_success_toast">Authentifizierung erfolgreich</string>
     <string name="auth_failed_toast">Authentifizierung fehlgeschlagen</string>
     <string name="auth_prompt_title">Authentifizierung erforderlich</string>
-    <string name="no_items_selected_toast">Bitte Getränk auswählen</string>
+    <string name="no_items_selected_toast">Bitte Produkt auswählen</string>
     <string name="menu_delete_all_members">Alle Mitglieder löschen</string>
     <string name="import_members_alert_title">Mitglieder importieren</string>
     <string name="import_members_alert_message">Die Mitgliederliste muss als .csv-Datei im Download Ordner gespeichert sein.\nDie Tabelle muss die Spalten \"vorname\" und \"nachname\" enthalten.\nDas Trennzeichen ist ein Semikolon (\";\").</string>

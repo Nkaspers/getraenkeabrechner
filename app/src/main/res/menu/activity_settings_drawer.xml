@@ -48,7 +48,7 @@
     </item>
     <item
         android:id="@+id/nav_subheader_items"
-        android:title="@string/menu_subheader_beverages">
+        android:title="@string/menu_subheader_items">
         <menu>
             <item
                 android:id="@+id/nav_items_edit"
