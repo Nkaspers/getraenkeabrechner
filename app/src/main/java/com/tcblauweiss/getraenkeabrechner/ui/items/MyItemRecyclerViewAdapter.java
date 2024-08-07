@@ -56,7 +56,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         Item item = itemList.get(position);
-        viewHolder.getNumberTextView().setText(String.valueOf(position));
+        viewHolder.getNumberTextView().setText(String.valueOf(position + 1));
         viewHolder.getNameTextView().setText(item.getName());
         viewHolder.getPriceTextView().setText(item.getPriceString());
 
