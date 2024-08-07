@@ -49,7 +49,7 @@
     <string name="confirm_action_button_label">Bestätigen</string>
     <string name="cancel_action_button_label">Abbrechen</string>
     <string name="entries_date_header_label">Datum</string>
-    <string name="entries_item_header_label">Getränk</string>
+    <string name="entries_item_header_label">Produkt</string>
     <string name="entries_price_header_label">Preis</string>
     <string name="entries_amount_header_label">Anzahl</string>
     <string name="entries_total_header_label">Gesamt</string>

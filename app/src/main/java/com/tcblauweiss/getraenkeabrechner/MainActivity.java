@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
             total += entry.getTotalPrice();
         }
 
-        String message = String.format(Locale.GERMANY, "Bist du <b>%s %s</b> und möchtest Getränke im Wert von <b>%.2f€</b> buchen?", entries[0].getFirstName(), entries[0].getLastName(), total);
+        String message = String.format(Locale.GERMANY, "Bist du <b>%s %s</b> und möchtest Getränke und Snacks im Wert von <b>%.2f€</b> buchen?", entries[0].getFirstName(), entries[0].getLastName(), total);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered);
         builder.setTitle(R.string.dialog_title_entry_confirmation);
