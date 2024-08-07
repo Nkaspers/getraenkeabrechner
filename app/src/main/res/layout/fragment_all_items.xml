@@ -6,26 +6,73 @@
     android:layout_height="match_parent"
     tools:context=".ui.items.AllItemsFragment"
     android:layout_marginTop="?attr/actionBarSize">
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/list_all_items"
-    android:name="com.tcblauweiss.getraenkeabrechner.ui.items.AllItemsFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:listitem="@layout/viewholder_items" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:id="@+id/label_item_category_1"
+            style="@style/Theme.Getraenkeabrechner.Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:drawablePadding="8dp"
+            android:text="@string/item_category_label_1"
+            app:drawableLeftCompat="@drawable/ic_shopping_cart"
+            app:drawableTint="?attr/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_items_1"
+            android:name="com.tcblauweiss.getraenkeabrechner.ui.items.AllItemsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHeight_percent="0.42"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/label_item_category_1"
+            tools:layout_editor_absoluteX="16dp"
+            tools:listitem="@layout/viewholder_items" />
+
+        <TextView
+            android:id="@+id/label_item_category_2"
+            style="@style/Theme.Getraenkeabrechner.Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/item_category_label_2"
+            app:drawableLeftCompat="@drawable/ic_shopping_cart"
+            app:drawableTint="?attr/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/list_items_2"
+            app:layout_constraintStart_toStartOf="@+id/label_item_category_1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_items_2"
+            android:name="com.tcblauweiss.getraenkeabrechner.ui.items.AllItemsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.42"
+            tools:layout_editor_absoluteX="16dp"
+            tools:listitem="@layout/viewholder_items" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_all_items_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/fab_add_item_content_desc"
-        app:srcCompat="@drawable/ic_plus"
-        style="?attr/floatingActionButtonSecondaryStyle"
-        />
+    android:id="@+id/fab_all_items_fragment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:contentDescription="@string/fab_add_item_content_desc"
+    app:srcCompat="@drawable/ic_plus"
+    style="?attr/floatingActionButtonSecondaryStyle" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

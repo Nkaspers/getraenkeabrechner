@@ -76,4 +76,6 @@
     <string name="add_item_dialog_error_message">Ungültiger Getränkename oder Preis</string>
     <string name="delete_item_action_title">Artikel löschen</string>
     <string name="edit_item_dialog_title">Artikel bearbeiten</string>
+    <string name="item_category_label_1">Getränke</string>
+    <string name="item_category_label_2">Snacks</string>
 </resources>

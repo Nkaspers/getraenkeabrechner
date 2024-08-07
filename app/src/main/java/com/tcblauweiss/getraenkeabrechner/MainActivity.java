@@ -362,7 +362,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Item> items) {
                 itemSelectionAdapter.submitList(items);
-
                 // Disable overscroll effect when scrolling is not possible
                 if (itemSelectionRecycleView.computeHorizontalScrollRange() > 0) {
                     itemSelectionRecycleView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);

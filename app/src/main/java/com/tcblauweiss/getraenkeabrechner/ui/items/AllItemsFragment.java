@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,12 +42,13 @@ import java.util.List;
  */
 public class AllItemsFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private SettingsActivity parentActivity;
     private MaterialToolbar toolbar;
     private AppViewModel viewModel;
-    private RecyclerView recyclerView;
-    private MyItemRecyclerViewAdapter allItemsViewAdapter;
+    private RecyclerView itemRecyclerView1;
+    private RecyclerView itemRecyclerView2;
+    private MyItemRecyclerViewAdapter allItemsViewAdapter1;
+    private MyItemRecyclerViewAdapter allItemsViewAdapter2;
     private FloatingActionButton addItemFab;
     private LiveData<List<Item>> allItems;
     private List<Item> selectedItems;
@@ -60,7 +62,7 @@ public class AllItemsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
@@ -75,7 +77,8 @@ public class AllItemsFragment extends Fragment {
         parentActivity.setSupportActionBar(toolbar);
         viewModel = new ViewModelProvider(this).get(AppViewModel.class);
 
-        recyclerView = view.findViewById(R.id.list_all_items);
+        itemRecyclerView1 = view.findViewById(R.id.list_items_1);
+        itemRecyclerView2 = view.findViewById(R.id.list_items_2);
         addItemFab = view.findViewById(R.id.fab_all_items_fragment);
         setupAllItemsView();
         setupActionMode();
@@ -117,18 +120,25 @@ public class AllItemsFragment extends Fragment {
             public void onDestroyActionMode(ActionMode actionMode) {
                 Log.d("AllItemFragment", "destroy actionMode");
                 selectedItems.clear();
-                allItemsViewAdapter.clearViewSelection();
+                allItemsViewAdapter1.clearViewSelection();
             }
         };
     }
 
     private void setupAllItemsView(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        allItemsViewAdapter = new MyItemRecyclerViewAdapter();
-        recyclerView.setAdapter(allItemsViewAdapter);
+        itemRecyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
+        itemRecyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        allItemsViewAdapter1 = new MyItemRecyclerViewAdapter();
+        allItemsViewAdapter2 = new MyItemRecyclerViewAdapter();
+
+        itemRecyclerView1.setAdapter(allItemsViewAdapter1);
+        itemRecyclerView2.setAdapter(allItemsViewAdapter2);
+
         selectedItems = new ArrayList<>();
         allItems = viewModel.getAllItems();
-        allItemsViewAdapter.setItemClickedListener(new MyItemRecyclerViewAdapter.ItemClickedListener() {
+
+        MyItemRecyclerViewAdapter.ItemClickedListener itemClickedListener = new MyItemRecyclerViewAdapter.ItemClickedListener() {
             @Override
             public void onItemClicked(Item item) {
                 if(selectedItems.isEmpty()){
@@ -166,9 +176,18 @@ public class AllItemsFragment extends Fragment {
                     itemSelectedActionMode.finish();
                 }
             }
-        });
+        };
 
-        allItems.observe(requireActivity(), allItemsViewAdapter::submitList);
+        allItemsViewAdapter1.setItemClickedListener(itemClickedListener);
+        allItemsViewAdapter2.setItemClickedListener(itemClickedListener);
+
+        allItems.observe(requireActivity(), new Observer<List<Item>>() {
+            @Override
+            public void onChanged(List<Item> items) {
+                allItemsViewAdapter1.submitList( items.subList( 0, 6));
+                allItemsViewAdapter2.submitList( items.subList( 6, items.size()));
+            }
+        });
     }
 
     private AlertDialog createNewItemDialog() {
