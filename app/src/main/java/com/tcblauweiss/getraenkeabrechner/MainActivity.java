@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -38,7 +39,6 @@ import com.tcblauweiss.getraenkeabrechner.model.ItemWrapper;
 import com.tcblauweiss.getraenkeabrechner.model.Member;
 import com.tcblauweiss.getraenkeabrechner.model.Receipt;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionAdapter;
-import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ItemSelectionSnapHelper;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.itemselection.ReceiptAdapter;
 import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntriesAdapter;
 import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
         itemSelectionAdapter = new ItemSelectionAdapter(receipt, receiptAdapter);
         itemSelectionRecycleView.setAdapter(itemSelectionAdapter);
         itemSelectionRecycleView.setItemViewCacheSize(6);
-        ItemSelectionSnapHelper itemSelectionSnapHelper = new ItemSelectionSnapHelper();
+        LinearSnapHelper itemSelectionSnapHelper = new LinearSnapHelper();
 
         itemSelectionRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
