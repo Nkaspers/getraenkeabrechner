@@ -288,10 +288,12 @@ public class AllItemsFragment extends Fragment {
         itemNameInput.setText(item.getName());
         itemPriceInput.setText(String.valueOf(item.getPrice()));
 
+        int icon = item.getCategory() == 0 ? R.drawable.ic_beverage : R.drawable.ic_snack;
+
         itemPriceInput.setFilters(new InputFilter[] { new DecimalDigitsInputFilter(3,2)});
 
         return new MaterialAlertDialogBuilder(requireContext(), com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
-                .setIcon(R.drawable.ic_beverage)
+                .setIcon(icon)
                 .setTitle(R.string.edit_item_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {

@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/item_name"
         android:layout_width="194dp"
-        android:layout_height="22dp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:minWidth="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
