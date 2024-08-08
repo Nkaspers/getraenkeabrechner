@@ -79,4 +79,5 @@
     <string name="item_category_label_1">Getränke</string>
     <string name="item_category_label_2">Snacks</string>
     <string name="add_item_category_2_dialog_title">Neuen Snack hinzufügen</string>
+    <string name="add_item_dialog_max_items_error_message">Es können maximal 6 Produkte in einer Kategorie sein.</string>
 </resources>

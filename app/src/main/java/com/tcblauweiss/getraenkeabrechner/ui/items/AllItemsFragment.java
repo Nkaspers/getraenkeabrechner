@@ -261,13 +261,14 @@ public class AllItemsFragment extends Fragment {
                         Editable itemName = itemNameInput.getEditableText();
                         Editable itemPrice = itemPriceInput.getEditableText();
 
-                        if( !itemPrice.toString().isEmpty() && !itemName.toString().isEmpty()){
+                        if ( itemPrice.toString().isEmpty() || itemName.toString().isEmpty()) {
+                            Toast.makeText(getContext(), R.string.add_item_dialog_error_message, Toast.LENGTH_SHORT).show();
+                        } else if( allItems.getValue().stream().filter(item->item.getCategory() == category).count() > 5){
+                            Toast.makeText(getContext(), R.string.add_item_dialog_max_items_error_message, Toast.LENGTH_SHORT).show();
+                        } else {
                             double itemPriceDouble = Double.parseDouble(itemPrice.toString().replace(",", "."));
                             viewModel.insertItems(new Item(itemName.toString(), itemPriceDouble, category));
                             Log.d("addItemDialog", "added Item: " + itemName + " " + itemPrice);
-                        }else{
-                            Log.d("addItemDialog", "item name or price is null");
-                            Toast.makeText(getContext(), R.string.add_item_dialog_error_message, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
