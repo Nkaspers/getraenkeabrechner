@@ -57,7 +57,7 @@
     <string name="delete_selection_action_title">Auswahl löschen</string>
     <string name="fab_add_item_content_desc">neues Getränk hinzufügen</string>
     <string name="add_item_category_1_dialog_title">Neues Getränk hinzufügen</string>
-    <string name="member_item_name_input_label">Getränk</string>
+    <string name="member_item_name_input_label">Produkt</string>
     <string name="item_price_input_label">Preis</string>
     <string name="submit_failure_toast">Fehler beim Speichern</string>
     <string name="signature_dialog_title">Unterschrift</string>
