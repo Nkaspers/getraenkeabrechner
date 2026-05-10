@@ -48,6 +48,9 @@ public class Member {
     }
 
     public String getName() {
+        if (firstName.isEmpty()) {
+            return lastName;
+        }
         return lastName + ", " + firstName;
     }
 

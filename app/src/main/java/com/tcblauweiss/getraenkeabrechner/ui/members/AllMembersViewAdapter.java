@@ -64,9 +64,11 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Member member = localDataSetFiltered.get(position);
         String lastName = member.getLastName();
+        String firstName = member.getFirstName();
+        String lastNameString = firstName.isEmpty() ? lastName : String.format("%s,", lastName);
 
-        viewHolder.getLastNameTextView().setText(String.format("%s,", member.getLastName()));
-        viewHolder.getFirstNameTextView().setText(member.getFirstName());
+        viewHolder.getLastNameTextView().setText(lastNameString);
+        viewHolder.getFirstNameTextView().setText(firstName);
         if (!lastName.isEmpty()) {
             viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
         }
