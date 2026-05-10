@@ -67,7 +67,9 @@ public class AllMembersViewAdapter extends RecyclerView.Adapter<AllMembersViewAd
 
         viewHolder.getLastNameTextView().setText(String.format("%s,", member.getLastName()));
         viewHolder.getFirstNameTextView().setText(member.getFirstName());
-        viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
+        if (!lastName.isEmpty()) {
+            viewHolder.getFirstLetterTextView().setText(String.valueOf(lastName.charAt(0)));
+        }
 
         if (memberClickedListener != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
