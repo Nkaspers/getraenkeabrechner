@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.search.SearchView;
@@ -142,14 +143,17 @@ public class AllMembersFragment extends Fragment {
                 .setPositiveButton(R.string.add_member_dialog_confirm_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO: Mitglied hinzufügen
                         Editable firstName = memberFirstNameInput.getEditableText();
                         Editable lastName = memberLastNameInput.getEditableText();
 
                         if(firstName != null && lastName != null){
-                            appViewModel.insertMembers(new Member(firstName.toString(), lastName.toString()));
-                            Log.d("addMemberDialog", "added Member: " + firstName + " " + lastName);
-                        }else{
+                            if(!lastName.toString().isEmpty()) {
+                                appViewModel.insertMembers(new Member(firstName.toString(), lastName.toString()));
+                                Log.d("addMemberDialog", "added Member: " + lastName + ", " + firstName);
+                            } else {
+                                Log.d("addMemberDialog", "member last name is empty");
+                            }
+                        } else {
                             Log.d("addMemberDialog", "member name is null");
                         }
                     }
@@ -160,6 +164,29 @@ public class AllMembersFragment extends Fragment {
                     }
                 })
                 .create();
+
+        addMemberDialog.setOnShowListener(dialog -> {
+            AlertDialog alertDialog = (AlertDialog) dialog;
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+        });
+
+        memberLastNameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Button confirmButton = addMemberDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                confirmButton.setEnabled(!editable.toString().isEmpty());
+            }
+        });
 
         return addMemberDialog;
     }
