@@ -66,6 +66,10 @@ public class AppViewModel extends AndroidViewModel {
         return allMembers;
     }
 
+    public Member findMemberByName(String first, String last) {
+        return appRepository.findMemberByName(first, last);
+    }
+
     public void insertMembers(Member... members) {
         appRepository.insertMembers(members);
     }

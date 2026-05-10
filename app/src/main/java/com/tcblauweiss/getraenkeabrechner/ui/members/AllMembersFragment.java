@@ -147,12 +147,7 @@ public class AllMembersFragment extends Fragment {
                         Editable lastName = memberLastNameInput.getEditableText();
 
                         if(firstName != null && lastName != null){
-                            if(!lastName.toString().isEmpty()) {
-                                appViewModel.insertMembers(new Member(firstName.toString(), lastName.toString()));
-                                Log.d("addMemberDialog", "added Member: " + lastName + ", " + firstName);
-                            } else {
-                                Log.d("addMemberDialog", "member last name is empty");
-                            }
+                            addNewMember(firstName.toString(), lastName.toString());
                         } else {
                             Log.d("addMemberDialog", "member name is null");
                         }
@@ -189,6 +184,22 @@ public class AllMembersFragment extends Fragment {
         });
 
         return addMemberDialog;
+    }
+
+    private void addNewMember(String firstName, String lastName){
+        if (lastName.isEmpty()) {
+            Log.d("addMemberDialog", "member last name is empty");
+            return;
+        }
+
+        if (appViewModel.findMemberByName(firstName, lastName) != null){
+            Log.d("addMemberDialog", "member already exists");
+            Toast.makeText(getContext(), R.string.add_member_dialog_member_exists_toast, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        appViewModel.insertMembers(new Member(firstName, lastName));
+        Log.d("addMemberDialog", "added Member: " + lastName + ", " + firstName);
     }
 
     private void setupSearchBar(){
@@ -356,7 +367,7 @@ public class AllMembersFragment extends Fragment {
                     Log.d("AllMembersFragment","Filepath = "+ filePath);
                     int num = parentActivity.getViewModel().importMembersFromCsv(filePath);
 
-                    Toast.makeText(getContext() ,num + " Mitglieder importiert", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext() ,num + "Mitglieder importiert", Toast.LENGTH_SHORT).show();
                 }
 
             });

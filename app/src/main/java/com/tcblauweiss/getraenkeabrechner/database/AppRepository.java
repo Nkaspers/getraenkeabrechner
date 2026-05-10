@@ -138,6 +138,21 @@ public class AppRepository {
         return allMembers;
     }
 
+    public Member findMemberByName(String first, String last) {
+        Future<Member> memberFuture = AppDatabase.databaseWriteExecutor.submit(new Callable<Member>() {
+            @Override
+            public Member call() throws Exception {
+                return memberDao.findByName(first, last);
+            }
+        });
+        try {
+            return memberFuture.get();
+        } catch (Exception e) {
+            Log.d("AppRepository", e.toString());
+            return null;
+        }
+    }
+
     public void insertMembers(Member... members) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
