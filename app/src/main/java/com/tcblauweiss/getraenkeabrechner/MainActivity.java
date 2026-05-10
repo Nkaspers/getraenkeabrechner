@@ -44,7 +44,6 @@ import com.tcblauweiss.getraenkeabrechner.ui.mainactivity.lastentries.LastEntrie
 import com.tcblauweiss.getraenkeabrechner.util.StringFormatter;
 
 import se.warting.signatureview.views.SignaturePad;
-import se.warting.signatureview.views.SignedListener;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         setupLastEntriesView();
         setupItemSelectionView();
         setupMemberNameInputField();
-        setupSignaturePad();
 
         Button resetEntryBtn = findViewById(R.id.btn_reset_entry);
         Button submitEntryBtn = findViewById(R.id.btn_submit_entry);
@@ -446,30 +444,6 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
                 memberNameInputField.clearFocus();
-            }
-        });
-    }
-
-    private void setupSignaturePad() {
-        signaturePad.setOnSignedListener(new SignedListener() {
-            @Override
-            public void onStartSigning() {
-                Log.d("SignedListener", "OnStartSigning");
-            }
-
-            @Override
-            public void onSigning() {
-                Log.d("SignedListener", "OnSigning");
-            }
-
-            @Override
-            public void onSigned() {
-                Log.d("SignedListener", "OnSigned");
-            }
-
-            @Override
-            public void onClear() {
-                Log.d("SignedListener", "OnClear");
             }
         });
     }
